@@ -1,4 +1,4 @@
-import { MenuItem } from '@/types/navigation';
+import { MenuItem } from "@/components/common/navbar-related/navigation";
 
 export const NON_USER_MENU_ITEMS: MenuItem[] = [
     { label: 'Home', href: '/' },

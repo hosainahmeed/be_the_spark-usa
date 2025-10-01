@@ -1,7 +1,7 @@
 'use client';
 
+import { User } from '@/types/navigation';
 import { motion } from 'framer-motion';
-import { User } from './ProfileDropdown';
 
 interface ProfileAvatarProps {
     user: User;

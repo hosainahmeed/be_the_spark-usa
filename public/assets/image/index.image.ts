@@ -7,6 +7,10 @@ import lockImage from "@/../public/assets/image/lock-image.webp";
 import bannerImage from "@/../public/assets/image/banner.webp";
 import discoverBannerImage from "@/../public/assets/image/layer-discover.png";
 import pageTopBannerImage from "@/../public/assets/image/page-banner.webp";
+import slideImage1 from "./slide-1.webp";
+import slideImage2 from "./slide-2.png";
+import slideImage3 from "./slide-3.png";
+
 export const IMAGE = {
     brandLogo,
     chooseIcon1,
@@ -18,3 +22,9 @@ export const IMAGE = {
     discoverBannerImage,
     pageTopBannerImage,
 };
+
+export const SlideImage = {
+    slideImage1,
+    slideImage2,
+    slideImage3,
+}

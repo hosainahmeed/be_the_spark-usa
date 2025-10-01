@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
@@ -17,7 +16,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
     return (
         <section
             ref={sectionRef}
-            className="w-full h-fit py-16 md:py-28 flex items-center justify-center bg-gradient-to-br from-white to-gray-50/30"
+            className="w-full h-fit py-16 md:pb-28 flex items-center justify-center bg-gradient-to-br from-white to-gray-50/30"
             aria-labelledby="banner-title"
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,7 +34,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                         <motion.h1
                             id="banner-title"
                             variants={textVariants}
-                            style={{ fontFamily: 'Optima' }}
+                            style={{ fontFamily: 'sans-serif' }}
                             className="font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-6xl leading-tight sm:leading-tight lg:leading-tight text-gray-900 mb-6"
                         >
                             {title}
@@ -43,7 +42,6 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
 
                         <motion.p
                             variants={textVariants}
-                            style={{ fontFamily: 'Optima' }}
                             className="font-normal text-lg sm:text-xl lg:text-3xl leading-relaxed text-gray-600 mb-8 max-w-3xl"
                         >
                             {description}
