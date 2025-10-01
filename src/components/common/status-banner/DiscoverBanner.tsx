@@ -20,18 +20,18 @@ function DiscoverBanner({ title, description }: { title: string, description: st
                     className="font-medium text-white text-2xl lg:text-4xl xl:text-5xl tracking-normal">{title}</h1>
                 <p className="text-white text-lg lg:text-xl xl:text-2xl">{description}</p>
             </div>
-            <div className='flex flex-col md:flex-row gap-4 md:gap-6'>
+            <div className='flex w-full mt-3 md:mt-0 flex-col md:flex-row gap-4 md:gap-6'>
                 <Link
                     href={"/sign-in"}
                 >
-                    <Button className='bg-white text-[var(--blue)] hover:text-[var(--blue)] px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white'>
+                    <Button className='bg-white text-[var(--blue)] hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white'>
                         Find Events Near You
                     </Button>
                 </Link>
                 <Link
                     href={"/sign-in"}
                 >
-                    <Button className='border border-white bg-transparent px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]'>
+                    <Button className='border border-white bg-transparent md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]'>
                         <ArrowUpRight />  List Your Event
                     </Button>
                 </Link>

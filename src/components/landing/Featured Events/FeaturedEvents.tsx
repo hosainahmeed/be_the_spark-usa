@@ -3,7 +3,7 @@ import FeaturedEventsCard from './FeaturedEventsCard';
 import SectionTitleFormal from '@/components/component-layout/SectionTitleFormal';
 import { ArrowUpRight } from 'lucide-react';
 
-const CAMP_DATA = [
+export const CAMP_DATA = [
     {
         id: 1,
         title: "Summer Soccer Camp 2025",
@@ -37,6 +37,17 @@ const CAMP_DATA = [
         sport: "Tennis",
         photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png"
     },
+    {
+        id: 4,
+        title: "Tennis Academy Camp 2025",
+        location: "Miami, USA",
+        dateRange: "August 5-7, 2025",
+        ages: "8-14",
+        rating: 4.8,
+        reviewCount: 32,
+        sport: "Tennis",
+        photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png"
+    },
 ];
 
 
@@ -55,7 +66,7 @@ const FeaturedEvents = () => {
                 className='my-12'
 
             />
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {CAMP_DATA.map((camp) => (
                     <FeaturedEventsCard key={camp.id} camp={camp} />
                 ))}

@@ -10,6 +10,9 @@ import pageTopBannerImage from "@/../public/assets/image/page-banner.webp";
 import slideImage1 from "./slide-1.webp";
 import slideImage2 from "./slide-2.png";
 import slideImage3 from "./slide-3.png";
+import contactImage from "./contact.svg";
+import footersImage from "./Footers.svg";
+import brandV2 from "./brand-v2.svg"
 
 export const IMAGE = {
     brandLogo,
@@ -21,6 +24,9 @@ export const IMAGE = {
     bannerImage,
     discoverBannerImage,
     pageTopBannerImage,
+    contactImage,
+    footersImage,
+    brandV2,
 };
 
 export const SlideImage = {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { NavigationMenuBar } from "@/components/common/NavigationMenuBar";
+import Footer from "@/components/common/footer/Footer";
 
 export const metadata: Metadata = {
     title: {
@@ -15,8 +16,9 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            {/* <NavigationMenuBar /> */}
+            <NavigationMenuBar />
             {children}
+            <Footer />
         </>
     );
 }

@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import React from 'react'
 
 function FeaturedEventsCard({ camp }: { camp: any }) {
@@ -48,9 +50,9 @@ function FeaturedEventsCard({ camp }: { camp: any }) {
                     </div>
                 </div>
 
-                <button className="w-fit mt-4 bg-[#E6ECF5] text-black font-medium py-2 px-5 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
+                <Button className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-5 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
                     View Details
-                </button>
+                </Button>
             </div>
         </article>
     )
@@ -63,12 +65,11 @@ const ClippedImage = ({ photoUrl, className = "" }: { photoUrl: string; classNam
     const clipId = `clip-${Math.random().toString(36).substr(2, 9)}`;
 
     return (
-        <div className={`relative overflow-hidden ${className}`}>
+        <div className={cn(`relative overflow-hidden`, className)}>
             <svg
                 className="absolute inset-0 w-full h-full"
                 viewBox="0 0 360 160"
                 preserveAspectRatio="none"
-                xmlns="http://www.w3.org/2000/svg"
             >
                 <defs>
                     <clipPath id={clipId} clipPathUnits="objectBoundingBox">
@@ -86,6 +87,7 @@ const ClippedImage = ({ photoUrl, className = "" }: { photoUrl: string; classNam
                     width="360"
                     height="160"
                     preserveAspectRatio="xMidYMid slice"
+                    className='object-cover'
                     clipPath={`url(#${clipId})`}
                 />
             </svg>
