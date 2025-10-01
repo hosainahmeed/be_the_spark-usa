@@ -47,7 +47,7 @@ const FindYourEventsSections: React.FC<Props> = ({
             >
                 <div
                     className={cn(
-                        'absolute w-24 h-2 -top-2 rounded-br-[20px]',
+                        'absolute w-24 h-2 -top-8 rounded-br-[20px]',
                         index % 2 === 0 ? 'left-0 rounded-br-[20px]' : 'right-0 rounded-bl-[20px]',
                         barBg
                     )}
@@ -55,7 +55,7 @@ const FindYourEventsSections: React.FC<Props> = ({
 
                 <h2 className="text-3xl sm:text-4xl font-bold">{title}</h2>
                 <p className="text-base sm:text-lg text-gray-700">{description}</p>
-                <Button className="mt-4 self-start md:self-auto primary-btn px-6 py-3 text-lg rounded hover:bg-white hover:text-[#BF0A30] transition-colors">
+                <Button className="mt-4 cursor-pointer self-auto primary-btn px-6 py-3 text-lg rounded hover:bg-white hover:text-[#BF0A30] transition-colors">
                     Start Find Events
                 </Button>
             </div>

@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            <NavigationMenuBar />
+            {/* <NavigationMenuBar /> */}
             {children}
             <Footer />
         </>

@@ -28,7 +28,14 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bg-[#0a1f44] text-white" role="contentinfo">
+        <footer
+            style={{
+                backgroundImage: `url(${IMAGE.footersImage.src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+            }}
+            className="bg-[#0a1f44] text-white" role="contentinfo">
             <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20">
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                     {/* Brand Section */}

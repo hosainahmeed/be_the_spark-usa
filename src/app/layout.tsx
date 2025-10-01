@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 // export const poppins = localFont({
 //   src: "../../public/fonts/poppins/Poppins-Black.ttf",
 //   variable: "--font-poppins",
@@ -25,6 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={optima.className}>
+      <NextTopLoader
+            color='#002868'
+          />
         {children}
       </body>
     </html>
