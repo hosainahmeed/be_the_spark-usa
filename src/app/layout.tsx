@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
+import localFont from "next/font/local";
 import "./globals.css";
 // export const poppins = localFont({
 //   src: "../../public/fonts/poppins/Poppins-Black.ttf",
 //   variable: "--font-poppins",
 // });
-// export const optima = localFont({
-//   src: "../../public/fonts/optima/Optima Medium.ttf",
-//   variable: "--font-optima",
-// });
+export const optima = localFont({
+  src: "../../public/fonts/optima/Optima Medium.ttf",
+  variable: "--font-optima",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={optima.className}>
         {children}
       </body>
     </html>

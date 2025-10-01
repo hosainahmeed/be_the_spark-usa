@@ -7,7 +7,7 @@ export interface MenuItem {
   
 export const NON_USER_MENU_ITEMS: MenuItem[] = [
     { label: 'Home', href: '/' },
-    { label: 'Find Your Events', href: '/events' },
+    { label: 'Find Your Events', href: '/find-your-events' },
     { label: 'List Your Events', href: '/list-events' },
     { label: 'Contact / Help', href: '/contact' },
 ];

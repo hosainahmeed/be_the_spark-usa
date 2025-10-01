@@ -5,6 +5,7 @@
 
 :root {
   --white: #FFFFFF;
+  --main-bg: #f5f7fa;
   --black: #000000;
   --off-white: #F5F7FA;
   --charcoal: #1E1E1E;
@@ -13,7 +14,7 @@
   --blue-deep: #001E4D;
   --success: #28A745;
   --danger: #BF0A30;
-  --bg: var(--white);
+  --bg: var(--main-bg);
   --surface: var(--off-white);
   --text: var(--charcoal);
   --muted-text: var(--muted);
@@ -50,6 +51,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+}
+
+body {
+  background-color: var(--main-bg);
 }
 
 @theme inline {

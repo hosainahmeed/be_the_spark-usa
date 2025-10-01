@@ -6,8 +6,8 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { BannerProps } from '@/types/banner';
 import { containerVariants, imageVariants, textVariants } from '@/lib/animation.framer';
-import { IMAGE } from '../../../public/assets/image/index.image';
-import { Button } from '../ui/button';
+import { IMAGE } from '../../../../public/assets/image/index.image';
+import { Button } from '../../ui/button';
 import { cn } from '@/lib/utils';
 
 const BannerClient = ({ title, description, image }: BannerProps) => {
@@ -17,7 +17,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
     return (
         <section
             ref={sectionRef}
-            className="w-full min-h-[calc(100dvh-80px)] flex items-center justify-center bg-gradient-to-br from-white to-gray-50/30"
+            className="w-full h-fit py-16 md:py-28 flex items-center justify-center bg-gradient-to-br from-white to-gray-50/30"
             aria-labelledby="banner-title"
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +52,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                         {/* CTA Buttons */}
                         <motion.div
                             variants={containerVariants}
-                            className="flex  gap-4 justify-center lg:justify-start"
+                            className="flex flex-col md:flex-row gap-4 justify-center lg:justify-start"
                         >
                             <Button className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
                                 Find Events Near You
