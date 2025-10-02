@@ -19,16 +19,17 @@ import { User } from '@/types/navigation';
 //     onLogout: () => void;
 // }
 
+
 // export const NavigationMenuBar = ({ user, onLogin, onRegister, onLogout }: HeaderProps) => {
 export const NavigationMenuBar = () => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    // const [currentUser, setCurrentUser] = useState<User | null>({
-    //     id: '1',
-    //     name: 'Leslie Alexander',
-    //     email: 'redaniel@gmail.com',
-    //     role: 'login-user',
-    //     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    // });
+    // const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<User | null>({
+        id: '1',
+        name: 'Leslie Alexander',
+        email: 'redaniel@gmail.com',
+        role: 'login-user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    });
 
     const handleLogout = () => {
         console.log('Logout clicked');

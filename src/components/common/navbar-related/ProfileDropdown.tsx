@@ -6,10 +6,12 @@ import { useRef, useEffect } from 'react';
 import { ICONS } from '../../../../public/assets/icons/index.icons';
 import Image from 'next/image';
 import { ProfileDropdownProps } from '@/types/navigation';
+import { useRouter } from 'next/navigation';
 
 
 export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDropdownProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -30,7 +32,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
         if (user.role === 'login-user') {
             return [
                 { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => console.log('Navigate to shortlisted') },
-                { label: 'My Subscription', icons: ICONS.subscription, onClick: () => console.log('Navigate to subscription') },
+                { label: 'My Subscription', icons: ICONS.subscription, onClick: () => router.push('/my-subscription') },
                 ...baseItems,
             ];
         }
