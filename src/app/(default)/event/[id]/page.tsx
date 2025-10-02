@@ -1,10 +1,14 @@
 'use client'
+import React from 'react'
 import { CAMP_DATA } from '@/components/landing/Featured Events/FeaturedEvents'
 import { useParams } from 'next/navigation'
-import React from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Calendar, Users, MapPin, Mail, Phone, Star } from 'lucide-react'
+import { MapPin, Mail, Phone, Star } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { AgeIcon, CalenderIcon, EventIcon, SaveIcon, ShareIcon, SlotIcon, SportIcon } from '@/components/events/custom.icons'
+import SingleEventBanner from '@/components/events/SingleEventBanner'
+import SingleEventTitleStatus from '@/components/events/SingleEventTitleStatus'
+import UserFeedbackGivenSection from '@/components/events/UserFeedbackGivenSection'
 
 function Page() {
     const { id } = useParams()
@@ -20,103 +24,62 @@ function Page() {
 
     return (
         <div className="container mx-auto px-4 md:px-6 lg:px-10 py-6">
-            {/* Banner */}
-            <div
-                style={{
-                    backgroundImage: `url(${event.photoUrl})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-                className="relative w-full h-64 md:h-80 lg:h-96 rounded-2xl shadow-lg">
-                <div className='absolute md:block hidden top-0 left-0 w-full rounded-2xl h-full backdrop-blur-md opacity-50'></div>
-                <div className='absolute md:block hidden -bottom-4 shadow-xl left-1/2 h-48 w-72 -translate-x-1/2 rounded-2xl overflow-hidden'>
-                    <Image
-                        src={event.photoUrl}
-                        alt={event.title}
-                        fill
-                        className="object-cover"
-                    />
-                </div>
-            </div>
-
-            {/* Title + Status */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mt-6">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-semibold">{event.title}</h1>
-                    <p className="text-sm text-gray-500">
-                        For ages {event.ages} | {event.eventType} | Hosted by {event.organizer}
-                    </p>
-                </div>
-                <span
-                    className={`px-4 py-1 text-sm font-medium rounded-full self-start md:self-auto ${event.status === 'registration-open'
-                        ? 'bg-green-100 text-green-700'
-                        : event.status === 'started-event'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-red-100 text-red-700'
-                        }`}
-                >
-                    {event.status.replace('-', ' ')}
-                </span>
-            </div>
-
-            {/* Main Content */}
+            <SingleEventBanner event={event} />
+            <SingleEventTitleStatus event={event} />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                {/* Left Column */}
                 <div className="lg:col-span-2 space-y-6">
-                    {/* About the Event */}
                     <div className="bg-white border rounded-xl shadow-sm p-5">
                         <h2 className="text-lg font-semibold mb-4">About The Event</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 text-sm">
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Calendar className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader >
+                                    <CalenderIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Registration Deadline</p>
                                     <p className="text-gray-600">{event.registrationDeadline}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Users className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader>
+                                    <AgeIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Ages</p>
                                     <p className="text-gray-600">{event.ages}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Users className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader>
+                                    <SportIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Sport</p>
                                     <p className="text-gray-600">{event.sport}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Users className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader>
+                                    <SlotIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Available Slots</p>
                                     <p className="text-gray-600">{event.availableSlot}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Users className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader>
+                                    <EventIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Event Type</p>
                                     <p className="text-gray-600">{event.eventType}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <Users className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
+                                <IconShader>
+                                    <CalenderIcon />
+                                </IconShader>
                                 <div>
                                     <p className="font-medium">Event Start On</p>
                                     <p className="text-gray-600">{event.eventStart}</p>
@@ -124,24 +87,31 @@ function Page() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Event Details */}
                     <div className="bg-white border rounded-xl shadow-sm p-5">
                         <h2 className="text-lg font-semibold mb-4">Event Details</h2>
                         <div dangerouslySetInnerHTML={{ __html: event.eventDetails || '' }} />
                     </div>
                 </div>
-
-                {/* Right Column */}
                 <div className="space-y-6">
-                    {/* Price & Register */}
                     <div className="bg-white border rounded-xl shadow-sm p-5">
-                        <p className="text-sm text-gray-500">Starts From</p>
-                        <p className="text-2xl font-bold">${event.price.toFixed(2)}</p>
-                        <Button className="mt-4 w-full">Go to Event Registration</Button>
+                        <div className='flex items-center justify-between'>
+                            <div>
+                                <p className="text-sm text-gray-500">Starts From</p>
+                                <p className="text-2xl font-bold">${event.price.toFixed(2)}</p>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                                <IconShader className='cursor-pointer' onClick={() => { }}>
+                                    <SaveIcon />
+                                </IconShader>
+                                <IconShader className='cursor-pointer' onClick={() => { }}>
+                                    <ShareIcon />
+                                </IconShader>
+                            </div>
+                        </div>
+                        <Button
+                            className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
+                        >Go to Event Registration Link</Button>
                     </div>
-
-                    {/* Organizer Info */}
                     <div className="bg-white border rounded-xl shadow-sm p-5 space-y-3">
                         <h2 className="text-lg font-semibold">Organizer Info</h2>
                         <p><span className="font-medium">Organized By: </span>{event.organizer}</p>
@@ -184,6 +154,8 @@ function Page() {
                             loading="lazy"
                         ></iframe>
                     </div>
+
+                    <UserFeedbackGivenSection />
                 </div>
             </div>
         </div>
@@ -191,3 +163,12 @@ function Page() {
 }
 
 export default Page
+
+
+const IconShader = ({ children, onClick, className }: { children: React.ReactNode, onClick?: () => void, className?: string }) => {
+    return (
+        <div onClick={onClick} className={cn("flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2", className)}>
+            {children}
+        </div>
+    )
+}
