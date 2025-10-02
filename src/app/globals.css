@@ -148,3 +148,7 @@ body {
     @apply !bg-[#002868] !text-white
   }
 }
+
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}

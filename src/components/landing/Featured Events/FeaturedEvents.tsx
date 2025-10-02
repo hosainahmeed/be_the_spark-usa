@@ -3,7 +3,20 @@ import FeaturedEventsCard from './FeaturedEventsCard';
 import SectionTitleFormal from '@/components/component-layout/SectionTitleFormal';
 import { ArrowUpRight } from 'lucide-react';
 
-export const CAMP_DATA = [
+export interface CAMP_DATA {
+    id: number;
+    title: string;
+    location: string;
+    dateRange: string;
+    ages: string;
+    rating: number;
+    reviewCount: number;
+    sport: string;
+    photoUrl: string;
+    status: 'registration-open' | 'started-event' | 'finished-event';
+}
+
+export const CAMP_DATA: CAMP_DATA[] = [
     {
         id: 1,
         title: "Summer Soccer Camp 2025",
@@ -13,7 +26,8 @@ export const CAMP_DATA = [
         rating: 4.9,
         reviewCount: 24,
         sport: "Soccer",
-        photoUrl: "https://i.ibb.co.com/PZN7Lq13/8cdf4a01753ac5dcd0ec91ad19d3665448a437b7.png"
+        photoUrl: "https://i.ibb.co.com/PZN7Lq13/8cdf4a01753ac5dcd0ec91ad19d3665448a437b7.png",
+        status: 'registration-open'
     },
     {
         id: 2,
@@ -24,7 +38,8 @@ export const CAMP_DATA = [
         rating: 4.7,
         reviewCount: 18,
         sport: "Basketball",
-        photoUrl: "https://i.ibb.co.com/PGTbr1xQ/cdb0cbd28f4d652b06cacf43557c76749ca38023.png"
+        photoUrl: "https://i.ibb.co.com/PGTbr1xQ/cdb0cbd28f4d652b06cacf43557c76749ca38023.png",
+        status: 'started-event'
     },
     {
         id: 3,
@@ -35,7 +50,8 @@ export const CAMP_DATA = [
         rating: 4.8,
         reviewCount: 32,
         sport: "Tennis",
-        photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png"
+        photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png",
+        status: 'registration-open'
     },
     {
         id: 4,
@@ -46,7 +62,8 @@ export const CAMP_DATA = [
         rating: 4.8,
         reviewCount: 32,
         sport: "Tennis",
-        photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png"
+        photoUrl: "https://i.ibb.co.com/DgLWmZcY/b827575f043289944139bd0b82b4f0b512e4a0d0.png",
+        status: 'finished-event'
     },
 ];
 

@@ -31,7 +31,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
 
         if (user.role === 'login-user') {
             return [
-                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => console.log('Navigate to shortlisted') },
+                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => router.push('/my-shortlisted-events') },
                 { label: 'My Subscription', icons: ICONS.subscription, onClick: () => router.push('/my-subscription') },
                 ...baseItems,
             ];
