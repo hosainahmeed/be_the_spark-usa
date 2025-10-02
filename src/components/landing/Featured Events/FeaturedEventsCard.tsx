@@ -12,7 +12,7 @@ function FeaturedEventsCard({ camp }: { camp: any }) {
                     className="w-full h-full object-cover"
                 />
 
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-medium text-gray-700 flex items-center gap-1">
+                <div className="absolute top-2 right-3 bg-gray-100 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-medium text-gray-700 flex items-center gap-1">
                     📆 {camp.dateRange}
                 </div>
             </div>
@@ -74,7 +74,7 @@ const ClippedImage = ({ photoUrl, className = "" }: { photoUrl: string; classNam
         <div className={cn(`relative overflow-hidden`, className)}>
             <svg
                 className="absolute inset-0 w-full h-full"
-                viewBox="0 0 360 160"
+                viewBox="0 0 360 180"
                 preserveAspectRatio="none"
             >
                 <defs>
@@ -91,7 +91,7 @@ const ClippedImage = ({ photoUrl, className = "" }: { photoUrl: string; classNam
                     x="0"
                     y="0"
                     width="360"
-                    height="160"
+                    height="180"
                     preserveAspectRatio="xMidYMid slice"
                     className='object-cover'
                     clipPath={`url(#${clipId})`}

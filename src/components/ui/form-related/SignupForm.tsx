@@ -62,7 +62,7 @@ export default function SignupForm() {
     };
 
     return (
-        <Card className="w-full shadow-none border-none md:shadow-lg md:border">
+        <div>
             <CardHeader className="flex flex-col items-start gap-2">
                 <Image
                     src={IMAGE.brandLogo}
@@ -74,13 +74,13 @@ export default function SignupForm() {
                 <CardTitle className="text-4xl text-[#1F2937] font-bold">
                     Create Your Account
                 </CardTitle>
-                <CardDescription className="text-[#1F2937] text-lg">
+                <CardDescription className="text-gray-400 text-lg">
                     Sign up with your email and phone number to get started with sports events.
                 </CardDescription>
             </CardHeader>
 
             <CardContent>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <form onSubmit={handleSubmit} className="flex mt-5 flex-col gap-6">
                     {inputFields.map((field) => (
                         <div key={field.label} className="flex flex-col gap-1 relative">
                             <Label htmlFor={field.label}>{field.label}</Label>
@@ -140,7 +140,7 @@ export default function SignupForm() {
                 </form>
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-2">
+            <CardFooter className="flex flex-col mt-3 gap-2">
                 <p className="text-sm text-center text-gray-600">
                     Already have an account?{' '}
                     <Link
@@ -151,6 +151,6 @@ export default function SignupForm() {
                     </Link>
                 </p>
             </CardFooter>
-        </Card>
+        </div>
     );
 }

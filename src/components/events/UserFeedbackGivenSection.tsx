@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
-import { X, Star, StarHalf } from 'lucide-react'
+import { X, Star } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface FeedbackFormData {

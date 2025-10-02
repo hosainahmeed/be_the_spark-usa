@@ -1,10 +1,12 @@
+import { cn } from '@/lib/utils';
 import React from 'react'
 
-function SectionLayout({ children }: Readonly<{
+function SectionLayout({ children, className }: Readonly<{
     children: React.ReactNode;
+    className?: string;
 }>) {
     return (
-        <div className='container mx-auto mb-28'>
+        <div className={cn('container mx-auto mb-28', className)}>
             {children}
         </div>
     )

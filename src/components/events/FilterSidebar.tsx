@@ -135,8 +135,7 @@ const FILTER_SECTIONS: FilterSection[] = [
     }
 ] as const
 
-// Components
-const AccordionFilter = ({
+export const AccordionFilter = ({
     section,
     isOpen,
     onToggle
@@ -183,7 +182,7 @@ const AccordionFilter = ({
     </div>
 )
 
-const SelectFilter = ({ section }: { section: FilterSection }) => (
+export const SelectFilter = ({ section }: { section: FilterSection }) => (
     <Select>
         <SelectTrigger className="w-full">
             <SelectValue placeholder={section.placeholder} />
@@ -198,7 +197,7 @@ const SelectFilter = ({ section }: { section: FilterSection }) => (
     </Select>
 )
 
-const InputFilter = ({ section }: { section: FilterSection }) => (
+export const InputFilter = ({ section }: { section: FilterSection }) => (
     <Input
         placeholder={section.placeholder}
         aria-label={section.label}
@@ -206,7 +205,7 @@ const InputFilter = ({ section }: { section: FilterSection }) => (
     />
 )
 
-// Main Component
+
 export function FilterSidebar() {
     const [openSections, setOpenSections] = useState<Record<string, boolean>>({
         age: true

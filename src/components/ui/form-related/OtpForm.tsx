@@ -13,7 +13,7 @@ function OtpForm() {
         e.preventDefault();
     };
     return (
-        <Card className="w-full shadow-none border-none md:shadow-lg md:border">
+        <div>
             <CardHeader className="flex flex-col items-start gap-2">
                 <Image
                     src={IMAGE.brandLogo}
@@ -25,13 +25,13 @@ function OtpForm() {
                 <CardTitle className="text-4xl text-[#1F2937] font-bold">
                     Verify your OTP
                 </CardTitle>
-                <CardDescription className="text-[#1F2937] text-xl">
+                <CardDescription className="text-gray-400 mb-3 text-lg">
                     Please enter the code we've sent to your email
                 </CardDescription>
             </CardHeader>
 
             <CardContent>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-3">
                     <InputOTP style={{ width: '100%' }} maxLength={6}>
                         <InputOTPGroup className="w-full">
                             <InputOTPSlot className="w-full" index={0} />
@@ -55,10 +55,10 @@ function OtpForm() {
                     </Button>
                 </form>
             </CardContent>
-            <CardFooter className="flex flex-col gap-2">
+            <CardFooter className="flex mt-3 flex-col gap-2">
                 <p className="text-sm text-center text-gray-600">You have not received the OTP? <span className='hover:underline cursor-pointer' onClick={() => { }}>Resend OTP</span></p>
             </CardFooter>
-        </Card>
+        </div>
 
     )
 }

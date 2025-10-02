@@ -1,7 +1,8 @@
+'use client'
 import React from 'react'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
-
+import { useRouter } from 'next/navigation'
 interface SectionTitleFormalProps {
     title: string;
     description: string;
@@ -10,9 +11,19 @@ interface SectionTitleFormalProps {
     className?: string;
     buttonClassName?: string;
     icon?: React.ReactNode;
+    routes?: string;
 }
-function SectionTitleFormal({ title, description, button = false, buttonText = "Get Started", className, buttonClassName, icon }: SectionTitleFormalProps) {
-
+function SectionTitleFormal(
+    { title,
+        description,
+        button = false,
+        buttonText = "Get Started",
+        className,
+        buttonClassName,
+        icon,
+        routes
+    }: SectionTitleFormalProps) {
+    const router = useRouter()
     return (
         <div className={cn("container mx-auto", "flex justify-between md:flex-row flex-col md:items-center", className)}>
             <div>
@@ -24,7 +35,13 @@ function SectionTitleFormal({ title, description, button = false, buttonText = "
                 </span>
             </div>
             {button && (
-                <Button className={cn("mt-6 flex items-center gap-2 hover:bg-[var(--blue)] cursor-pointer", buttonClassName)}>{icon && icon}{buttonText}</Button>
+                <Button
+                    onClick={() => {
+                        if (routes && typeof routes === 'string') {
+                            router.push(routes)
+                        }
+                    }}
+                    className={cn("mt-6 flex items-center gap-2 hover:bg-[var(--blue)] cursor-pointer", buttonClassName)}>{icon && icon}{buttonText}</Button>
             )}
         </div>
     )

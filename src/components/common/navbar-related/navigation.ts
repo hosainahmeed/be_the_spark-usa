@@ -20,6 +20,6 @@ export const LOGIN_USER_MENU_ITEMS: MenuItem[] = [
 
 export const ORGANIZER_MENU_ITEMS: MenuItem[] = [
     { label: 'Home', href: '/' },
-    { label: 'Browse Events', href: '/browse-events' },
+    { label: 'List Events', href: '/list-events-organizer' },
     { label: 'Contact / Help', href: '/contact-us' },
 ];

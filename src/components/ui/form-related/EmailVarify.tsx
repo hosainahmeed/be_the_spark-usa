@@ -30,7 +30,7 @@ function EmailVarify() {
     }
 
     return (
-        <Card className="w-full shadow-none border-none md:shadow-lg md:border">
+        <div>
             <CardHeader className="flex flex-col items-start gap-2">
                 <Image
                     src={IMAGE.brandLogo}
@@ -42,13 +42,13 @@ function EmailVarify() {
                 <CardTitle className="text-4xl text-[#1F2937] font-bold">
                     Verify Your Email
                 </CardTitle>
-                <CardDescription className="text-[#1F2937] text-xl">
+                <CardDescription className="text-gray-400 text-lg mb-3">
                     We sent a 6-digit code to your email
                 </CardDescription>
             </CardHeader>
 
             <CardContent>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <form onSubmit={handleSubmit} className="flex mt-3 flex-col gap-6">
                     <Input
                         id="email"
                         type="email"
@@ -69,10 +69,10 @@ function EmailVarify() {
                     </Button>
                 </form>
             </CardContent>
-            <CardFooter className="flex flex-col gap-2">
+            <CardFooter className="flex mt-3 flex-col gap-2">
                 <p className="text-sm text-center text-gray-600">Back to <Link className='hover:underline' href="/sign-up">Sign Up</Link></p>
             </CardFooter>
-        </Card>
+        </div>
     )
 }
 

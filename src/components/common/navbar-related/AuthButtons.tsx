@@ -16,7 +16,7 @@ export const AuthButtons = () => {
                     Login
                 </motion.button>
             </Link>
-            <Link href="/sign-up">
+            <Link href="/choose-role">
                 <motion.button
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

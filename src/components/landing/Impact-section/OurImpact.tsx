@@ -69,7 +69,7 @@ function OurImpact() {
                     </p>
                     <Button
                         asChild
-                        className="bg-[var(--blue)] hover:bg-blue-700 text-white px-8 py-5 rounded-lg shadow-md transition-all duration-300 text-sm sm:text-base md:text-lg"
+                        className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]"
                     >
                         <a href="/get-started" aria-label="Get started with our platform">
                             Get Started Now

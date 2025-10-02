@@ -9,6 +9,8 @@ import { AgeIcon, CalenderIcon, EventIcon, SaveIcon, ShareIcon, SlotIcon, SportI
 import SingleEventBanner from '@/components/events/SingleEventBanner'
 import SingleEventTitleStatus from '@/components/events/SingleEventTitleStatus'
 import UserFeedbackGivenSection from '@/components/events/UserFeedbackGivenSection'
+import Image from 'next/image'
+import { Card } from '@/components/ui/card'
 
 function Page() {
     const { id } = useParams()
@@ -91,6 +93,24 @@ function Page() {
                         <h2 className="text-lg font-semibold mb-4">Event Details</h2>
                         <div dangerouslySetInnerHTML={{ __html: event.eventDetails || '' }} />
                     </div>
+                    {event?.isMyFeedbackGiven &&
+                        <div>
+                            <h1 className='text-lg font-semibold mb-4'>My feedback</h1>
+                            <Card className='flex flex-row items-center gap-2 p-5'>
+                                <Image
+                                    src={event.feedbackData?.profilePhotoUrl || ''}
+                                    alt="Profile"
+                                    width={50}
+                                    height={50}
+                                    className='rounded-full overflow-hidden'
+                                />
+                                <div>
+                                    <h1 className="font-semibold text-xl">{event.feedbackData?.name}</h1>
+                                    <span className='flex items-center gap-1'>⭐ {" "} {event.feedbackData?.rating} / 5</span>
+                                </div>
+                            </Card>
+                        </div>
+                    }
                 </div>
                 <div className="space-y-6">
                     <div className="bg-white border rounded-xl shadow-sm p-5">
@@ -155,10 +175,10 @@ function Page() {
                         ></iframe>
                     </div>
 
-                    <UserFeedbackGivenSection />
+                   {!event?.isMyFeedbackGiven && <UserFeedbackGivenSection />}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

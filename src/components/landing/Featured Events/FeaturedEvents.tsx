@@ -23,7 +23,16 @@ export interface CAMP_DATA {
     contactEmail: string;
     contactPhone: string;
     eventDetails: string,
+    isMyFeedbackGiven: boolean,
+    feedbackData?: FeedbackData | null
 }
+
+export interface FeedbackData {
+    profilePhotoUrl: string;
+    name: string;
+    rating: number;
+}
+
 export const CAMP_DATA: CAMP_DATA[] = [
     {
         id: 1,
@@ -44,6 +53,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         organizer: "Youth Sport Club",
         contactEmail: "info@youthsportclub.com",
         contactPhone: "+1 (963) 123-4567",
+        isMyFeedbackGiven: true,
+        feedbackData: {
+            profilePhotoUrl: 'https://avatar.iran.liara.run/public/15',
+            name: 'John Doe',
+            rating: 5
+        },
         eventDetails: `
         <html>
 <body>
@@ -71,6 +86,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         organizer: "Elite Hoops Academy",
         contactEmail: "contact@elitehoops.com",
         contactPhone: "+1 (310) 555-7821",
+        isMyFeedbackGiven: true,
+        feedbackData: {
+            profilePhotoUrl: 'https://avatar.iran.liara.run/public/15',
+            name: 'John Doe',
+            rating: 4
+        },
         eventDetails: `
         <html>
 <body>
@@ -98,6 +119,8 @@ export const CAMP_DATA: CAMP_DATA[] = [
         organizer: "Miami Tennis Club",
         contactEmail: "info@miamitennisclub.com",
         contactPhone: "+1 (786) 555-9087",
+        isMyFeedbackGiven: false,
+        feedbackData: null,
         eventDetails: `
         <html>
 <body>
@@ -126,6 +149,7 @@ export const CAMP_DATA: CAMP_DATA[] = [
         organizer: "Miami Tennis Club",
         contactEmail: "info@miamitennisclub.com",
         contactPhone: "+1 (786) 555-9087",
+        isMyFeedbackGiven: false,
         eventDetails: `
         <html>
 <body>
