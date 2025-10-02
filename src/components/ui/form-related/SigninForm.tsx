@@ -9,9 +9,11 @@ import { IMAGE } from '../../../../public/assets/image/index.image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface InputField {
     label: string;
+    name: string;
     type: string;
     placeholder: string;
     value?: string;
@@ -20,20 +22,21 @@ interface InputField {
 
 export default function SigninForm() {
     const inputFields: InputField[] = [
-        { label: "Email Address", type: "email", placeholder: "Enter your email address" },
-        { label: "Password", type: "password", placeholder: "Enter your password" },
+        { label: "Email Address", name: "email", type: "email", placeholder: "Enter your email address" },
+        { label: "Password", name: "password", type: "password", placeholder: "Enter your password" },
     ];
 
     const router = useRouter();
     const [formData, setFormData] = useState<Record<string, string>>(
-        inputFields.reduce((acc, field) => ({ ...acc, [field.label]: "" }), {})
+        inputFields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
     );
 
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleChange = (label: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [label]: value }));
+    const handleChange = (name: string, value: string) => {
+        console.log(`Input Name: ${name}, Value: ${value}`);
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +45,36 @@ export default function SigninForm() {
         try {
             await new Promise(resolve => setTimeout(resolve, 2000));
             console.log("Login Form Data:", formData);
-            router.push('/');
+
+
+            inputFields.forEach(field => {
+                console.log(`Field Name: ${field.name}, Value: ${formData[field.name]}`);
+            }); 
+            
+
+            if (formData.email === "user@gmail.com" && formData.password === "123456") {
+                localStorage.setItem('user', JSON.stringify({
+                    id: '1',
+                    name: 'Leslie Alexander',
+                    email: 'user@gmail.com',
+                    role: 'login-user',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                }))
+                router.push('/');
+            } else if (formData.email === "org@gmail.com" && formData.password === "123456") {
+                localStorage.setItem('user', JSON.stringify({
+                    id: '1',
+                    name: 'Leslie Alexander',
+                    email: 'org@gmail.com',
+                    role: 'org',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                }))
+                router.push('/');
+            } else {
+                toast("Invalid email or password", {
+                    duration: 5000,
+                })
+            }
         } catch (error) {
             console.error('Login submission error:', error);
         } finally {
@@ -75,27 +107,28 @@ export default function SigninForm() {
             <CardContent>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     {inputFields.map((field) => (
-                        <div key={field.label} className="flex flex-col gap-1 relative">
-                            <Label htmlFor={field.label} className="text-sm font-medium">
+                        <div key={field.name} className="flex flex-col gap-1 relative">
+                            <Label htmlFor={field.name} className="text-sm font-medium">
                                 {field.label}
                             </Label>
                             <div className="relative">
                                 <Input
-                                    id={field.label}
+                                    id={field.name}
+                                    name={field.name}
                                     type={
-                                        field.label === "Password"
+                                        field.name === "password"
                                             ? showPassword ? "text" : "password"
                                             : field.type
                                     }
                                     placeholder={field.placeholder}
-                                    value={formData[field.label]}
-                                    onChange={(e) => handleChange(field.label, e.target.value)}
+                                    value={formData[field.name]}
+                                    onChange={(e) => handleChange(field.name, e.target.value)}
                                     required
                                     className="w-full pr-10"
                                     aria-required="true"
                                     disabled={isLoading}
                                 />
-                                {field.label === "Password" && (
+                                {field.name === "password" && (
                                     <Button
                                         type="button"
                                         variant="ghost"
@@ -138,7 +171,7 @@ export default function SigninForm() {
 
             <CardFooter className="flex flex-col gap-2">
                 <p className="text-sm text-center text-gray-600">
-                    Don’t have an account?{' '}
+                    Don't have an account?{' '}
                     <Link
                         className="text-[var(--blue)] hover:underline font-medium"
                         href="/sign-up"
@@ -146,7 +179,6 @@ export default function SigninForm() {
                         Sign Up
                     </Link>
                 </p>
-
             </CardFooter>
         </Card>
     );

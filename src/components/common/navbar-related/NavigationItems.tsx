@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MenuItem } from './navigation';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 
 interface NavigationItemsProps {
@@ -10,6 +12,8 @@ interface NavigationItemsProps {
 }
 
 export const NavigationItems = ({ items }: NavigationItemsProps) => {
+    const pathname = usePathname();
+    console.log(pathname);
     return (
         <nav className="hidden md:flex items-center space-x-8">
             {items.map((item, index) => (
@@ -29,7 +33,10 @@ export const NavigationItems = ({ items }: NavigationItemsProps) => {
                     ) : (
                         <Link
                             href={item.href}
-                            className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-sm"
+                            className={cn(
+                                "text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-sm",
+                                pathname === item.href && "text-blue-600 border-b-2 border-blue-600"
+                            )}
                         >
                             {item.label}
                         </Link>

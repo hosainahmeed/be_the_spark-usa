@@ -14,6 +14,7 @@ import contactImage from "./contact.svg";
 import footersImage from "./Footers.svg";
 import brandV2 from "./brand-v2.svg"
 import subscriptionImage from "./subscription-image.webp"
+import aboutUsImage from "./about-us.png"
 
 export const IMAGE = {
     brandLogo,
@@ -29,6 +30,7 @@ export const IMAGE = {
     footersImage,
     brandV2,
     subscriptionImage,
+    aboutUsImage,
 };
 
 export const SlideImage = {

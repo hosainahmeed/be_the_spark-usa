@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import React from 'react'
 
 function FeaturedEventsCard({ camp }: { camp: any }) {
@@ -50,9 +51,14 @@ function FeaturedEventsCard({ camp }: { camp: any }) {
                     </div>
                 </div>
 
-                <Button className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-5 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
-                    View Details
-                </Button>
+                <Link
+                    href={`/event/${camp.id}`}
+                >
+                    <Button
+                        className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-5 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
+                        View Details
+                    </Button>
+                </Link>
             </div>
         </article>
     )

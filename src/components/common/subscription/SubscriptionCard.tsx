@@ -60,6 +60,7 @@ function SubscriptionCard() {
                                 </ul>
                             </div>
                             <Button
+                                onClick={() => alert('Renew option is not available yet , this feature will be available soon')}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
                             >Renew Now</Button>
                         </CardContent>

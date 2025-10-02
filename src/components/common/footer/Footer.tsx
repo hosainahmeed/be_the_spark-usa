@@ -8,8 +8,8 @@ const Footer = () => {
 
     const footerLinks = {
         resources: [
-            { label: 'About Us', href: '/about' },
-            { label: 'Contact Us', href: '/contact' },
+            { label: 'About Us', href: '/about-us' },
+            { label: 'Contact Us', href: '/contact-us' },
             { label: 'FAQ', href: '/faq' },
         ],
         quickLinks: [
