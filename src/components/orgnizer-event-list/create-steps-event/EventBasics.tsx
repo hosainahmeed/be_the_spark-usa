@@ -6,7 +6,7 @@ import ImageUpload from '../ImageUpload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { SportOptions } from '@/constants/constantsOptions';
+import { EventTypes, SportOptions } from '@/constants/constantsOptions';
 
 interface BasicsData {
     event_name: string;
@@ -114,10 +114,11 @@ function EventBasics({
                             <SelectValue placeholder="Select Event Type" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="league">League</SelectItem>
-                            <SelectItem value="tournament">Tournament</SelectItem>
-                            <SelectItem value="camp">Camp</SelectItem>
-                            <SelectItem value="clinic">Clinic</SelectItem>
+                            {EventTypes.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     {errors.event_type && <p className="text-red-500 text-sm mt-1">Event Type is required</p>}

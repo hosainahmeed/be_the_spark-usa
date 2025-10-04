@@ -47,7 +47,7 @@ function FieldCheckerForCreateEvent({
                 </Button>
                 {index < totalSteps - 1 ? (
                     <Button
-                        className="bg-[var(--blue)] text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white"
+                        className="bg-[var(--blue)] -z-1 text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white"
                         onClick={handleNext}
                         disabled={!canProceed}
                     >

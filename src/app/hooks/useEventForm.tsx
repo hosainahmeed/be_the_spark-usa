@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface EventFormData {
     basics: any;
@@ -16,6 +17,7 @@ export function useEventForm(totalSteps: number) {
         location: {},
         details: {},
     });
+    console.log(formData)
     const [showResumePrompt, setShowResumePrompt] = useState(false);
 
     useEffect(() => {
@@ -38,6 +40,7 @@ export function useEventForm(totalSteps: number) {
     }, [formData, currentIndex]);
 
     const updateFormData = (section: keyof EventFormData, data: any) => {
+        console.log("=============updateFormData", data)
         setFormData(prev => ({
             ...prev,
             [section]: { ...prev[section], ...data }
@@ -68,6 +71,7 @@ export function useEventForm(totalSteps: number) {
                 console.error('Failed to parse saved event form data', e);
                 localStorage.removeItem('eventFormData');
                 localStorage.removeItem('eventFormStep');
+                alert('Failed to parse saved event form data');
                 setFormData({ basics: {}, dates: {}, location: {}, details: {} });
                 setCurrentIndex(0);
             }
@@ -85,7 +89,9 @@ export function useEventForm(totalSteps: number) {
 
     const submitForm = () => {
         const isValid = validateAllSteps();
-
+        if (!(formData.basics.image instanceof File)) {
+            return toast.error('Please upload an image');
+        }
         if (isValid) {
             console.log('Final Form Data:', formData);
             localStorage.removeItem('eventFormData');

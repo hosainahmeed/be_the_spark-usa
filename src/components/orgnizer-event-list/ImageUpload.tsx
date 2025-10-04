@@ -8,7 +8,20 @@ import { cn } from '@/lib/utils';
 function ImageUpload({ file, setFile, title, className, required }: { file: File | null, setFile: React.Dispatch<React.SetStateAction<File | null>>, title: string, className?: string, required?: boolean }) {
     return (
         <div className={cn('', className)}>
-            {!file ? <form className="file-upload-form">
+            {file && file instanceof File ? <>
+                <h1 className='text-lg font-normal my-3'>{title}</h1>
+                <div className='w-[300px] rounded border border-dashed relative h-[200px]'>
+                    <div className='absolute bg-[var(--blue)] text-white flex items-center justify-center rounded-full p-2 top-2 right-2 cursor-pointer' onClick={() => setFile(null)}>
+                        <X />
+                    </div>
+                    <Image
+                        width={300}
+                        height={200}
+                        src={file instanceof File ? URL.createObjectURL(file) : ""} alt="Preview"
+                        className='w-full h-full object-cover'
+                    />
+                </div>
+            </> : <form className="file-upload-form">
                 <h1 className='text-lg font-normal my-3'>{title}</h1>
                 <label className="custum-file-upload" htmlFor="file">
                     <div className="icon">
@@ -22,21 +35,7 @@ function ImageUpload({ file, setFile, title, className, required }: { file: File
                     <input type="file" id="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </label>
 
-            </form> :
-                <>
-                    <h1 className='text-lg font-normal my-3'>{title}</h1>
-                    <div className='w-[300px] rounded border border-dashed relative h-[200px]'>
-                        <div className='absolute bg-[var(--blue)] text-white flex items-center justify-center rounded-full p-2 top-2 right-2 cursor-pointer' onClick={() => setFile(null)}>
-                            <X />
-                        </div>
-                        <Image
-                            width={300}
-                            height={200}
-                            src={URL.createObjectURL(file)} alt="Preview"
-                            className='w-full h-full object-cover'
-                        />
-                    </div>
-                </>
+            </form>
             }
         </div>
     )

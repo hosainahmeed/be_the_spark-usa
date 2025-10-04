@@ -5,6 +5,7 @@ import SectionTitleFormal from '@/components/component-layout/SectionTitleFormal
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AgeOptions, SkillLevel } from '@/constants/constantsOptions';
 
 interface LocationData {
   age_group: string;
@@ -74,10 +75,11 @@ function ParticipantsLocation({
               <SelectValue placeholder="Select Age Group" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all-age">All Age</SelectItem>
-              <SelectItem value="kids">Kids (5–12)</SelectItem>
-              <SelectItem value="teens">Teens (13–18)</SelectItem>
-              <SelectItem value="adults">Adults (18+)</SelectItem>
+              {AgeOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           {errors.age_group && <p className="text-red-500 text-sm mt-1">Required</p>}
@@ -93,10 +95,11 @@ function ParticipantsLocation({
               <SelectValue placeholder="Select Skill Level" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all-skill-level">All Skill Levels</SelectItem>
-              <SelectItem value="beginner">Beginner</SelectItem>
-              <SelectItem value="intermediate">Intermediate</SelectItem>
-              <SelectItem value="advanced">Advanced</SelectItem>
+              {SkillLevel.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           {errors.skill_level && <p className="text-red-500 text-sm mt-1">Required</p>}

@@ -76,7 +76,7 @@ export default function Page() {
 
       {showResumePrompt && (
         <Dialog open>
-          <DialogContent>
+          <DialogContent showCloseButton={false}>
             <DialogHeader>
               <DialogTitle>Resume Your Previous Event?</DialogTitle>
             </DialogHeader>
