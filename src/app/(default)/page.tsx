@@ -6,11 +6,17 @@ import HowToWork from '@/components/landing/how-to/HowToWork'
 import OurImpact from '@/components/landing/Impact-section/OurImpact'
 import PopularSportSection from '@/components/landing/Popular Sport/PopularSportSection'
 import TestimonialCarousel from '@/components/landing/testimonials/TestimonialCarousel'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function page() {
-  const user = localStorage.getItem('user')
-  const userInfo = user && JSON.parse(user)
+  const [userInfo, setUserInfo] = useState(null)
+  useEffect(() => {
+    if (localStorage) {
+      const user = localStorage.getItem('user')
+      const userInfo = user && JSON.parse(user)
+      setUserInfo(userInfo)
+    }
+  }, [])
   return (
     <div className='flex flex-col items-center justify-center gap-16'>
       <BannerServer />

@@ -7,13 +7,13 @@ import { OnSelectHandler } from "react-day-picker"
 
 function DatePickerCustom({ date, setDate }: { date: Date | undefined, setDate: (date: Date | undefined) => void }) {
     return (
-        <div>
+        <div className="w-full">
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
                         data-empty={!date}
-                        className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
+                        className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal"
                     >
                         <CalendarIcon />
                         {date ? format(date, "PPP") : <span>Pick a date</span>}

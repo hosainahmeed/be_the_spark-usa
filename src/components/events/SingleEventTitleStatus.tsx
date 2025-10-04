@@ -9,7 +9,7 @@ function SingleEventTitleStatus({ event }: { event: CAMP_DATA }) {
             <div>
                 <h1 className="text-2xl md:text-3xl font-semibold">{event.title}</h1>
                 <p className="text-sm text-gray-500">
-                    For ages {event.ages} | {event.eventType} | Hosted by {event.organizer}
+                    For ages {event.ages} | {event.eventType} | Hosted by {event.organizer.name}
                 </p>
             </div>
             <span

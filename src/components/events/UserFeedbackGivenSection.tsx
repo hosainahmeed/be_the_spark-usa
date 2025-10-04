@@ -72,7 +72,7 @@ function UserFeedbackGivenSection() {
         }
     }
 
-    // Star rating component
+
     const renderStars = () => {
         return Array.from({ length: 5 }, (_, index) => {
             const starNumber = index + 1

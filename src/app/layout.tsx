@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
+import ReduxWrapper from "./redux/query/ReduxWrapper";
 // export const poppins = localFont({
 //   src: "../../public/fonts/poppins/Poppins-Black.ttf",
 //   variable: "--font-poppins",
@@ -27,11 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={optima.className}>
-        <Toaster />
-        <NextTopLoader
-          color='#002868'
-        />
-        {children}
+        <ReduxWrapper>
+          <Toaster />
+          <NextTopLoader
+            color='#002868'
+          />
+          {children}
+        </ReduxWrapper>
       </body>
     </html>
   );

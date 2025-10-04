@@ -112,70 +112,100 @@ function Page() {
                         </div>
                     }
                 </div>
-                <div className="space-y-6">
-                    <div className="bg-white border rounded-xl shadow-sm p-5">
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className="text-sm text-gray-500">Starts From</p>
-                                <p className="text-2xl font-bold">${event.price.toFixed(2)}</p>
+                <div>
+                    <Card className='bg-[#FAF7F9] p-4'>
+                        <div>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <p className="text-sm text-gray-500">Starts From</p>
+                                    <p className="text-2xl font-bold">${event.price.toFixed(2)}</p>
+                                </div>
+                                <div className='flex items-center gap-2'>
+                                    <IconShader className='cursor-pointer' onClick={() => { }}>
+                                        <SaveIcon />
+                                    </IconShader>
+                                    <IconShader className='cursor-pointer' onClick={() => { }}>
+                                        <ShareIcon />
+                                    </IconShader>
+                                </div>
                             </div>
-                            <div className='flex items-center gap-2'>
-                                <IconShader className='cursor-pointer' onClick={() => { }}>
-                                    <SaveIcon />
-                                </IconShader>
-                                <IconShader className='cursor-pointer' onClick={() => { }}>
-                                    <ShareIcon />
-                                </IconShader>
+                            <Button
+                                className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
+                            >Go to Event Registration Link</Button>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <h2 className="text-lg font-semibold">Organizer Info</h2>
+                            <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                <Image
+                                    src={event.organizer.avatarUrl}
+                                    alt="Avatar"
+                                    width={50}
+                                    height={50}
+                                    className='rounded-full overflow-hidden'
+                                />
+                                <div>
+                                    <p className="font-black">Organized By: </p>
+                                    <p>{event.organizer.name}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                    <Star className="w-4 h-4 text-yellow-500" />
+                                </div>
+                                <div>
+                                    <h1 className="font-black">Rating</h1>
+                                    <p>{event.organizer.rating} ({event.organizer.reviewCount})</p>
+                                </div>
+                            </div>
+                            <div
+                                className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                    <Mail className="w-4 h-4 text-gray-500" />
+                                </div>
+                                <div>
+                                    <h1 className="font-black">Contact Email</h1>
+                                    <span>{event.contactEmail}</span>
+                                </div>
+                            </div>
+                            <div
+                                className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                    <Phone className="w-4 h-4 text-gray-500" />
+                                </div>
+                                <div>
+                                    <h1 className="font-black">Contact Phone</h1>
+                                    <span>{event.contactPhone}</span>
+                                </div>
                             </div>
                         </div>
-                        <Button
-                            className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
-                        >Go to Event Registration Link</Button>
-                    </div>
-                    <div className="bg-white border rounded-xl shadow-sm p-5 space-y-3">
-                        <h2 className="text-lg font-semibold">Organizer Info</h2>
-                        <p><span className="font-medium">Organized By: </span>{event.organizer}</p>
-                        <div className="flex items-center gap-2">
-                            <Star className="w-4 h-4 text-yellow-500" />
-                            <span>{event.rating} ({event.reviewCount} reviews)</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Mail className="w-4 h-4 text-gray-500" />
-                            <span>{event.contactEmail}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Phone className="w-4 h-4 text-gray-500" />
-                            <span>{event.contactPhone}</span>
-                        </div>
-                    </div>
-
+                    </Card>
                     {/* Location */}
-                    <div className="bg-white border rounded-xl shadow-sm p-5">
+                    <div className="mt-3">
                         <h2 className="text-lg font-semibold mb-3">Event Location</h2>
-                        <p className="text-gray-600 mb-2">{event.location}</p>
-
-                        <div className="flex mb-3 items-start gap-2">
-                            <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
+                        <div className='border border-gray-200 rounded-xl p-5'>
+                            <div className="flex mb-3 items-start gap-2">
+                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
+                                    <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
+                                </div>
+                                <div>
+                                    <p className="font-medium">Location</p>
+                                    <p className="text-gray-600">{event.location}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-medium">Location</p>
-                                <p className="text-gray-600">{event.location}</p>
-                            </div>
+                            <iframe
+                                src={`https://www.google.com/maps?q=${encodeURIComponent(
+                                    event.location
+                                )}&output=embed`}
+                                width="100%"
+                                height="200"
+                                className="rounded-lg"
+                                allowFullScreen
+                                loading="lazy"
+                            ></iframe>
                         </div>
-                        <iframe
-                            src={`https://www.google.com/maps?q=${encodeURIComponent(
-                                event.location
-                            )}&output=embed`}
-                            width="100%"
-                            height="200"
-                            className="rounded-lg"
-                            allowFullScreen
-                            loading="lazy"
-                        ></iframe>
                     </div>
 
-                   {!event?.isMyFeedbackGiven && <UserFeedbackGivenSection />}
+                    {!event?.isMyFeedbackGiven && <UserFeedbackGivenSection />}
                 </div>
             </div>
         </div >

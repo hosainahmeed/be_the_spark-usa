@@ -19,7 +19,12 @@ export interface CAMP_DATA {
     eventType: string;
     eventStart: string;
     price: number;
-    organizer: string;
+    organizer: {
+        name: string;
+        rating: number;
+        reviewCount: number;
+        avatarUrl: string;
+    };
     contactEmail: string;
     contactPhone: string;
     eventDetails: string,
@@ -50,7 +55,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         eventType: "Tournament",
         eventStart: "June 15, 2025 9:00 am",
         price: 19.00,
-        organizer: "Youth Sport Club",
+        organizer: {
+            name: "Youth Sport Club",
+            rating: 4.9,
+            reviewCount: 24,
+            avatarUrl: "https://avatar.iran.liara.run/public/15",
+        },
         contactEmail: "info@youthsportclub.com",
         contactPhone: "+1 (963) 123-4567",
         isMyFeedbackGiven: true,
@@ -83,7 +93,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         eventType: "Training Camp",
         eventStart: "July 20, 2025 9:30 am",
         price: 25.00,
-        organizer: "Elite Hoops Academy",
+        organizer: {
+            name: "Elite Hoops Academy",
+            rating: 4.7,
+            reviewCount: 18,
+            avatarUrl: "https://avatar.iran.liara.run/public/15"
+        },
         contactEmail: "contact@elitehoops.com",
         contactPhone: "+1 (310) 555-7821",
         isMyFeedbackGiven: true,
@@ -116,7 +131,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         eventType: "Training Camp",
         eventStart: "August 5, 2025 8:30 am",
         price: 30.00,
-        organizer: "Miami Tennis Club",
+        organizer: {
+            name: "Miami Tennis Club",
+            rating: 4.8,
+            reviewCount: 32,
+            avatarUrl: "https://avatar.iran.liara.run/public/15"
+        },
         contactEmail: "info@miamitennisclub.com",
         contactPhone: "+1 (786) 555-9087",
         isMyFeedbackGiven: false,
@@ -146,7 +166,12 @@ export const CAMP_DATA: CAMP_DATA[] = [
         eventType: "Training Camp",
         eventStart: "August 5, 2025 8:30 am",
         price: 30.00,
-        organizer: "Miami Tennis Club",
+        organizer: {
+            name: "Miami Tennis Club",
+            rating: 4.8,
+            reviewCount: 32,
+            avatarUrl: "https://avatar.iran.liara.run/public/15"
+        },
         contactEmail: "info@miamitennisclub.com",
         contactPhone: "+1 (786) 555-9087",
         isMyFeedbackGiven: false,
