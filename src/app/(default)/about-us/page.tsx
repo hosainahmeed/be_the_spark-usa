@@ -25,7 +25,7 @@ function Page() {
                                     width={IMAGE.aboutUsImage.width}
                                     height={IMAGE.aboutUsImage.height}
                                     priority
-                                    className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-300"
+                                    className="w-full h-auto rounded-2xl transition-transform duration-300"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
                                 />
                                 {/* Optional decorative element */}
@@ -80,7 +80,7 @@ function Page() {
 
                                 {/* Optional CTA Button */}
                                 <div className="pt-4 md:pt-6">
-                                    <button className="bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-sm md:text-base hover:bg-primary/90 transition-colors duration-200 shadow-md hover:shadow-lg">
+                                    <button className="bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded hover:bg-[var(--blue)] font-semibold text-sm md:text-base  transition-colors duration-200 shadow-md hover:shadow-lg">
                                         Get Started
                                     </button>
                                 </div>

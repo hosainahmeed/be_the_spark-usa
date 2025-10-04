@@ -1,10 +1,51 @@
+'use client'
 import Link from 'next/link';
 import { Facebook, Twitter, Youtube, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { IMAGE } from '../../../../public/assets/image/index.image';
+import { useCallback, useEffect, useState } from 'react';
+import { User } from '@/types/navigation';
+import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from '@/constants/navigation';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+
+
+
+    const getUserData = useCallback(() => {
+        if (typeof window === 'undefined') return null;
+
+        try {
+            const user = localStorage.getItem('user');
+            return user ? JSON.parse(user) : null;
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+            return null;
+        }
+    }, []);
+
+    useEffect(() => {
+        setCurrentUser(getUserData());
+    }, [getUserData]);
+
+
+    const getMenuItems = useCallback(() => {
+        if (!currentUser) return NON_USER_MENU_ITEMS;
+
+        switch (currentUser.role) {
+            case 'login-user':
+                return LOGIN_USER_MENU_ITEMS;
+            case 'org':
+                return ORGANIZER_MENU_ITEMS;
+            default:
+                return NON_USER_MENU_ITEMS;
+        }
+    }, [currentUser]);
+
+    const menuItems = getMenuItems();
+
 
     const footerLinks = {
         resources: [
@@ -12,12 +53,9 @@ const Footer = () => {
             { label: 'Contact Us', href: '/contact-us' },
             { label: 'FAQ', href: '/faq' },
         ],
-        quickLinks: [
-            { label: 'Home', href: '/' },
-            { label: 'Find Your Events', href: '/find-your-events' },
-            { label: 'List Your Events', href: '/list-events' },
-            { label: 'Privacy Policy', href: '/privacy' },
-            { label: 'Terms of Condition', href: '/terms' },
+        quickLinks: [...menuItems,
+        { label: 'Privacy Policy', href: '/privacy' },
+        { label: 'Terms of Condition', href: '/terms' }
         ],
         social: [
             { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
@@ -26,7 +64,6 @@ const Footer = () => {
             { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
         ],
     };
-
     return (
         <footer
             style={{

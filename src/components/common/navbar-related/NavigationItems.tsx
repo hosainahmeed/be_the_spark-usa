@@ -13,7 +13,7 @@ interface NavigationItemsProps {
 
 export const NavigationItems = ({ items }: NavigationItemsProps) => {
     const pathname = usePathname();
-    console.log(pathname);
+
     return (
         <nav className="hidden md:flex items-center space-x-8">
             {items.map((item, index) => (

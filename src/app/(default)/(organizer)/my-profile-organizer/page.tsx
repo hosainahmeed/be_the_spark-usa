@@ -155,7 +155,7 @@ const ProfilePage: React.FC = () => {
     return (
         <div className="min-h-screen p-6">
             <div className="container mx-auto">
-                <button className="flex items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
+                <button onClick={() => router.back()} className="flex cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     My Profile
                 </button>

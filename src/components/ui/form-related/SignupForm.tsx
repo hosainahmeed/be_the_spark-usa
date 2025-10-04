@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface InputField {
     label: string;
@@ -19,7 +19,11 @@ interface InputField {
 }
 
 export default function SignupForm() {
+    const searchParams = useSearchParams();
+    const role = searchParams.get('role');
+    console.log(role)
     const inputFields: InputField[] = [
+        ...(role === 'list-events' ? [{ label: "Business Name", type: "text", placeholder: "Major League Baseball (MLB)" }] : []),
         { label: "Full Name", type: "text", placeholder: "Full Name" },
         { label: "Email Address", type: "email", placeholder: "Email Address" },
         { label: "Phone Number", type: "tel", placeholder: "Phone Number" },

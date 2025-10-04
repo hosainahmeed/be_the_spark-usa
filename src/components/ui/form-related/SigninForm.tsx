@@ -174,7 +174,7 @@ export default function SigninForm() {
                     Don't have an account?{' '}
                     <Link
                         className="text-[var(--blue)] hover:underline font-medium"
-                        href="/sign-up"
+                        href="/choose-role"
                     >
                         Sign Up
                     </Link>

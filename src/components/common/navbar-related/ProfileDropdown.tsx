@@ -51,69 +51,87 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
     const menuItems = getMenuItems();
 
     return (
-        <AnimatePresence>
-            {isOpen && (
-                <motion.div
-                    ref={dropdownRef}
-                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
-                >
-                    {/* User Info Section */}
-                    <div className="p-4 border-b border-gray-100">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                {user.avatar ? (
-                                    <img
-                                        src={user.avatar}
-                                        alt={user.name}
-                                        className="w-full h-full rounded-full object-cover"
-                                    />
-                                ) : (
-                                    user.name.charAt(0).toUpperCase()
-                                )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-gray-900 truncate">
-                                    {user.name}
-                                </p>
-                                <p className="text-sm text-gray-500 truncate">{user.email}</p>
+        <div>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        ref={dropdownRef}
+                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute hidden md:block right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+                    >
+                        {/* User Info Section */}
+                        <div className="p-4 border-b border-gray-100">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                    {user.avatar ? (
+                                        <img
+                                            src={user.avatar}
+                                            alt={user.name}
+                                            className="w-full h-full rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        user.name.charAt(0).toUpperCase()
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-semibold text-gray-900 truncate">
+                                        {user.name}
+                                    </p>
+                                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Menu Items */}
-                    <div className="p-2">
-                        {menuItems.map((item, index) => (
+                        {/* Menu Items */}
+                        <div className="p-2">
+                            {menuItems.map((item, index) => (
+                                <motion.button
+                                    key={item.label}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    onClick={item.onClick}
+                                    className="w-full flex cursor-pointer items-center gap-2 text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                                >
+                                    <Image src={item.icons} width={20} height={20} alt={item.label} />  {item.label}
+                                </motion.button>
+                            ))}
+                        </div>
+
+                        {/* Sign Out Section */}
+                        <div className="p-2 border-t border-gray-100">
                             <motion.button
-                                key={item.label}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                onClick={item.onClick}
-                                className="w-full flex cursor-pointer items-center gap-2 text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                                onClick={onLogout}
+                                className="w-full flex items-center gap-2 text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
                             >
-                                <Image src={item.icons} width={20} height={20} alt={item.label} />  {item.label}
+                                <LogOut className="w-5 h-5" />   Sign Out
                             </motion.button>
-                        ))}
-                    </div>
-
-                    {/* Sign Out Section */}
-                    <div className="p-2 border-t border-gray-100">
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <div className="md:hidden">
+                <div className="p-2">
+                    {menuItems.map((item, index) => (
                         <motion.button
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            onClick={onLogout}
-                            className="w-full flex items-center gap-2 text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
+                            key={item.label}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            onClick={item.onClick}
+                            className="w-full flex cursor-pointer items-center gap-2 text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors duration-200"
                         >
-                            <LogOut className="w-5 h-5" />   Sign Out
+                            <Image src={item.icons} width={20} height={20} alt={item.label} />  {item.label}
                         </motion.button>
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 };
