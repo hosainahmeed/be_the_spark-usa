@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-function ImageUpload({ file, setFile, title, className, required }: { file: File | null, setFile: React.Dispatch<React.SetStateAction<File | null>>, title: string, className?: string, required?: boolean }) {
+function ImageUpload({ file, setFile, title, className, required, onUpdate }: { file: File | null, setFile: React.Dispatch<React.SetStateAction<File | null>>, title: string, className?: string, required?: boolean, onUpdate?: (data: any) => void }) {
     return (
         <div className={cn('', className)}>
             {file && file instanceof File ? <>
@@ -32,7 +32,12 @@ function ImageUpload({ file, setFile, title, className, required }: { file: File
                     <div className="text">
                         <span>{required ? "*" : ""}Upload Images</span>
                     </div>
-                    <input type="file" id="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                    <input type="file" id="file" onChange={(e) => {
+                        setFile(e.target.files?.[0] || null)
+                        onUpdate && onUpdate({
+                            image: e.target.files?.[0] || null
+                        })
+                    }} />
                 </label>
 
             </form>

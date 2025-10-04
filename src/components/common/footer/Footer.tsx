@@ -14,7 +14,7 @@ const Footer = () => {
         ],
         quickLinks: [
             { label: 'Home', href: '/' },
-            { label: 'Find Your Events', href: '/find-events' },
+            { label: 'Find Your Events', href: '/find-your-events' },
             { label: 'List Your Events', href: '/list-events' },
             { label: 'Privacy Policy', href: '/privacy' },
             { label: 'Terms of Condition', href: '/terms' },

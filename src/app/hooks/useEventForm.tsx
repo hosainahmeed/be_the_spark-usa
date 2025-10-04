@@ -89,8 +89,10 @@ export function useEventForm(totalSteps: number) {
 
     const submitForm = () => {
         const isValid = validateAllSteps();
+        console.log(formData.basics.image)
         if (!(formData.basics.image instanceof File)) {
-            return toast.error('Please upload an image');
+            toast.error('Please upload an image');
+            return false;
         }
         if (isValid) {
             console.log('Final Form Data:', formData);
@@ -112,6 +114,7 @@ export function useEventForm(totalSteps: number) {
         updateFormData,
         nextStep,
         prevStep,
+        setFormData,
         showResumePrompt,
         handleResume,
         handleStartFresh,

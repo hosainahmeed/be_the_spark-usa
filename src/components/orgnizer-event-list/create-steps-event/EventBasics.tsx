@@ -25,7 +25,7 @@ function EventBasics({
     onUpdate: (data: BasicsData) => void;
     onValidationChange: any;
 }) {
-    const { register, handleSubmit, setValue, watch, formState: { errors, isValid } } = useForm<BasicsData>({
+    const { register, handleSubmit, setValue, watch, reset, formState: { errors, isValid } } = useForm<BasicsData>({
         defaultValues: data,
         mode: 'onChange'
     });
@@ -40,11 +40,19 @@ function EventBasics({
             watchedValues.event_name &&
             watchedValues.event_short_description &&
             watchedValues.sport &&
-            watchedValues.event_type &&
-            file !== null;
+            watchedValues.event_type;
 
         onValidationChange(isFormValid);
     }, [watchedValues, file, onValidationChange]);
+
+    // Hydrate form values when `data` prop changes (e.g., after resume from localStorage)
+    useEffect(() => {
+        if (data) {
+            reset(data);
+            setFile(data?.image instanceof File ? data.image : null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, reset]);
 
     useEffect(() => {
         const subscription = watch((values: any) => onUpdate({ ...values, image: file }));
@@ -58,12 +66,13 @@ function EventBasics({
                 title="Event Basics"
                 description="Provide essential information so families can quickly understand your event."
             />
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit(() => { })}>
+            <form className="flex flex-col gap-4" onSubmit={() => { }}>
                 <ImageUpload
                     title="Event Image"
                     file={file}
                     setFile={setFile}
                     required
+                    onUpdate={onUpdate}
                 />
 
                 <div>
@@ -87,7 +96,7 @@ function EventBasics({
                 <div>
                     <Label>Sport *</Label>
                     <Select
-                        value={data.sport}
+                        value={watch('sport')}
                         onValueChange={(v) => setValue('sport', v, { shouldValidate: true })}
                     >
                         <SelectTrigger className="w-full">
@@ -107,7 +116,7 @@ function EventBasics({
                 <div>
                     <Label>Event Type *</Label>
                     <Select
-                        value={data.event_type}
+                        value={watch('event_type')}
                         onValueChange={(v) => setValue('event_type', v, { shouldValidate: true })}
                     >
                         <SelectTrigger className="w-full">

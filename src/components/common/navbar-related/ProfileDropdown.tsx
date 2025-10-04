@@ -24,27 +24,28 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [onClose]);
 
-    const getMenuItems = () => {
-        const baseItems = [
-            { label: 'My Profile', icons: ICONS.userSetting, onClick: () => console.log('Navigate to profile') },
-        ];
+    const handleNavigate = (path: string) => {
+        router.push(path);
+        onClose();
+    };
 
+    const getMenuItems = () => {
         if (user.role === 'login-user') {
             return [
-                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => router.push('/my-shortlisted-events') },
-                { label: 'My Subscription', icons: ICONS.subscription, onClick: () => router.push('/my-subscription') },
-                ...baseItems,
+                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => handleNavigate('/my-shortlisted-events') },
+                { label: 'My Subscription', icons: ICONS.subscription, onClick: () => handleNavigate('/my-subscription') },
+                { label: 'My Profile', icons: ICONS.userSetting, onClick: () => handleNavigate('/my-profile') }
             ];
         }
 
         if (user.role === 'org') {
             return [
-                { label: 'My Events', icons: ICONS.calender, onClick: () => console.log('Navigate to my events') },
-                ...baseItems,
+                { label: 'My Events', icons: ICONS.calender, onClick: () => handleNavigate('/my-events') },
+                { label: 'My Profile', icons: ICONS.userSetting, onClick: () => handleNavigate('/my-profile-organizer') }
             ];
         }
 
-        return baseItems;
+        return [];
     };
 
     const menuItems = getMenuItems();

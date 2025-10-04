@@ -4,7 +4,7 @@ import { BannerSEO } from './BannerSEO';
 import BannerClient from './BannerClient';
 
 
-export const BannerServer = async () => {
+export const BannerServer = () => {
     const bannerData: BannerProps = {
         title: "Find the Perfect Youth Sport Event — Fast.",
         description: "Tryouts, Camps, Tournaments. All in One Place. All Across America.",
@@ -19,7 +19,7 @@ export const BannerServer = async () => {
     return (
         <>
             <BannerSEO
-                title={bannerData.title}
+            title={bannerData.title}
                 description={bannerData.description}
                 imageUrl={bannerData.image.src}
             />
