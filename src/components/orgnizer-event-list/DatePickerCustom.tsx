@@ -8,7 +8,7 @@ import { OnSelectHandler } from "react-day-picker"
 function DatePickerCustom({ date, setDate }: { date: Date | undefined, setDate: (date: Date | undefined) => void }) {
     return (
         <div className="w-full">
-            <Popover>
+            {/* <Popover>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
@@ -22,7 +22,13 @@ function DatePickerCustom({ date, setDate }: { date: Date | undefined, setDate: 
                 <PopoverContent className="w-auto bg-white p-0">
                     <Calendar mode="single" selected={date} onSelect={setDate as OnSelectHandler<Date | undefined>} />
                 </PopoverContent>
-            </Popover>
+            </Popover> */}
+            <input
+                className="w-full shadow rounded border py-3 bg-white px-3"
+                type="date"
+                value={date ? format(date, "yyyy-MM-dd") : ""}
+                onChange={(e) => setDate(new Date(e.target.value))}
+            />
         </div>
     )
 }

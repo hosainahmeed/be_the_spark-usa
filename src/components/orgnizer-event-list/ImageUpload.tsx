@@ -32,7 +32,7 @@ function ImageUpload({ file, setFile, title, className, required, onUpdate }: { 
                     <div className="text">
                         <span>{required ? "*" : ""}Upload Images</span>
                     </div>
-                    <input type="file" id="file" onChange={(e) => {
+                    <input accept='image/*' type="file" id="file" onChange={(e) => {
                         setFile(e.target.files?.[0] || null)
                         onUpdate && onUpdate({
                             image: e.target.files?.[0] || null

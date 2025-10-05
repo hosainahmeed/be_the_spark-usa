@@ -113,7 +113,7 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                                 alt="Brand Logo"
                                 width={200}
                                 height={100}
-                                className="w-auto h-6 md:h-8 lg:h-10 object-contain"
+                                className="w-auto h-6 md:h-8 lg:h-6 object-contain"
                                 priority
                             />
                         </Link>

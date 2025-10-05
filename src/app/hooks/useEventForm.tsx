@@ -103,6 +103,12 @@ export function useEventForm(totalSteps: number) {
         return false;
     };
 
+
+    const reset =()=>{
+        setFormData({ basics: {}, dates: {}, location: {}, details: {} });
+        setCurrentIndex(0);
+    }
+
     const validateAllSteps = () => {
         return true;
     };
@@ -119,5 +125,6 @@ export function useEventForm(totalSteps: number) {
         handleResume,
         handleStartFresh,
         submitForm,
+        reset
     };
 }

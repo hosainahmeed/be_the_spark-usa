@@ -22,6 +22,7 @@ export default function Page() {
     handleResume,
     handleStartFresh,
     submitForm,
+    reset
   } = useEventForm(4);
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
@@ -97,7 +98,10 @@ export default function Page() {
             </DialogHeader>
             <p>Your event has been saved and published successfully.</p>
             <DialogFooter className="mt-4 flex justify-end">
-              <Button onClick={() => setShowSuccessDialog(false)}>OK</Button>
+              <Button onClick={() => {
+                setShowSuccessDialog(false)
+                reset()
+              }}>OK</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
