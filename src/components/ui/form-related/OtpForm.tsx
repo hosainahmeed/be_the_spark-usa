@@ -6,11 +6,22 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { IMAGE } from '../../../../public/assets/image/index.image'
 import { Button } from '../button'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 function OtpForm() {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter()
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        try {
+            setTimeout(() => {
+                setIsLoading(false);
+                router.push('/one-time-pass');
+            }, 2000);
+        } catch (error) {
+            console.error('Form submission error:', error);
+        }
     };
     return (
         <div>

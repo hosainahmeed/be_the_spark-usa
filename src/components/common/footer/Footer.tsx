@@ -5,8 +5,7 @@ import Image from 'next/image';
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import { useCallback, useEffect, useState } from 'react';
 import { User } from '@/types/navigation';
-import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from '@/constants/navigation';
-
+import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from '../navbar-related/navigation';
 const Footer = () => {
     const currentYear = new Date().getFullYear();
     const [currentUser, setCurrentUser] = useState<User | null>(null);

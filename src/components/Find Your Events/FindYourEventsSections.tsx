@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import Image, { StaticImageData } from 'next/image';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface Props {
     title: string;
@@ -55,9 +56,11 @@ const FindYourEventsSections: React.FC<Props> = ({
 
                 <h2 className="text-3xl sm:text-4xl font-bold">{title}</h2>
                 <p className="text-base sm:text-lg text-gray-700">{description}</p>
-                <Button className="mt-4 cursor-pointer self-auto primary-btn px-6 py-3 text-lg rounded hover:bg-white hover:text-[#BF0A30] transition-colors">
-                    Start Find Events
-                </Button>
+                <Link href='/browse-events'>
+                    <Button className="mt-4 cursor-pointer self-auto primary-btn px-6 py-3 text-lg rounded hover:bg-white hover:text-[#BF0A30] transition-colors">
+                        Start Find Events
+                    </Button>
+                </Link>
             </div>
         </section>
     );

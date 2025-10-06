@@ -32,7 +32,7 @@ function Page() {
                 <div className="lg:col-span-2 space-y-6">
                     <div className="bg-white border rounded-xl shadow-sm p-5">
                         <h2 className="text-lg font-semibold mb-4">About The Event</h2>
-                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div className="flex items-start gap-2">
                                 <IconShader >
                                     <CalenderIcon />

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
-function DiscoverBanner({ title, description }: { title: string, description: string }) {
+function DiscoverBanner({ title, description, listbutton }: { title: string, description: string, listbutton: boolean }) {
     return (
         <div
             style={{
@@ -30,13 +30,13 @@ function DiscoverBanner({ title, description }: { title: string, description: st
                         Find Events Near You
                     </Button>
                 </Link>
-                <Link
+                {listbutton && <Link
                     href={"/sign-in"}
                 >
                     <Button className='border border-white bg-transparent md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]'>
                         <ArrowUpRight />  List Your Event
                     </Button>
-                </Link>
+                </Link>}
             </div>
         </div>
     )

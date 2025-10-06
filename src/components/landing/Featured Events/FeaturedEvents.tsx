@@ -197,7 +197,7 @@ const FeaturedEvents = () => {
                 icon={<ArrowUpRight className="w-6 h-6" />}
                 buttonClassName='bg-[var(--blue)] text-white'
                 className='my-12'
-
+                routes='/browse-events'
             />
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {CAMP_DATA.map((camp) => (

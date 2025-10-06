@@ -18,8 +18,7 @@ function EmailVarify() {
         e.preventDefault()
         setIsLoading(true)
         setTimeout(() => {
-            console.log(formData)
-            router.push('/one-time-pass')
+            router.push(`/one-time-pass?email=${formData.email}`,)
             setIsLoading(false)
         }, 2000)
     }

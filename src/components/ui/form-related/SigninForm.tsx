@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Cookies from "js-cookie"
 
 interface InputField {
     label: string;
@@ -46,14 +47,21 @@ export default function SigninForm() {
             await new Promise(resolve => setTimeout(resolve, 2000));
             console.log("Login Form Data:", formData);
 
-
             inputFields.forEach(field => {
                 console.log(`Field Name: ${field.name}, Value: ${formData[field.name]}`);
-            }); 
-            
+            });
+
 
             if (formData.email === "user@gmail.com" && formData.password === "123456") {
+
                 localStorage.setItem('user', JSON.stringify({
+                    id: '1',
+                    name: 'Leslie Alexander',
+                    email: 'user@gmail.com',
+                    role: 'login-user',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                }))
+                Cookies.set('user', JSON.stringify({
                     id: '1',
                     name: 'Leslie Alexander',
                     email: 'user@gmail.com',
@@ -63,6 +71,13 @@ export default function SigninForm() {
                 router.push('/');
             } else if (formData.email === "org@gmail.com" && formData.password === "123456") {
                 localStorage.setItem('user', JSON.stringify({
+                    id: '1',
+                    name: 'Leslie Alexander',
+                    email: 'org@gmail.com',
+                    role: 'org',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                }))
+                Cookies.set('user', JSON.stringify({
                     id: '1',
                     name: 'Leslie Alexander',
                     email: 'org@gmail.com',
@@ -103,7 +118,7 @@ export default function SigninForm() {
                     Please enter your email and password to continue
                 </CardDescription>
             </CardHeader>
-            
+
             <CardContent>
                 <form onSubmit={handleSubmit} className="flex mt-3 flex-col gap-6">
                     {inputFields.map((field) => (

@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -8,10 +8,20 @@ import { containerVariants, imageVariants, textVariants } from '@/lib/animation.
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import { Button } from '../../ui/button';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const BannerClient = ({ title, description, image }: BannerProps) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+
+    const [role, setRole] = useState<'login-user' | 'org' | null>(null)
+    useEffect(() => {
+        if (localStorage) {
+            const user = localStorage.getItem('user');
+            const Userdata = user ? JSON.parse(user) : null
+            setRole(Userdata ? Userdata?.role : null);
+        }
+    }, [])
 
     return (
         <section
@@ -52,13 +62,15 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                             variants={containerVariants}
                             className="flex flex-col md:flex-row gap-4 justify-center lg:justify-start"
                         >
-                            <Button className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
-                                Find Events Near You
-                            </Button>
+                            <Link href='/browse-events'>
+                                <Button className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
+                                    Find Events
+                                </Button>
+                            </Link>
 
-                            <Button className={cn("px-6 py-6 text-lg rounded border hover:!bg-white hover:!text-[#BF0A30]", "bg-white text-[#BF0A30] border-[#BF0A30] cursor-pointer")}>
+                            {role === null && <Link href="/list-events"> <Button className={cn("px-6 py-6 text-lg rounded border hover:!bg-white hover:!text-[#BF0A30]", "bg-white text-[#BF0A30] border-[#BF0A30] cursor-pointer")}>
                                 List Your Event
-                            </Button>
+                            </Button></Link>}
                         </motion.div>
                     </motion.div>
 

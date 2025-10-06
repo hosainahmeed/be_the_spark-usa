@@ -19,6 +19,7 @@ import { ProfileAvatar } from './navbar-related/ProfileAvatar';
 import { ProfileDropdown } from './navbar-related/ProfileDropdown';
 import { NavigationItems } from './navbar-related/NavigationItems';
 import { Button } from '../ui/button';
+import Cookies from 'js-cookie';
 
 interface NavigationMenuBarProps {
     // Optional props for external control
@@ -62,6 +63,8 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
         localStorage.removeItem('user');
         setCurrentUser(null);
         setIsDropdownOpen(false);
+
+        Cookies.remove('user')
 
         // Optional: Add your logout logic here
         // if (onLogout) onLogout();
