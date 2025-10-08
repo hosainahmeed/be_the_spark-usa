@@ -15,7 +15,7 @@ export const NavigationItems = ({ items }: NavigationItemsProps) => {
     const pathname = usePathname();
 
     return (
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden lg:flex items-center space-x-8">
             {items.map((item, index) => (
                 <motion.div
                     key={item.label}

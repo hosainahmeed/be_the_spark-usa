@@ -60,7 +60,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute hidden md:block right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+                        className="absolute hidden lg:block right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
                     >
                         {/* User Info Section */}
                         <div className="p-4 border-b border-gray-100">
@@ -116,7 +116,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="md:hidden">
+            <div className="lg:hidden">
                 <div className="p-2">
                     {menuItems.map((item, index) => (
                         <motion.button

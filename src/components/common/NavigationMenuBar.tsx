@@ -116,19 +116,19 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                                 alt="Brand Logo"
                                 width={200}
                                 height={100}
-                                className="w-auto h-6 md:h-8 lg:h-6 object-contain"
+                                className="w-auto h-6 lg:h-8 object-contain"
                                 priority
                             />
                         </Link>
                     </motion.div>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-8">
+                    <nav className="hidden lg:flex items-center space-x-8">
                         <NavigationItems items={menuItems} />
                     </nav>
 
                     {/* Desktop Auth Section */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className="hidden lg:flex items-center space-x-4">
                         {!currentUser ? (
                             <AuthButtons />
                         ) : (
@@ -151,7 +151,7 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
+                        className="lg:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
                         aria-label="Toggle menu"
                         aria-expanded={isMobileMenuOpen}
                     >
@@ -188,7 +188,7 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="md:hidden absolute top-full left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg"
+                        className="lg:hidden absolute top-full left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg"
                     >
                         <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                             <div className="flex flex-col space-y-4">
