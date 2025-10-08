@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import SignupForm from '@/components/ui/form-related/SignupForm';
 import SideImage from '@/components/component-layout/SideImage';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: "Sign Up | Tryouts, Camps & Tournaments",
@@ -20,7 +21,9 @@ export default function SignupPage() {
       {/* Left side image */}
       <SideImage image={IMAGE.signUpImage} />
       {/* Right side form card */}
-      <SignupForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SignupForm />
+      </Suspense>
     </main>
   );
 }

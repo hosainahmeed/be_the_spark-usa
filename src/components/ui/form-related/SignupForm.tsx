@@ -21,7 +21,6 @@ interface InputField {
 export default function SignupForm() {
     const searchParams = useSearchParams();
     const role = searchParams.get('role');
-    console.log(role)
     const inputFields: InputField[] = [
         ...(role === 'list-events' ? [{ label: "Business Name", type: "text", placeholder: "Major League Baseball (MLB)" }] : []),
         { label: "Full Name", type: "text", placeholder: "Full Name" },
@@ -50,7 +49,7 @@ export default function SignupForm() {
         try {
             setTimeout(() => {
                 setIsLoading(false);
-                router.push('/one-time-pass');
+                router.push(`/one-time-pass?role=${role}`);
             }, 2000);
         } catch (error) {
             console.error('Form submission error:', error);

@@ -3,11 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
 import { IMAGE } from '../../../../public/assets/image/index.image'
-import PageTopBanner from '../status-banner/PageTopBanner'
 import SectionLayout from '@/components/component-layout/SectionLayout'
-import { span } from 'framer-motion/m'
 
-function SubscriptionCard() {
+function SubscriptionCard({buttonText, onClick}: {buttonText: string, onClick: () => void}) {
     const subscriptionData = [
         {
             title: 'Annual Access',
@@ -24,9 +22,6 @@ function SubscriptionCard() {
     ]
     return (
         <div>
-            <PageTopBanner
-                title='Simple. Fair. One Plan.'
-                description='Everything you need — no tiers, no confusion. Just $15/year to access all events.' />
             <div className='md:mt-28 mt-16 px-1'>
                 <SectionLayout>
                     <Card
@@ -60,9 +55,9 @@ function SubscriptionCard() {
                                 </ul>
                             </div>
                             <Button
-                                onClick={() => alert('Renew option is not available yet , this feature will be available soon')}
+                                onClick={onClick}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
-                            >Renew Now</Button>
+                            >{buttonText}</Button>
                         </CardContent>
                     </Card>
                 </SectionLayout>

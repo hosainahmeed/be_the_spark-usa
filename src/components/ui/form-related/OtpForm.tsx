@@ -2,25 +2,33 @@
 import React, { useState } from 'react'
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '../input-otp'
 import Image from 'next/image'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../card'
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../card'
 import { IMAGE } from '../../../../public/assets/image/index.image'
 import { Button } from '../button'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 
 function OtpForm() {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter()
+    const searchParams = useSearchParams();
+    const role = searchParams.get('role');
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         try {
             setTimeout(() => {
                 setIsLoading(false);
-                router.push('/one-time-pass');
+                if (role === 'list-events') {
+                    toast.success('OTP verified successfully');
+                    router.push(`/subscription-purchase?role=${role}`);
+                } else {
+                    toast.success('OTP verified successfully');
+                    router.push(`/login`);
+                }
             }, 2000);
-        } catch (error) {
-            console.error('Form submission error:', error);
+        } catch (error: any) {
+            toast.error(error?.message || 'Something went wrong');
         }
     };
     return (

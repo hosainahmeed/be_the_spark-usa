@@ -111,11 +111,6 @@ function RegistrationEventDetails({
                         setContent={handleContentChange} 
                     />
                     {!content.trim() && <p className="text-red-500 text-sm mt-1">Description required</p>}
-                    {content.trim() && content.length < 50 && (
-                        <p className="text-yellow-600 text-sm mt-1">
-                            Description should be at least 50 characters (currently: {content.length})
-                        </p>
-                    )}
                 </div>
             </form>
         </div>

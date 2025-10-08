@@ -2,6 +2,7 @@ import SideImage from "@/components/component-layout/SideImage";
 import { Metadata } from "next";
 import { IMAGE } from "../../../../public/assets/image/index.image";
 import OtpForm from "@/components/ui/form-related/OtpForm";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "One Time Pass | Tryouts, Camps & Tournaments",
@@ -17,10 +18,10 @@ export const metadata: Metadata = {
 export default function OneTimePassPage() {
     return (
         <main className="grid grid-cols-1 md:grid-cols-2 items-center justify-center max-w-screen-xl mx-auto min-h-screen md:p-4 gap-8 content-center">
-            {/* Left side image */}
             <SideImage image={IMAGE.lockImage} />
-            {/* Right side form card */}
-            <OtpForm />
+            <Suspense fallback={<div>Loading...</div>}>
+                <OtpForm />
+            </Suspense>
         </main>
     );
 }

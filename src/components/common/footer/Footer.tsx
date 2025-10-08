@@ -6,13 +6,11 @@ import { IMAGE } from '../../../../public/assets/image/index.image';
 import { useCallback, useEffect, useState } from 'react';
 import { User } from '@/types/navigation';
 import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from '../navbar-related/navigation';
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa";
 const Footer = () => {
     const currentYear = new Date().getFullYear();
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-
-
-
     const getUserData = useCallback(() => {
         if (typeof window === 'undefined') return null;
 
@@ -58,9 +56,9 @@ const Footer = () => {
         ],
         social: [
             { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-            { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-            { icon: Youtube, href: 'https://youtube.com', label: 'YouTube' },
+            { icon: FaXTwitter , href: 'https://twitter.com', label: 'Twitter' },
             { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+            { icon: FaInstagram , href: 'https://instagram.com', label: 'Instagram' },
         ],
     };
     return (

@@ -60,7 +60,7 @@ const JoditComponent = ({ content, setContent }: { content: string, setContent: 
       <JoditEditor
         ref={editor}
         value={content || ''}
-        onChange={(newContent) => setContent(newContent)}
+        onBlur={(newContent) => setContent(newContent)}
         config={config}
         tabIndex={1}
       />
