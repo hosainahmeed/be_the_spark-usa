@@ -40,9 +40,11 @@ export default function SigninForm() {
         setFormData({ ...formData, [name]: value });
     };
 
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+
         try {
             await new Promise(resolve => setTimeout(resolve, 2000));
             console.log("Login Form Data:", formData);
@@ -51,51 +53,52 @@ export default function SigninForm() {
                 console.log(`Field Name: ${field.name}, Value: ${formData[field.name]}`);
             });
 
+            const setUserSession = (userData: any) => {
+                localStorage.setItem('user', JSON.stringify(userData));
+
+                Cookies.set('user', JSON.stringify(userData), {
+                    path: '/',
+                    sameSite: 'lax',
+                    secure: true, // process.env.NODE_ENV === 'production'
+                    expires: 7,
+                });
+            };
 
             if (formData.email === "user@gmail.com" && formData.password === "123456") {
-
-                localStorage.setItem('user', JSON.stringify({
+                const user = {
                     id: '1',
                     name: 'Leslie Alexander',
                     email: 'user@gmail.com',
                     role: 'login-user',
-                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                }))
-                Cookies.set('user', JSON.stringify({
-                    id: '1',
-                    name: 'Leslie Alexander',
-                    email: 'user@gmail.com',
-                    role: 'login-user',
-                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                }))
+                    avatar:
+                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                };
+                setUserSession(user);
                 router.push('/');
-            } else if (formData.email === "org@gmail.com" && formData.password === "123456") {
-                localStorage.setItem('user', JSON.stringify({
-                    id: '1',
-                    name: 'Leslie Alexander',
-                    email: 'org@gmail.com',
-                    role: 'org',
-                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                }))
-                Cookies.set('user', JSON.stringify({
-                    id: '1',
-                    name: 'Leslie Alexander',
-                    email: 'org@gmail.com',
-                    role: 'org',
-                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                }))
-                router.push('/');
-            } else {
-                toast("Invalid email or password", {
-                    duration: 5000,
-                })
             }
+            else if (formData.email === "org@gmail.com" && formData.password === "123456") {
+                const orgUser = {
+                    id: '2',
+                    name: 'Leslie Alexander',
+                    email: 'org@gmail.com',
+                    role: 'org',
+                    avatar:
+                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                };
+                setUserSession(orgUser);
+                router.push('/');
+            }
+            else {
+                toast("Invalid email or password", { duration: 5000 });
+            }
+
         } catch (error) {
             console.error('Login submission error:', error);
         } finally {
             setIsLoading(false);
         }
     };
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);

@@ -8,12 +8,11 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.get('user');
     const user = token ? JSON.parse(token.value) : null;
     const role = user?.role;
-    console.log('=========')
+    console.log('Cookies:', request.cookies.getAll());
+
     if (!token || token === undefined) {
-        console.log("token=============",token)
         return NextResponse.redirect(new URL('/sign-in', request.url))
     };
-    console.log('=========')
 
     if (token && role === 'org') {
         if (!orgUserPath.includes(pathname)) {
