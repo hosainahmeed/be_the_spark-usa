@@ -71,7 +71,7 @@ function OurImpact() {
                         asChild
                         className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]"
                     >
-                        <a href="/get-started" aria-label="Get started with our platform">
+                        <a href="/choose-role" aria-label="Get started with our platform">
                             Get Started Now
                         </a>
                     </Button>
