@@ -77,6 +77,7 @@ const Footer = () => {
                         <Link href="/" className="inline-flex items-center gap-2 group" aria-label="PlayFinderUSA Home">
                             <Image src={IMAGE.brandV2} alt="Logo" width={200} height={100} />
                         </Link>
+                        <span className="text-sm capitalize block text-gray-300 lg:text-base">A product of Lorimer Sports Group LLC</span>
                         <address className="not-italic">
                             <Link
                                 href="mailto:support@PlayFinderUSA.com"
