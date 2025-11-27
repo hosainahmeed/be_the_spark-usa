@@ -3,6 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import { PopularSportImage } from "../../../../public/assets/PopularSportImage/populor.sport.index";
 import SportCategoryCard from "./SportCategoryCard";
 import { Metadata } from "next";
+import { useGetCategoryQuery } from "@/app/redux/service/categoryApis";
+import { SportCategory } from "@/types/categoryApis";
+import { useMemo } from "react";
 
 export const metadata: Metadata = {
     title: "Popular Sports",
@@ -15,66 +18,56 @@ export const metadata: Metadata = {
     },
 };
 
+export const backgroundImage = [
+    PopularSportImage.bg1,
+    PopularSportImage.bg2,
+    PopularSportImage.bg3,
+    PopularSportImage.bg4,
+];
 
-export const backgroundImage = [PopularSportImage.bg1, PopularSportImage.bg2, PopularSportImage.bg3, PopularSportImage.bg4];
-export const sportData = [
-    {
-        title: "Soccer",
-        background: backgroundImage[0],
-        icon: PopularSportImage.soccer
-    },
-    {
-        title: "Basketball",
-        background: backgroundImage[1],
-        icon: PopularSportImage.basketball
-    },
-    {
-        title: "Rugby",
-        background: backgroundImage[2],
-        icon: PopularSportImage.rugby
-    },
-    {
-        title: "Baseball",
-        background: backgroundImage[3],
-        icon: PopularSportImage.baseball
-    },
-    {
-        title: "Cricket",
-        background: backgroundImage[0],
-        icon: PopularSportImage.cricket
-    },
-    {
-        title: "Volleyball",
-        background: backgroundImage[1],
-        icon: PopularSportImage.volleyball
-    },
-    {
-        title: "Tennis",
-        background: backgroundImage[2],
-        icon: PopularSportImage.tennis
-    },
-    {
-        title: "Chess",
-        background: backgroundImage[3],
-        icon: PopularSportImage.chess
-    }
-]
 const PopularSportSection = () => {
+    const { data, isLoading } = useGetCategoryQuery({ type: 'sports' })
+
+    const randomBackgrounds = useMemo(() => {
+        if (!data?.data?.result) return [];
+        return data.data.result.map(() => {
+            const random = Math.floor(Math.random() * backgroundImage.length);
+            return backgroundImage[random];
+        });
+    }, [data?.data?.result]);
+    if (isLoading) {
+        return (
+            <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="bg-gray-300 h-20 rounded w-full p-2 animate-pulse" />
+                    ))}
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+
             <SectionTitleFormal
                 title="Popular Sports"
                 description="Explore the most popular sports for youth athletes."
                 button={true}
                 buttonText="Explore All Events"
                 icon={<ArrowUpRight className="w-6 h-6" />}
-                buttonClassName='bg-[var(--blue)] text-white'
-                className='my-12'
+                buttonClassName="bg-[var(--blue)] text-white"
+                className="my-12"
                 routes="/popular-sports"
             />
+
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {sportData.map((item, index) => (
-                    <SportCategoryCard key={index} title={item.title} background={item.background} icon={item.icon} />
+                {data?.data?.result.map((item: SportCategory, index: number) => (
+                    <SportCategoryCard
+                        key={index}
+                        title={item.name}
+                        background={randomBackgrounds[index]}
+                        icon={item.category_image}
+                    />
                 ))}
             </div>
         </div>

@@ -8,41 +8,25 @@ import { User } from '@/types/navigation';
 import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from '../navbar-related/navigation';
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
+import { useMyProfile } from '@/app/hooks/useMyProfile';
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const getUserData = useCallback(() => {
-        if (typeof window === 'undefined') return null;
-
-        try {
-            const user = localStorage.getItem('user');
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error('Error parsing user data:', error);
-            return null;
-        }
-    }, []);
-
-    useEffect(() => {
-        setCurrentUser(getUserData());
-    }, [getUserData]);
-
+    const { user, profile, isLoading } = useMyProfile()
 
     const getMenuItems = useCallback(() => {
-        if (!currentUser) return NON_USER_MENU_ITEMS;
+        if (!user) return NON_USER_MENU_ITEMS;
 
-        switch (currentUser.role) {
-            case 'login-user':
+        switch (user?.role) {
+            case 'user':
                 return LOGIN_USER_MENU_ITEMS;
-            case 'org':
+            case 'organizer':
                 return ORGANIZER_MENU_ITEMS;
             default:
                 return NON_USER_MENU_ITEMS;
         }
-    }, [currentUser]);
+    }, [user]);
 
-    const menuItems = getMenuItems();
-
+    const menuItems = isLoading ? [] : getMenuItems();
 
     const footerLinks = {
         resources: [
@@ -56,9 +40,9 @@ const Footer = () => {
         ],
         social: [
             { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-            { icon: FaXTwitter , href: 'https://twitter.com', label: 'Twitter' },
+            { icon: FaXTwitter, href: 'https://twitter.com', label: 'Twitter' },
             { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-            { icon: FaInstagram , href: 'https://instagram.com', label: 'Instagram' },
+            { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
         ],
     };
     return (
@@ -115,7 +99,7 @@ const Footer = () => {
                             Quick Links
                         </h3>
                         <ul className="space-y-3">
-                            {footerLinks.quickLinks.map((link) => (
+                            {footerLinks?.quickLinks?.map((link) => (
                                 <li key={link.href}>
                                     <Link
                                         href={link.href}

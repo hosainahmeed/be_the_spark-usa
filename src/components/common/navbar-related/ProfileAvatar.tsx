@@ -1,10 +1,11 @@
 'use client';
 
+import { IProfileData } from '@/app/hooks/useMyProfile';
 import { User } from '@/types/navigation';
 import { motion } from 'framer-motion';
 
 interface ProfileAvatarProps {
-    user: User;
+    user: IProfileData | null | undefined
     isDropdownOpen: boolean;
     onToggleDropdown: () => void;
 }
@@ -20,14 +21,14 @@ export const ProfileAvatar = ({ user, isDropdownOpen, onToggleDropdown }: Profil
             className="flex items-center cursor-pointer space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
         >
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                {user.avatar ? (
+                {user?.profile_image ? (
                     <img
-                        src={user.avatar}
-                        alt={user.name}
+                        src={user?.profile_image}
+                        alt={user?.name}
                         className="w-full h-full rounded-full object-cover"
                     />
                 ) : (
-                    user.name.charAt(0).toUpperCase()
+                    user?.name.charAt(0).toUpperCase()
                 )}
             </div>
             <motion.div

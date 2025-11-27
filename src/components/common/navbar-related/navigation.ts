@@ -23,3 +23,4 @@ export const ORGANIZER_MENU_ITEMS: MenuItem[] = [
     { label: 'List Events', href: '/list-events-organizer' },
     { label: 'Contact / Help', href: '/contact-us' },
 ];
+

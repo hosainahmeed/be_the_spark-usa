@@ -2,6 +2,8 @@ import React from 'react';
 import FeaturedEventsCard from './FeaturedEventsCard';
 import SectionTitleFormal from '@/components/component-layout/SectionTitleFormal';
 import { ArrowUpRight } from 'lucide-react';
+import { useGetEventsQuery } from '@/app/redux/service/eventApis';
+import { EventDetails } from '@/types/event';
 
 export interface CAMP_DATA {
     id: number;
@@ -187,6 +189,8 @@ export const CAMP_DATA: CAMP_DATA[] = [
 
 
 const FeaturedEvents = () => {
+    const { data, isLoading } = useGetEventsQuery({limit:4})
+    console.log(data)
     return (
         <div className="container  mx-auto p-4 sm:p-6 lg:p-8">
             <SectionTitleFormal
@@ -200,8 +204,8 @@ const FeaturedEvents = () => {
                 routes='/browse-events'
             />
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {CAMP_DATA.map((camp) => (
-                    <FeaturedEventsCard key={camp.id} camp={camp} />
+                {data?.data?.result.map((event:EventDetails) => (
+                    <FeaturedEventsCard key={event?._id} event={event} />
                 ))}
             </div>
         </div>

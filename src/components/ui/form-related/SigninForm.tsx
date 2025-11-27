@@ -11,6 +11,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Cookies from "js-cookie"
+import { useLoginMutation } from '@/app/redux/service/authApis';
 
 interface InputField {
     label: string;
@@ -22,6 +23,8 @@ interface InputField {
 }
 
 export default function SigninForm() {
+    const [login, { isLoading: loginLoading }] = useLoginMutation()
+
     const inputFields: InputField[] = [
         { label: "Email Address", name: "email", type: "email", placeholder: "Enter your email address" },
         { label: "Password", name: "password", type: "password", placeholder: "Enter your password" },
@@ -32,7 +35,6 @@ export default function SigninForm() {
         inputFields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
     );
 
-    const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (name: string, value: string) => {
@@ -43,59 +45,25 @@ export default function SigninForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-
         try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            console.log("Login Form Data:", formData);
-
-            inputFields.forEach(field => {
-                console.log(`Field Name: ${field.name}, Value: ${formData[field.name]}`);
-            });
-
-            const setUserSession = (userData: any) => {
-                localStorage.setItem('user', JSON.stringify(userData));
-
-                Cookies.set('user', JSON.stringify(userData), {
-                    path: '/',
-                    sameSite: 'lax',
-                    secure: true, // process.env.NODE_ENV === 'production'
-                    expires: 7,
-                });
-            };
-
-            if (formData.email === "user@gmail.com" && formData.password === "123456") {
-                const user = {
-                    id: '1',
-                    name: 'Leslie Alexander',
-                    email: 'user@gmail.com',
-                    role: 'login-user',
-                    avatar:
-                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                };
-                setUserSession(user);
-                router.push('/');
+            const res = await login(formData).unwrap()
+            if (!res?.success) {
+                throw new Error(res?.message || "Login Failed");
             }
-            else if (formData.email === "org@gmail.com" && formData.password === "123456") {
-                const orgUser = {
-                    id: '2',
-                    name: 'Leslie Alexander',
-                    email: 'org@gmail.com',
-                    role: 'org',
-                    avatar:
-                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-                };
-                setUserSession(orgUser);
-                router.push('/');
-            }
-            else {
-                toast("Invalid email or password", { duration: 5000 });
+            if (res?.data?.accessToken) {
+                Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken);
+                if (Cookies.get('accessTokenForPlayFinder')) {
+                    toast.success(res?.message || "Login Successful");
+                    if (window !== undefined) {
+                        window.location.href = "/";
+                    }else{
+                        
+                    }
+                }
             }
 
         } catch (error) {
             console.error('Login submission error:', error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -144,7 +112,7 @@ export default function SigninForm() {
                                     required
                                     className="w-full pr-10"
                                     aria-required="true"
-                                    disabled={isLoading}
+                                    disabled={loginLoading}
                                 />
                                 {field.name === "password" && (
                                     <Button
@@ -153,7 +121,7 @@ export default function SigninForm() {
                                         size="sm"
                                         className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                                         onClick={togglePasswordVisibility}
-                                        disabled={isLoading}
+                                        disabled={loginLoading}
                                         aria-label={showPassword ? "Hide password" : "Show password"}
                                     >
                                         {showPassword ? (
@@ -179,10 +147,10 @@ export default function SigninForm() {
                     <Button
                         type="submit"
                         className="w-full cursor-pointer bg-[var(--blue)] hover:bg-[var(--blue)]"
-                        disabled={isLoading}
+                        disabled={loginLoading}
                         size="lg"
                     >
-                        {isLoading ? 'Signing in...' : 'Sign In'}
+                        {loginLoading ? 'Signing in...' : 'Sign In'}
                     </Button>
                 </form>
             </CardContent>

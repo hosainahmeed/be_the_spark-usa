@@ -4,73 +4,8 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { ChevronDown } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { AgeOptions, DateRange, EventStatus, EventTypes, SkillLevel, SportOptions } from "@/constants/constantsOptions"
-
-// Types
-interface FilterOption {
-    value: string
-    label: string
-}
-
-interface FilterSection {
-    id: string
-    type: 'input' | 'select' | 'accordion'
-    label: string
-    options?: FilterOption[]
-    placeholder?: string
-    defaultValue?: string
-}
-
-// Constants
-const FILTER_SECTIONS: FilterSection[] = [
-    {
-        id: 'location',
-        type: 'input',
-        label: 'Location',
-        placeholder: 'Location (ZIP Code or City)',
-    },
-    {
-        id: 'sport',
-        type: 'select',
-        label: 'Sport',
-        placeholder: 'All Sport',
-        options: SportOptions
-    },
-    {
-        id: 'age',
-        type: 'accordion',
-        label: 'Age Group',
-        options: AgeOptions
-    },
-    {
-        id: 'eventType',
-        type: 'select',
-        label: 'Event Type',
-        placeholder: 'Event Type',
-        options: EventTypes
-    },
-    {
-        id: 'eventStatus',
-        type: 'select',
-        label: 'Event Status',
-        placeholder: 'Event Status',
-        options: EventStatus
-    },
-    {
-        id: 'skillLevel',
-        type: 'select',
-        label: 'Skill Level',
-        placeholder: 'Skill Level',
-        options: SkillLevel
-    },
-    {
-        id: 'dateRange',
-        type: 'select',
-        label: 'Date Range',
-        placeholder: 'Date Range',
-        options: DateRange
-    }
-] as const
+import { FILTER_SECTIONS } from "@/constants/constantsOptions"
+import { FilterSection } from "@/types/global"
 
 export const AccordionFilter = ({
     section,

@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import React from 'react'
-import { CAMP_DATA } from '../landing/Featured Events/FeaturedEvents'
+import { imageUrl } from '@/utils/imageHandler'
+import { EventDetails } from '@/types/event'
 
-function SingleEventBanner({ event }: { event: CAMP_DATA }) {
+function SingleEventBanner({ event }: { event: EventDetails }) {
     return (
         <div
             style={{
-                backgroundImage: `url(${event.photoUrl})`,
+                backgroundImage: `url(${event.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -15,8 +16,8 @@ function SingleEventBanner({ event }: { event: CAMP_DATA }) {
             <div className='absolute md:block hidden top-0 left-0 w-full rounded-2xl h-full backdrop-blur-md opacity-50'></div>
             <div className='absolute md:block hidden -bottom-4 shadow-xl left-1/2 h-48 w-72 -translate-x-1/2 rounded-2xl overflow-hidden'>
                 <Image
-                    src={event.photoUrl}
-                    alt={event.title}
+                    src={imageUrl({ image: event.image })}
+                    alt={event.name}
                     fill
                     className="object-cover"
                 />

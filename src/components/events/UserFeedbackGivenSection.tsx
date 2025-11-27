@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 
 interface FeedbackFormData {
     rating: number
-    comment: string
 }
 
 function UserFeedbackGivenSection() {
@@ -14,14 +13,13 @@ function UserFeedbackGivenSection() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState<FeedbackFormData>({
         rating: 0,
-        comment: ''
     })
     const [hoveredRating, setHoveredRating] = useState(0)
 
     const handleOpenModal = () => setIsModalOpen(true)
     const handleCloseModal = () => {
         setIsModalOpen(false)
-        setFormData({ rating: 0, comment: '' })
+        setFormData({ rating: 0 })
         setHoveredRating(0)
     }
 
@@ -37,10 +35,6 @@ function UserFeedbackGivenSection() {
         setHoveredRating(0)
     }
 
-    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setFormData(prev => ({ ...prev, comment: e.target.value }))
-    }
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
@@ -54,9 +48,8 @@ function UserFeedbackGivenSection() {
         try {
             await new Promise(resolve => setTimeout(resolve, 1500))
             console.log('Feedback submitted:', {
-                ...formData,
-                organizer: 'Marvin Fey',
-                timestamp: new Date().toISOString()
+                event: "6915ac1438d97b3abbf63982",
+                rating: formData?.rating
             })
             toast.success('Thank you for your feedback!', {
                 description: 'Your review has been submitted successfully.',
@@ -90,8 +83,8 @@ function UserFeedbackGivenSection() {
                 >
                     <Star
                         className={`w-8 h-8 ${isFilled
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'text-gray-300'
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
                             } transition-colors duration-200`}
                     />
                 </button>

@@ -3,7 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
-import ReduxWrapper from "./redux/query/ReduxWrapper";
+import ReduxWrapper from "./redux/ReduxWrapper";
+
 // export const poppins = localFont({
 //   src: "../../public/fonts/poppins/Poppins-Black.ttf",
 //   variable: "--font-poppins",

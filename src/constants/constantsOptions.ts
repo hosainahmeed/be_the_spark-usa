@@ -1,3 +1,5 @@
+import { FilterSection } from "@/types/global";
+
 export const AgeOptions: { value: string; label: string }[] = [
     { value: 'any', label: 'Any Age' },
     { value: '2-4', label: '2–4 years' },
@@ -73,3 +75,53 @@ export const DateRange: { value: string; label: string }[] = [
     { value: 'next-7-days', label: 'Next 7 Days' },
     { value: 'next-30-days', label: 'Next 30 Days' }
 ]
+
+export const FILTER_SECTIONS: FilterSection[] = [
+    {
+        id: 'location',
+        type: 'input',
+        label: 'Location',
+        placeholder: 'Location (ZIP Code or City)',
+    },
+    {
+        id: 'sport',
+        type: 'select',
+        label: 'Sport',
+        placeholder: 'All Sport',
+        options: SportOptions
+    },
+    {
+        id: 'age',
+        type: 'accordion',
+        label: 'Age Group',
+        options: AgeOptions
+    },
+    {
+        id: 'eventType',
+        type: 'select',
+        label: 'Event Type',
+        placeholder: 'Event Type',
+        options: EventTypes
+    },
+    {
+        id: 'eventStatus',
+        type: 'select',
+        label: 'Event Status',
+        placeholder: 'Event Status',
+        options: EventStatus
+    },
+    {
+        id: 'skillLevel',
+        type: 'select',
+        label: 'Skill Level',
+        placeholder: 'Skill Level',
+        options: SkillLevel
+    },
+    {
+        id: 'dateRange',
+        type: 'select',
+        label: 'Date Range',
+        placeholder: 'Date Range',
+        options: DateRange
+    }
+] as const

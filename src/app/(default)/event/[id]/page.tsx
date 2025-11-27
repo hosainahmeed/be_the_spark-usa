@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { CAMP_DATA } from '@/components/landing/Featured Events/FeaturedEvents'
 import { useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MapPin, Mail, Phone, Star } from 'lucide-react'
@@ -11,10 +10,33 @@ import SingleEventTitleStatus from '@/components/events/SingleEventTitleStatus'
 import UserFeedbackGivenSection from '@/components/events/UserFeedbackGivenSection'
 import Image from 'next/image'
 import { Card } from '@/components/ui/card'
+import { useGetSingleEventQuery } from '@/app/redux/service/eventApis'
+import { EventDetails } from '@/types/event'
+import { imageUrl } from '@/utils/imageHandler'
+import { useMarkAsBookMarkMutation } from '@/app/redux/service/bookMarkApis'
+import { toast } from 'sonner'
 
 function Page() {
     const { id } = useParams()
-    const event = CAMP_DATA.find((item) => item.id === Number(id))
+    const { data: event, isLoading } = useGetSingleEventQuery(id as string, { skip: !id })
+    const [markBook, { isLoading: bookMarkLoading }] = useMarkAsBookMarkMutation()
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-lg font-semibold">Event loading...</p>
+            </div>
+        )
+    }
+
+    if (!event?.data) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-lg font-semibold">Event not found</p>
+            </div>
+        )
+    }
+    const eventData: EventDetails = event?.data && event?.data;
 
     if (!event) {
         return (
@@ -24,22 +46,57 @@ function Page() {
         )
     }
 
+
+
+    const handleShare = (event: EventDetails) => {
+        if (navigator.share) {
+            navigator.share({
+                title: event?.name || "Event",
+                text: "Check this out!",
+                url: event?.websiteLink,
+            });
+        } else {
+            alert("Share not supported on this device");
+        }
+    };
+
+    const handleEventBookMark = async (id: string) => {
+        try {
+            if (!id) {
+                throw new Error('Event Id is invalid!')
+            }
+            const res = await markBook(id).unwrap()
+            if (!res?.success) {
+                throw new Error(res?.message || '')
+            }
+            toast.dismiss()
+            toast.success(res?.message)
+        } catch (error: any) {
+            toast.dismiss()
+            toast.error(error?.data?.message || error?.message || 'something went wrong while ')
+        }
+    }
+
     return (
         <div className="container mx-auto px-4 md:px-6 lg:px-10 py-6">
-            <SingleEventBanner event={event} />
-            <SingleEventTitleStatus event={event} />
+            <SingleEventBanner event={eventData} />
+            <SingleEventTitleStatus event={eventData} />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                 <div className="lg:col-span-2 space-y-6">
                     <div className="bg-white border rounded-xl shadow-sm p-5">
                         <h2 className="text-lg font-semibold mb-4">About The Event</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div className="flex items-start gap-2">
-                                <IconShader >
+                                <IconShader>
                                     <CalenderIcon />
                                 </IconShader>
                                 <div>
-                                    <p className="font-medium">Registration Deadline</p>
-                                    <p className="text-gray-600">{event.registrationDeadline}</p>
+                                    <p className="font-medium">Event Start On</p>
+                                    <time className="text-gray-600">{new Date(eventData?.eventStartDateTime).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                    })}</time>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
@@ -48,7 +105,7 @@ function Page() {
                                 </IconShader>
                                 <div>
                                     <p className="font-medium">Ages</p>
-                                    <p className="text-gray-600">{event.ages}</p>
+                                    <p className="text-gray-600">{eventData?.minAge} min - {eventData?.maxAge} max</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
@@ -57,7 +114,7 @@ function Page() {
                                 </IconShader>
                                 <div>
                                     <p className="font-medium">Sport</p>
-                                    <p className="text-gray-600">{event.sport}</p>
+                                    <p className="text-gray-600">{eventData?.sport?.name}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
@@ -66,7 +123,7 @@ function Page() {
                                 </IconShader>
                                 <div>
                                     <p className="font-medium">Available Slots</p>
-                                    <p className="text-gray-600">{event.availableSlot}</p>
+                                    <p className="text-gray-600">{eventData?.availableSlot}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
@@ -75,38 +132,42 @@ function Page() {
                                 </IconShader>
                                 <div>
                                     <p className="font-medium">Event Type</p>
-                                    <p className="text-gray-600">{event.eventType}</p>
+                                    <p className="text-gray-600">{eventData?.eventType?.type}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-2">
-                                <IconShader>
+                                <IconShader >
                                     <CalenderIcon />
                                 </IconShader>
                                 <div>
-                                    <p className="font-medium">Event Start On</p>
-                                    <p className="text-gray-600">{event.eventStart}</p>
+                                    <p className="font-medium">Registration Deadline</p>
+                                    <time className="text-gray-600">{new Date(eventData?.registrationEndDateTime).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                    })}</time>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="bg-white border rounded-xl shadow-sm p-5">
                         <h2 className="text-lg font-semibold mb-4">Event Details</h2>
-                        <div dangerouslySetInnerHTML={{ __html: event.eventDetails || '' }} />
+                        <div dangerouslySetInnerHTML={{ __html: eventData?.description || '' }} />
                     </div>
                     {event?.isMyFeedbackGiven &&
                         <div>
                             <h1 className='text-lg font-semibold mb-4'>My feedback</h1>
                             <Card className='flex flex-row items-center gap-2 p-5'>
                                 <Image
-                                    src={event.feedbackData?.profilePhotoUrl || ''}
+                                    src={event?.feedbackData?.profilePhotoUrl || ''}
                                     alt="Profile"
                                     width={50}
                                     height={50}
                                     className='rounded-full overflow-hidden'
                                 />
                                 <div>
-                                    <h1 className="font-semibold text-xl">{event.feedbackData?.name}</h1>
-                                    <span className='flex items-center gap-1'>⭐ {" "} {event.feedbackData?.rating} / 5</span>
+                                    <h1 className="font-semibold text-xl">{event?.feedbackData?.name}</h1>
+                                    <span className='flex items-center gap-1'>⭐ {" "} {event?.feedbackData?.rating} / 5</span>
                                 </div>
                             </Card>
                         </div>
@@ -118,18 +179,25 @@ function Page() {
                             <div className='flex items-center justify-between'>
                                 <div>
                                     <p className="text-sm text-gray-500">Starts From</p>
-                                    <p className="text-2xl font-bold">${event.price.toFixed(2)}</p>
+                                    <p className="text-2xl font-bold">${eventData?.registrationFee}</p>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <IconShader className='cursor-pointer' onClick={() => { }}>
-                                        <SaveIcon />
+                                    <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onClick={() => {
+                                        if (!bookMarkLoading) {
+                                            handleEventBookMark(eventData?._id)
+                                        }
+                                    }}>
+                                        {bookMarkLoading ? <div className="w-5 h-5 border-red-400 rounded-full animate-spin border-t border-l"></div>
+                                            :
+                                            <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />}
                                     </IconShader>
-                                    <IconShader className='cursor-pointer' onClick={() => { }}>
+                                    <IconShader className='cursor-pointer' onClick={() => handleShare(eventData)}>
                                         <ShareIcon />
                                     </IconShader>
                                 </div>
                             </div>
                             <Button
+                                onClick={() => window.open(eventData?.websiteLink, '_blank')}
                                 className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
                             >Go to Event Registration Link</Button>
                         </div>
@@ -137,7 +205,7 @@ function Page() {
                             <h2 className="text-lg font-semibold">Organizer Info</h2>
                             <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
                                 <Image
-                                    src={event.organizer.avatarUrl}
+                                    src={imageUrl({ image: eventData?.organizer?.profile_image })}
                                     alt="Avatar"
                                     width={50}
                                     height={50}
@@ -145,7 +213,7 @@ function Page() {
                                 />
                                 <div>
                                     <p className="font-black">Organized By: </p>
-                                    <p>{event.organizer.name}</p>
+                                    <p>{eventData?.organizer?.name}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
@@ -154,7 +222,7 @@ function Page() {
                                 </div>
                                 <div>
                                     <h1 className="font-black">Rating</h1>
-                                    <p>{event.organizer.rating} ({event.organizer.reviewCount})</p>
+                                    <p>{eventData?.averageRating} ({eventData?.totalRating || 0})</p>
                                 </div>
                             </div>
                             <div
@@ -164,7 +232,7 @@ function Page() {
                                 </div>
                                 <div>
                                     <h1 className="font-black">Contact Email</h1>
-                                    <span>{event.contactEmail}</span>
+                                    <span>{eventData?.organizer?.email}</span>
                                 </div>
                             </div>
                             <div
@@ -174,12 +242,12 @@ function Page() {
                                 </div>
                                 <div>
                                     <h1 className="font-black">Contact Phone</h1>
-                                    <span>{event.contactPhone}</span>
+                                    <span>{eventData?.organizer?.phone}</span>
                                 </div>
                             </div>
                         </div>
                     </Card>
-                    {/* Location */}
+
                     <div className="mt-3">
                         <h2 className="text-lg font-semibold mb-3">Event Location</h2>
                         <div className='border border-gray-200 rounded-xl p-5'>
@@ -189,12 +257,12 @@ function Page() {
                                 </div>
                                 <div>
                                     <p className="font-medium">Location</p>
-                                    <p className="text-gray-600">{event.location}</p>
+                                    <p className="text-gray-600">{eventData?.address}</p>
                                 </div>
                             </div>
                             <iframe
                                 src={`https://www.google.com/maps?q=${encodeURIComponent(
-                                    event.location
+                                    eventData?.address
                                 )}&output=embed`}
                                 width="100%"
                                 height="200"

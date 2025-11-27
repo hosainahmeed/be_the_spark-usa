@@ -1,58 +1,69 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { EventDetails } from '@/types/event';
 import Link from 'next/link';
 import React from 'react'
 
-function FeaturedEventsCard({ camp }: { camp: any }) {
+function FeaturedEventsCard({ event }: { event: EventDetails }) {
+    console.log("12321 mhnkj 123bjk 123hn 1m23jm1b23n 1mnb3m12n 321nb ",event)
     return (
         <article className="group bg-white rounded-xl shadow-sm transition-all duration-300 border border-gray-100 overflow-hidden">
             <div className="relative p-2 h-40 sm:h-44 md:h-48 lg:h-40 xl:h-56">
                 <ClippedImage
-                    photoUrl={camp.photoUrl}
+                    photoUrl={event?.image}
                     className="w-full h-full object-cover"
                 />
 
-                <div className="absolute top-2 right-3 bg-gray-100 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-medium text-gray-700 flex items-center gap-1">
-                    📆 {camp.dateRange}
+                <div className={cn("absolute text-[10px] border top-1  right-3 bg-gray-100 backdrop-blur-sm px-1 md:px-3 md:py-1 md:text-xs rounded-md  font-medium text-gray-700 flex items-center gap-1",
+                    event?.eventStartDateTime >= new Date().toISOString() ?
+                        'border border-green-500/50' : 'border-red-500/50'
+                )}>
+                    📆 <time dateTime={event?.eventStartDateTime}>
+                        {new Date(event?.eventStartDateTime).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                        })}
+                    </time>
                 </div>
             </div>
 
             <div className="p-4 space-y-3">
                 <div className="space-y-2">
                     <h3 className="font-bold text-lg text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
-                        {camp.title}
+                        {event?.name}
                     </h3>
 
                     <div className="flex items-center text-sm text-gray-600 gap-1">
-                        <span className="truncate">{camp.location}</span>
+                        <span className="truncate">{event?.address}</span>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                     <div className="space-y-1">
                         <p className="text-base font-medium text-gray-700">Ages</p>
-                        <p className="text-sm text-gray-600">{camp.ages}</p>
+                        <p className="text-sm text-gray-600">{event?.minAge} - {event?.maxAge}</p>
                     </div>
                     <div className="space-y-1">
                         <p className="text-base font-medium text-gray-700">Sport</p>
-                        <p className="text-sm text-gray-600">{camp.sport}</p>
+                        <p className="text-sm text-gray-600">{event?.sport?.name}</p>
                     </div>
 
                     <div className="text-right space-y-1">
                         <p className="text-base font-medium text-gray-700">Reviews</p>
                         <div className="flex items-center gap-1">
                             🌟 <span className="text-sm font-medium text-gray-900">
-                                {camp.rating}
+                                {event?.averageRating}
                             </span>
                             <span className="text-sm text-gray-500">
-                                ({camp.reviewCount})
+                                5
                             </span>
                         </div>
                     </div>
                 </div>
 
                 <Link
-                    href={`/event/${camp.id}`}
+                    href={`/event/${event?._id}`}
                 >
                     <Button
                         className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-5 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">

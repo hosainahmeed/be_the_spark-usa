@@ -1,15 +1,16 @@
+import { url } from '@/utils/imageHandler';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import Cookies from 'js-cookie';
 const baseApis = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: "",
+        baseUrl: url,
         headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
+            Authorization: `${Cookies.get('accessTokenForPlayFinder')}`,
         },
     }),
-    tagTypes: [],
+    tagTypes: ['event', 'category'],
     endpoints: () => ({}),
 });
 

@@ -19,82 +19,50 @@ import { ProfileAvatar } from './navbar-related/ProfileAvatar';
 import { ProfileDropdown } from './navbar-related/ProfileDropdown';
 import { NavigationItems } from './navbar-related/NavigationItems';
 import { Button } from '../ui/button';
+import { useMyProfile } from '@/app/hooks/useMyProfile';
 import Cookies from 'js-cookie';
 
-interface NavigationMenuBarProps {
-    // Optional props for external control
-    // user?: User | null;
-    // onLogin?: () => void;
-    // onRegister?: () => void;
-    // onLogout?: () => void;
-}
-
-export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+export const NavigationMenuBar = () => {
+    const { user, profile, isLoading } = useMyProfile()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const pathname = usePathname();
+    if (isLoading) {
+        <div className="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 supports-backdrop-blur:bg-white/60"></div>
+    }
 
-    // Memoized user data retrieval
-    const getUserData = useCallback(() => {
-        if (typeof window === 'undefined') return null;
-
-        try {
-            const user = localStorage.getItem('user');
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error('Error parsing user data:', error);
-            return null;
-        }
-    }, []);
-
-    // Initialize user data
-    useEffect(() => {
-        setCurrentUser(getUserData());
-    }, [getUserData]);
-
-    // Close mobile menu when route changes
     useEffect(() => {
         setIsMobileMenuOpen(false);
     }, [pathname]);
 
-    // Handle logout
     const handleLogout = useCallback(() => {
-        localStorage.removeItem('user');
-        setCurrentUser(null);
-        setIsDropdownOpen(false);
-
-        Cookies.remove('user')
-
-        // Optional: Add your logout logic here
-        // if (onLogout) onLogout();
-
-        if (typeof window !== 'undefined') {
-            window.location.reload();
+        Cookies.remove('accessTokenForPlayFinder')
+        if (window !== undefined) {
+            window.location.reload()
         }
     }, []);
 
-    // Toggle dropdown
     const handleToggleDropdown = useCallback(() => {
         setIsDropdownOpen(!isDropdownOpen);
     }, [isDropdownOpen]);
 
 
-    // Get appropriate menu items based on user role
-    const getMenuItems = useCallback(() => {
-        if (!currentUser) return NON_USER_MENU_ITEMS;
 
-        switch (currentUser.role) {
-            case 'login-user':
+    const getMenuItems = useCallback(() => {
+        if (!user) return NON_USER_MENU_ITEMS;
+
+        switch (user?.role) {
+            case 'user':
                 return LOGIN_USER_MENU_ITEMS;
-            case 'org':
+            case 'organizer':
                 return ORGANIZER_MENU_ITEMS;
             default:
                 return NON_USER_MENU_ITEMS;
         }
-    }, [currentUser]);
+    }, [user]);
 
-    const menuItems = getMenuItems();
+    const menuItems = isLoading ? [] : getMenuItems();
+
 
     return (
         <header className="sticky top-0 z-40 h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 supports-backdrop-blur:bg-white/60">
@@ -129,17 +97,18 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
 
                     {/* Desktop Auth Section */}
                     <div className="hidden lg:flex items-center space-x-4">
-                        {!currentUser ? (
-                            <AuthButtons />
+                        {!user ? (
+                            isLoading ? <div className="w-20 h-8 animate-pulse rounded-md bg-gray-300"></div> : <AuthButtons />
                         ) : (
                             <div className="relative">
                                 <ProfileAvatar
-                                    user={currentUser}
+                                    user={profile}
                                     isDropdownOpen={isDropdownOpen}
                                     onToggleDropdown={() => handleToggleDropdown()}
                                 />
                                 <ProfileDropdown
-                                    user={currentUser}
+                                    user={user}
+                                    profile={profile}
                                     isOpen={isDropdownOpen}
                                     onClose={() => handleToggleDropdown()}
                                     onLogout={handleLogout}
@@ -179,7 +148,6 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                     </button>
                 </div>
             </div>
-
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
@@ -225,7 +193,7 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
 
                                 {/* Mobile Auth Section */}
                                 <div className="pt-4 border-t border-gray-200">
-                                    {!currentUser ? (
+                                    {!user ? (
                                         <div className="flex flex-col space-y-3">
                                             <AuthButtons />
                                         </div>
@@ -233,22 +201,22 @@ export const NavigationMenuBar = ({ }: NavigationMenuBarProps) => {
                                         <div className="flex flex-col space-y-3">
                                             <div className="flex items-center space-x-3 p-2">
                                                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                                                    {currentUser.avatar ? (
+                                                    {profile?.profile_image ? (
                                                         <img
-                                                            src={currentUser.avatar}
-                                                            alt={currentUser.name}
+                                                            src={profile?.profile_image}
+                                                            alt={profile?.name}
                                                             className="w-full h-full rounded-full object-cover"
                                                         />
                                                     ) : (
-                                                        currentUser.name.charAt(0).toUpperCase()
+                                                        profile?.name.charAt(0).toUpperCase()
                                                     )}
                                                 </div>
                                                 <span className="text-gray-700 font-medium">
-                                                    {currentUser.name || currentUser.email}
+                                                    {profile?.name || profile?.email}
                                                 </span>
                                             </div>
                                             <ProfileDropdown
-                                                user={currentUser}
+                                                user={profile}
                                                 isOpen={isDropdownOpen}
                                                 onClose={() => handleToggleDropdown()}
                                                 onLogout={() => handleLogout()}

@@ -9,7 +9,7 @@ import { ProfileDropdownProps } from '@/types/navigation';
 import { useRouter } from 'next/navigation';
 
 
-export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDropdownProps) => {
+export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: ProfileDropdownProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
@@ -30,7 +30,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
     };
 
     const getMenuItems = () => {
-        if (user.role === 'login-user') {
+        if (user?.role === 'user') {
             return [
                 { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => handleNavigate('/my-shortlisted-events') },
                 { label: 'My Subscription', icons: ICONS.subscription, onClick: () => handleNavigate('/my-subscription') },
@@ -38,7 +38,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
             ];
         }
 
-        if (user.role === 'org') {
+        if (user.role === 'organizer') {
             return [
                 { label: 'My Events', icons: ICONS.calender, onClick: () => handleNavigate('/my-events') },
                 { label: 'My Profile', icons: ICONS.userSetting, onClick: () => handleNavigate('/my-profile-organizer') }
@@ -47,9 +47,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
 
         return [];
     };
-
-    const menuItems = getMenuItems();
-
+    const menuItems = getMenuItems()
     return (
         <div>
             <AnimatePresence>
@@ -66,28 +64,28 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
                         <div className="p-4 border-b border-gray-100">
                             <div className="flex items-center space-x-3">
                                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                    {user.avatar ? (
+                                    {profile?.profile_image ? (
                                         <img
-                                            src={user.avatar}
-                                            alt={user.name}
+                                            src={profile?.profile_image}
+                                            alt={profile?.name}
                                             className="w-full h-full rounded-full object-cover"
                                         />
                                     ) : (
-                                        user.name.charAt(0).toUpperCase()
+                                        profile?.name?.charAt(0).toUpperCase()
                                     )}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-semibold text-gray-900 truncate">
-                                        {user.name}
+                                        {profile?.name}
                                     </p>
-                                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                                    <p className="text-sm text-gray-500 truncate">{profile?.email}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Menu Items */}
                         <div className="p-2">
-                            {menuItems.map((item, index) => (
+                            {menuItems?.map((item: any, index: number) => (
                                 <motion.button
                                     key={item.label}
                                     initial={{ opacity: 0, x: -20 }}
@@ -118,7 +116,7 @@ export const ProfileDropdown = ({ user, isOpen, onClose, onLogout }: ProfileDrop
             </AnimatePresence>
             <div className="lg:hidden">
                 <div className="p-2">
-                    {menuItems.map((item, index) => (
+                    {menuItems.map((item: any, index: number) => (
                         <motion.button
                             key={item.label}
                             initial={{ opacity: 0, x: -20 }}

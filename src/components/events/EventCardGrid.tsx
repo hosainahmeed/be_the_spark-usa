@@ -1,9 +1,9 @@
 import React from "react";
-import { CAMP_DATA } from "../landing/Featured Events/FeaturedEvents";
 import FeaturedEventsCard from "../landing/Featured Events/FeaturedEventsCard";
 import { Input } from "../ui/input";
+import { EventDetails } from "@/types/event";
 
-export function EventCardGrid() {
+export function EventCardGrid({ data }: { data: any }) {
     return (
         <React.Fragment>
             <Input
@@ -11,8 +11,8 @@ export function EventCardGrid() {
                 placeholder="Search your perfect event" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {CAMP_DATA.map(event => (
-                    <FeaturedEventsCard key={event.id} camp={event} />
+                {data?.data?.result.map((event: EventDetails) => (
+                    <FeaturedEventsCard key={event?._id} event={event} />
                 ))}
             </div>
         </React.Fragment>
