@@ -3,6 +3,7 @@
 import SectionTitleFormal from '@/components/component-layout/SectionTitleFormal'
 import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
+import { useMyProfile } from '@/app/hooks/useMyProfile'
 
 interface StepModel {
     title: string
@@ -12,8 +13,8 @@ interface StepModel {
 
 interface HowToWorkData {
     non_user: StepModel[]
-    login_user: StepModel[]
-    org: StepModel[]
+    user: StepModel[]
+    organizer: StepModel[]
 }
 
 const howToWorkData: HowToWorkData = {
@@ -39,7 +40,7 @@ const howToWorkData: HowToWorkData = {
             background: "bg-[#FFD7004D]/40",
         },
     ],
-    login_user: [
+    user: [
         {
             title: "Choose Your Membership",
             description: "Subscribe annually for full access to all events and filters.",
@@ -61,7 +62,7 @@ const howToWorkData: HowToWorkData = {
             background: "bg-[#EF44444D]/40",
         },
     ],
-    org: [
+    organizer: [
         {
             title: "Verify Your Account",
             description: "Verify your account to unlock event creation and manage your events — all for free.",
@@ -86,29 +87,20 @@ const howToWorkData: HowToWorkData = {
 }
 
 function HowToWork() {
-    const [role, setRole] = useState<'non_user' | 'login_user' | 'org'>('non_user')
+    const [role, setRole] = useState<'non_user' | 'user' | 'organizer'>('non_user')
+    const { user, isLoading } = useMyProfile()
 
     useEffect(() => {
-        const cookieData = Cookies.get('user')
-        if (cookieData) {
-            try {
-                const parsed = JSON.parse(cookieData)
-                if (parsed?.role === 'org') {
-                    setRole('org')
-                } else if (parsed?.role === 'login') {
-                    setRole('login_user')
-                } else {
-                    setRole('non_user')
-                }
-            } catch (err) {
-                console.error('Invalid cookie format:', err)
+        if (!isLoading) {
+            if (user?.role === 'organizer') {
+                setRole('organizer')
+            } else if (user?.role === 'user') {
+                setRole('user')
+            } else {
                 setRole('non_user')
             }
-        } else {
-            setRole('non_user')
         }
-    }, [])
-
+    }, [user?.role])
     const steps = howToWorkData[role]
 
     return (

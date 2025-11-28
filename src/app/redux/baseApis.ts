@@ -10,7 +10,7 @@ const baseApis = createApi({
             Authorization: `${Cookies.get('accessTokenForPlayFinder')}`,
         },
     }),
-    tagTypes: ['event', 'category'],
+    tagTypes: ['event', 'category', 'profile'],
     endpoints: () => ({}),
 });
 

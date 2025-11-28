@@ -9,6 +9,8 @@ import { IMAGE } from '../../../../public/assets/image/index.image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useUserSignUpMutation } from '@/app/redux/service/authApis';
+import { toast } from 'sonner';
 
 interface InputField {
     label: string;
@@ -18,41 +20,62 @@ interface InputField {
     icons?: string;
 }
 
+
 export default function SignupForm() {
     const searchParams = useSearchParams();
     const role = searchParams.get('role');
+    const [signUp, { isLoading: signUpLoading }] = useUserSignUpMutation()
+
     const inputFields: InputField[] = [
-        ...(role === 'list-events' ? [{ label: "Business Name", type: "text", placeholder: "Major League Baseball (MLB)" }] : []),
-        { label: "Full Name", type: "text", placeholder: "Full Name" },
-        { label: "Email Address", type: "email", placeholder: "Email Address" },
-        { label: "Phone Number", type: "tel", placeholder: "Phone Number" },
-        { label: "Password", type: "password", placeholder: "Password" },
-        { label: "Confirm Password", type: "password", placeholder: "Confirm Password" },
+        ...(role === 'organizer'
+            ? [{ label: "businessName", type: "text", placeholder: "Business Name" }]
+            : []
+        ),
+        { label: "name", type: "text", placeholder: "Full Name" },
+        { label: "email", type: "email", placeholder: "Email Address" },
+        { label: "phone", type: "tel", placeholder: "Phone Number" },
+        { label: "password", type: "password", placeholder: "Password" },
+        { label: "confirmPassword", type: "password", placeholder: "Confirm Password" }
     ];
+
 
     const router = useRouter();
     const [formData, setFormData] = useState<Record<string, string>>(
         inputFields.reduce((acc, field) => ({ ...acc, [field.label]: "" }), {})
     );
 
-    const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (label: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [label]: value }));
+        setFormData(prev => ({ ...prev, [label]: value }));
     };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
         try {
-            setTimeout(() => {
-                setIsLoading(false);
-                router.push(`/one-time-pass?role=${role}`);
-            }, 2000);
-        } catch (error) {
-            console.error('Form submission error:', error);
+            const data = {
+                name: formData.name,
+                email: formData.email,
+                role: role === "organizer" ? "organizer" : "user",
+                businessName: formData.businessName || "",
+                phone: formData.phone,
+                password: formData.password,
+                confirmPassword: formData.confirmPassword
+            };
+
+            const res = await signUp(data).unwrap();
+
+            if (!res?.success) {
+                throw new Error(res?.message);
+            }
+
+            toast.success("Account created successfully!");
+            router.push(`/one-time-pass?email=${formData.email}?role=${role}`);
+
+        } catch (error: any) {
+            toast.error(error?.data?.message || error?.message || 'Something went wrong while signing up!');
         }
     };
 
@@ -104,24 +127,24 @@ export default function SignupForm() {
                                     className="w-full pr-10"
                                     aria-required="true"
                                 />
-                                {(field.label === "Password" || field.label === "Confirm Password") && (
+                                {(field.label === "password" || field.label === "confirmPassword") && (
                                     <Button
                                         type="button"
                                         variant="ghost"
                                         size="sm"
                                         className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                                         onClick={
-                                            field.label === "Password"
+                                            field.label === "password"
                                                 ? togglePasswordVisibility
                                                 : toggleConfirmPasswordVisibility
                                         }
                                         aria-label={
-                                            (field.label === "Password" ? showPassword : showConfirmPassword)
+                                            (field.label === "password" ? showPassword : showConfirmPassword)
                                                 ? "Hide password"
                                                 : "Show password"
                                         }
                                     >
-                                        {(field.label === "Password" ? showPassword : showConfirmPassword) ? (
+                                        {(field.label === "password" ? showPassword : showConfirmPassword) ? (
                                             <EyeOff className="h-4 w-4 text-gray-500" />
                                         ) : (
                                             <Eye className="h-4 w-4 text-gray-500" />
@@ -135,10 +158,10 @@ export default function SignupForm() {
                     <Button
                         type="submit"
                         className="w-full cursor-pointer bg-[var(--blue)] hover:bg-[var(--blue)]"
-                        disabled={isLoading}
+                        disabled={signUpLoading}
                         size="lg"
                     >
-                        {isLoading ? 'Creating Account...' : 'Next'}
+                        {signUpLoading ? 'Creating Account...' : 'Next'}
                     </Button>
                 </form>
             </CardContent>

@@ -1,13 +1,13 @@
 import { FilterSection } from "@/types/global";
 
 export const AgeOptions: { value: string; label: string }[] = [
-    { value: 'any', label: 'Any Age' },
+    { value: '0-100000', label: 'Any Age' },
     { value: '2-4', label: '2–4 years' },
     { value: '5-7', label: '5–7 years' },
     { value: '8-10', label: '8–10 years' },
     { value: '11-13', label: '11–13 years' },
     { value: '14-16', label: '14–16 years' },
-    { value: '17+', label: '17+ years' }
+    { value: '17-100000', label: '17+ years' }
 ]
 
 export const SportOptions: { value: string; label: string }[] = [

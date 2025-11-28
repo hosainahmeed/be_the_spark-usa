@@ -56,14 +56,15 @@ export default function SigninForm() {
                     toast.success(res?.message || "Login Successful");
                     if (window !== undefined) {
                         window.location.href = "/";
-                    }else{
-                        
+                    } else {
+                        router.push("/")
                     }
                 }
             }
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Login submission error:', error);
+            toast.error(error?.data?.message || error?.message || 'something went wrong while sign-in!')
         }
     };
 

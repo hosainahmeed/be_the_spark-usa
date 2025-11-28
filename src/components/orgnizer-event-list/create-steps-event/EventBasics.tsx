@@ -6,7 +6,7 @@ import ImageUpload from '../ImageUpload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { EventTypes, SportOptions } from '@/constants/constantsOptions';
+import { useGetCategoryQuery } from '@/app/redux/service/categoryApis';
 
 interface BasicsData {
     event_name: string;
@@ -29,6 +29,8 @@ function EventBasics({
         defaultValues: data,
         mode: 'onChange'
     });
+    const { data: sportCategoryData } = useGetCategoryQuery({ type: 'sports' })
+    const { data: eventCategoryData } = useGetCategoryQuery({ type: 'event' })
 
     const [file, setFile] = React.useState<File | null>(data?.image || null);
 
@@ -45,13 +47,13 @@ function EventBasics({
         onValidationChange(isFormValid);
     }, [watchedValues, file, onValidationChange]);
 
-    // Hydrate form values when `data` prop changes (e.g., after resume from localStorage)
+
     useEffect(() => {
         if (data) {
             reset(data);
             setFile(data?.image instanceof File ? data.image : null);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [data, reset]);
 
     useEffect(() => {
@@ -103,9 +105,9 @@ function EventBasics({
                             <SelectValue placeholder="Select Sport Type" />
                         </SelectTrigger>
                         <SelectContent>
-                            {SportOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
+                            {sportCategoryData?.data?.result?.map((option: { _id: string, name: string }) => (
+                                <SelectItem key={option._id} value={option?._id}>
+                                    {option?.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -123,9 +125,9 @@ function EventBasics({
                             <SelectValue placeholder="Select Event Type" />
                         </SelectTrigger>
                         <SelectContent>
-                            {EventTypes.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
+                            {eventCategoryData?.data?.result?.map((option: { _id: string, name: string }) => (
+                                <SelectItem key={option?._id} value={option?._id}>
+                                    {option?.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>

@@ -16,7 +16,7 @@ const roles = [
     description:
       "For families and players who want to search, filter, and register for youth Sport events. Only $19.99/year (Service launch discount $10/year).",
     icon: chooseIcon1,
-    state: "find-events",
+    state: "user",
     buttonText: "Sign Up to Find Events",
   },
   {
@@ -24,7 +24,7 @@ const roles = [
     description:
       "For coaches, clubs, and organizers who want to create and publish events — completely FREE to register and list events.",
     icon: chooseIcon2,
-    state: "list-events",
+    state: "organizer",
     buttonText: "Sign Up to List Events",
   },
 ];

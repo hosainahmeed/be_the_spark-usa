@@ -40,7 +40,6 @@ export function useEventForm(totalSteps: number) {
     }, [formData, currentIndex]);
 
     const updateFormData = (section: keyof EventFormData, data: any) => {
-        console.log("=============updateFormData", data)
         setFormData(prev => ({
             ...prev,
             [section]: { ...prev[section], ...data }
@@ -67,8 +66,6 @@ export function useEventForm(totalSteps: number) {
                 setFormData(JSON.parse(savedData));
                 setCurrentIndex(parseInt(savedStep));
             } catch (e) {
-
-                console.error('Failed to parse saved event form data', e);
                 localStorage.removeItem('eventFormData');
                 localStorage.removeItem('eventFormStep');
                 alert('Failed to parse saved event form data');
@@ -89,11 +86,11 @@ export function useEventForm(totalSteps: number) {
 
     const submitForm = () => {
         const isValid = validateAllSteps();
-        console.log(formData.basics.image)
         if (!(formData.basics.image instanceof File)) {
             toast.error('Please upload an image');
             return false;
         }
+        
         if (isValid) {
             console.log('Final Form Data:', formData);
             localStorage.removeItem('eventFormData');
@@ -104,7 +101,7 @@ export function useEventForm(totalSteps: number) {
     };
 
 
-    const reset =()=>{
+    const reset = () => {
         setFormData({ basics: {}, dates: {}, location: {}, details: {} });
         setCurrentIndex(0);
     }
