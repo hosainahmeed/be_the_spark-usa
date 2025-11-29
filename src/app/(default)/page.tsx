@@ -8,9 +8,10 @@ import PopularSportSection from '@/components/landing/Popular Sport/PopularSport
 import TestimonialCarousel from '@/components/landing/testimonials/TestimonialCarousel'
 import React from 'react'
 import { useMyProfile } from '../hooks/useMyProfile'
+import MyFeatureEvenets from '@/components/landing/Featured Events/MyFeatureEvenets'
 
 function page() {
-  const { profile, isLoading } = useMyProfile()
+  const { profile, isLoading, user } = useMyProfile()
   if (isLoading) {
     return <div className='h-screen bg-gray-200 animate-pulse'>
     </div>
@@ -19,7 +20,7 @@ function page() {
     <div className='flex flex-col items-center justify-center gap-16'>
       <BannerServer />
       {!profile && <HowToWork />}
-      <FeaturedEvents />
+      {user?.role === 'organizer' ? <MyFeatureEvenets /> : <FeaturedEvents />}
       {profile ? <PopularSportSection /> : <TestimonialCarousel />}
       {!profile ? <OurImpact /> : <HowToWork />}
       <DiscoverBanner

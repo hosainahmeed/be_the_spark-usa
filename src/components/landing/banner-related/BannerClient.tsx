@@ -9,19 +9,19 @@ import { IMAGE } from '../../../../public/assets/image/index.image';
 import { Button } from '../../ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useMyProfile } from '@/app/hooks/useMyProfile';
 
 const BannerClient = ({ title, description, image }: BannerProps) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+    const { user } = useMyProfile()
 
-    const [role, setRole] = useState<'login-user' | 'org' | null>(null)
+    const [role, setRole] = useState<string | undefined>(undefined)
     useEffect(() => {
-        if (localStorage) {
-            const user = localStorage.getItem('user');
-            const Userdata = user ? JSON.parse(user) : null
-            setRole(Userdata ? Userdata?.role : null);
+        if (user) {
+            setRole(user?.role);
         }
-    }, [])
+    }, [user])
 
     return (
         <section
@@ -62,15 +62,21 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                             variants={containerVariants}
                             className="flex flex-col md:flex-row gap-4 justify-center lg:justify-start"
                         >
-                            <Link href='/browse-events'>
+                            {role !== 'organizer' && <Link href='/browse-events'>
                                 <Button className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
                                     Find Events
                                 </Button>
-                            </Link>
+                            </Link>}
 
-                            {role === null && <Link href="/list-events"> <Button className={cn("px-6 py-6 text-lg rounded border hover:!bg-white hover:!text-[#BF0A30]", "bg-white text-[#BF0A30] border-[#BF0A30] cursor-pointer")}>
-                                List Your Event
-                            </Button></Link>}
+                            {role !== 'user' &&
+                                <Link href={role === 'organizer' ? 'list-events-organizer' : '/list-events'}>
+                                    <Button className={cn("px-6 py-6 text-lg rounded",
+                                        "bg-white text-[#BF0A30] border border-[#BF0A30] cursor-pointer",
+                                        role === 'organizer' && "bg-[var(--blue)] border-none hover:bg-[var(--blue)] text-white  cursor-pointer"
+                                    )}>
+                                        List Your Event
+                                    </Button>
+                                </Link>}
                         </motion.div>
                     </motion.div>
 
@@ -92,8 +98,8 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                         </div>
                     </motion.div>
                 </motion.div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 export default BannerClient;
