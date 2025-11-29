@@ -15,6 +15,7 @@ interface EventData {
     eventEndDateTime: string | null;
     minAge: number | null;
     maxAge: number | null;
+    ageGroup: any,
     skillLevel: string | null;
     availableSlot: number | null;
     zipCode: string | null;
@@ -28,7 +29,7 @@ interface EventData {
 
 interface EventState {
     step: number;
-    event_image: File | null;
+    event_image: File | null | [] | string;
     data: EventData;
 }
 
@@ -40,12 +41,14 @@ const initialState: EventState = {
         shortDescription: null,
         sport: null,
         eventType: null,
+        // 
         registrationStartDateTime: null,
         registrationEndDateTime: null,
         eventStartDateTime: null,
         eventEndDateTime: null,
         minAge: null,
         maxAge: null,
+        ageGroup: null,
         skillLevel: null,
         availableSlot: null,
         zipCode: null,
@@ -69,7 +72,7 @@ export const eventSlice = createSlice({
             state.step = action.payload;
         },
 
-        setEventImage: (state, action: PayloadAction<File | null>) => {
+        setEventImage: (state, action: PayloadAction<any>) => {
             state.event_image = action.payload;
         },
 

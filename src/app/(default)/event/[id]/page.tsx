@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MapPin, Mail, Phone, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -15,11 +15,16 @@ import { EventDetails } from '@/types/event'
 import { imageUrl } from '@/utils/imageHandler'
 import { useMarkAsBookMarkMutation } from '@/app/redux/service/bookMarkApis'
 import { toast } from 'sonner'
+import { useMyProfile } from '@/app/hooks/useMyProfile'
+import { FaEdit } from 'react-icons/fa'
+
 
 function Page() {
     const { id } = useParams()
     const { data: event, isLoading } = useGetSingleEventQuery(id as string, { skip: !id })
     const [markBook, { isLoading: bookMarkLoading }] = useMarkAsBookMarkMutation()
+    const { user } = useMyProfile()
+    const router = useRouter()
 
     if (isLoading) {
         return (
@@ -273,9 +278,17 @@ function Page() {
                         </div>
                     </div>
 
-                    {!event?.isMyFeedbackGiven && <UserFeedbackGivenSection />}
+                    {!event?.isMyFeedbackGiven && user?.role !== 'organizer' && <UserFeedbackGivenSection />}
                 </div>
             </div>
+            {user?.role === 'organizer' && (
+                <div className='flex items-center gap-2'>
+                    <Button className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">Delete</Button>
+                    <Button
+                        onClick={()=>router.push(`/list-events-organizer?id=${id}`)}
+                        className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6"><FaEdit /> Edit</Button>
+                </div>
+            )}
         </div >
     )
 }

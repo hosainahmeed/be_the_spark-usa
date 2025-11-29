@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import baseApis from "../baseApis";
+import { eventSlice } from "../slices/eventSlice";
 
 const store = configureStore({
     reducer: {
         [baseApis.reducerPath]: baseApis.reducer,
+        event: eventSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(baseApis.middleware),

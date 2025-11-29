@@ -5,7 +5,6 @@ import Link from 'next/link';
 import React from 'react'
 
 function FeaturedEventsCard({ event }: { event: EventDetails }) {
-    console.log("12321 mhnkj 123bjk 123hn 1m23jm1b23n 1mnb3m12n 321nb ",event)
     return (
         <article className="group bg-white rounded-xl shadow-sm transition-all duration-300 border border-gray-100 overflow-hidden">
             <div className="relative p-2 h-40 sm:h-44 md:h-48 lg:h-40 xl:h-56">

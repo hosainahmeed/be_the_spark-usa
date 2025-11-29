@@ -25,7 +25,7 @@ function EventBasics({
     onUpdate: (data: BasicsData) => void;
     onValidationChange: any;
 }) {
-    const { register, handleSubmit, setValue, watch, reset, formState: { errors, isValid } } = useForm<BasicsData>({
+    const { register, setValue, watch, reset, formState: { errors } } = useForm<BasicsData>({
         defaultValues: data,
         mode: 'onChange'
     });

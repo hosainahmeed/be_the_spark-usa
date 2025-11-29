@@ -38,7 +38,6 @@ export async function getPlaceDetails(placeId: string) {
     if (!res.ok) return null;
 
     const place = await res.json();
-
     return {
       name: place.displayName?.text ?? "",
       latitude: place.location?.latitude ?? null,

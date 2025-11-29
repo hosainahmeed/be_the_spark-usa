@@ -33,6 +33,13 @@ const eventApis = baseApis.injectEndpoints({
             }),
             providesTags: ['event']
         }),
+        createEvent: builder.mutation({
+            query: (data) => ({
+                url: '/event/create',
+                method: 'POST',
+                body: data
+            })
+        })
     })
 })
-export const { useGetEventsQuery, useGetSingleEventQuery, useMyEventQuery } = eventApis;
+export const { useGetEventsQuery, useGetSingleEventQuery, useMyEventQuery, useCreateEventMutation } = eventApis;

@@ -2,12 +2,13 @@ import React, { memo, useState } from "react";
 import { Select, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlaceSuggestions, getPlaceDetails } from "@/lib/getPlaceNameAndCoordinates";
+import { setLocation, setLocationCoordinates, updateEventData } from "@/app/redux/slices/eventSlice";
 
 
 const PlaceSearch = () => {
     const dispatch = useDispatch();
-    const parentDetails = useSelector((state: any) => state.applyIgnite.parentDetails);
-
+    const eventData = useSelector((state: any) => state.event);
+    console.log(eventData)
     const [options, setOptions] = useState<any>([]);
     const [loading, setLoading] = useState(false);
 
@@ -34,21 +35,19 @@ const PlaceSearch = () => {
         const place = await getPlaceDetails(placeId);
 
         if (!place) return;
-
-        // dispatch(
-        //     setParentDetails({
-        //         guardianAddress: place.name,
-        //         location: {
-        //             type: "Point",
-        //             coordinates: [place.longitude, place.latitude],
-        //         },
-        //     })
-        // );
+        dispatch(setLocationCoordinates([place.longitude, place.latitude]))
+        dispatch(
+            setLocation({
+                type: "Point",
+                coordinates: [place.longitude, place.latitude],
+            })
+        );
+        dispatch(updateEventData({ field: 'address', value: place?.name }))
     };
 
     return (
         <div>
-            <label className="font-semibold">Search Address</label>
+            <label className="font-semibold">Select Location</label>
             <Select
                 size="large"
                 showSearch
@@ -58,7 +57,7 @@ const PlaceSearch = () => {
                 onSelect={handleSelect}
                 filterOption={false}
                 notFoundContent={loading ? <Spin size="small" /> : null}
-                value={parentDetails.guardianAddress || undefined}
+                value={eventData.address || undefined}
                 options={options}
             />
         </div>
