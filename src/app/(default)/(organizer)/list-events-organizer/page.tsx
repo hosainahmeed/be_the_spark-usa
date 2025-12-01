@@ -119,10 +119,10 @@ import ParticipantsLocationV2 from '@/components/v2/ParticipantsLocationV2';
 import RegistrationEventDetailsV2 from '@/components/v2/RegistrationEventDetailsV2';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetEvent, setEventData, setEventImage, setStep } from '@/app/redux/slices/eventSlice';
-import { useCreateEventMutation, useGetSingleEventQuery } from '@/app/redux/service/eventApis';
+import { useCreateEventMutation, useGetSingleEventQuery, useUpdateEventMutation } from '@/app/redux/service/eventApis';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { mapEventToEventData } from '@/utils/mapEventToEventData';
 
 
@@ -133,14 +133,15 @@ function page() {
   const [createEvent] = useCreateEventMutation()
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-
+  const router = useRouter()
   const { data: singleEventResponse, isLoading } = useGetSingleEventQuery(id as string, { skip: !id })
+  const [updateEvent] = useUpdateEventMutation()
 
   useEffect(() => {
     if (singleEventResponse?.data) {
       const apiEvent = singleEventResponse.data;
       const mapped = mapEventToEventData(apiEvent);
-      console.log("l;kas;ldkasld klasdlsad ",mapped)
+
       dispatch(setEventData(mapped));
       dispatch(setEventImage(mapped?.event_image));
     }
@@ -245,6 +246,7 @@ function page() {
           type: 'Point',
           coordinates: eventData?.data?.location?.coordinates
         },
+        vanue: eventData?.data?.vanue,
         city: eventData?.data?.city,
         websiteLink: eventData?.data?.websiteLink,
         registrationFee: eventData?.data?.registrationFee,
@@ -263,16 +265,22 @@ function page() {
 
       formData.append('data', JSON.stringify(data))
 
-
-      const res = await createEvent(formData).unwrap()
+      let res;
+      if (id) {
+        formData.append('_method', 'PATCH');
+        res = await updateEvent({
+          formData,
+          id
+        }).unwrap();
+      } else {
+        res = await createEvent(formData).unwrap()
+      }
       if (!res?.success) {
         throw new Error(res?.message)
       }
       toast.success(res?.message)
       dispatch(resetEvent())
-      if (window !== undefined) {
-        window.location.reload()
-      }
+      router.push("/my-events")
     } catch (error: any) {
       toast.error(error?.data?.message || error?.message || 'something went wrong while create event!')
     }
@@ -308,7 +316,7 @@ function page() {
         )}
         {eventData?.step === steps.length - 1 && (
           <Button size='large' style={buttonStyle} onClick={() => handleSubmit()}>
-            Save & Publish
+            {id ? "Update Event" : "Save & Publish"}
           </Button>
         )}
       </div>

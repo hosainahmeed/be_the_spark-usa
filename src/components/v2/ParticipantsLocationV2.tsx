@@ -25,7 +25,7 @@ function ParticipantsLocationV2() {
       skillLevel: eventData.skillLevel,
       availableSlot: eventData.availableSlot,
       zipCode: eventData.zipCode,
-      venue: eventData.venue,
+      // venue: eventData.venue,
       city: eventData.city,
     });
   }, [eventData, form]);
@@ -49,6 +49,7 @@ function ParticipantsLocationV2() {
       }
     });
   };
+
   return (
     <div className="p-4">
       <SectionTitleFormal
@@ -66,7 +67,7 @@ function ParticipantsLocationV2() {
           skillLevel: eventData.skillLevel,
           availableSlot: eventData.availableSlot,
           zipCode: eventData.zipCode,
-          venue: eventData.venue,
+          // venue: eventData.venue,
           city: eventData.city,
           address: eventData.address,
           location: eventData.location
@@ -129,7 +130,7 @@ function ParticipantsLocationV2() {
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={8}>
+          <Col xs={24} md={12}>
             <Form.Item
               label="Zip Code"
               name="zipCode"
@@ -143,7 +144,7 @@ function ParticipantsLocationV2() {
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={8}>
+          {/* <Col xs={24} md={8}>
             <Form.Item
               label="Location Name / Venue"
               name="venue"
@@ -155,9 +156,9 @@ function ParticipantsLocationV2() {
                 className="w-full"
               />
             </Form.Item>
-          </Col>
+          </Col> */}
 
-          <Col xs={24} md={8}>
+          <Col xs={24} md={12}>
             <Form.Item
               label="City / State"
               name="city"
@@ -171,7 +172,7 @@ function ParticipantsLocationV2() {
             </Form.Item>
           </Col>
         </Row>
-        <PlaceSearch />
+        <PlaceSearch existingPlace={eventData?.address as string} />
       </Form>
     </div>
   );

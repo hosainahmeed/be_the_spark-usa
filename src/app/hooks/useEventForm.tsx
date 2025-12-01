@@ -17,7 +17,7 @@ export function useEventForm(totalSteps: number) {
         location: {},
         details: {},
     });
-    console.log(formData)
+
     const [showResumePrompt, setShowResumePrompt] = useState(false);
 
     useEffect(() => {

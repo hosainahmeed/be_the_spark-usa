@@ -5,7 +5,7 @@ import { getPlaceSuggestions, getPlaceDetails } from "@/lib/getPlaceNameAndCoord
 import { setLocation, setLocationCoordinates, updateEventData } from "@/app/redux/slices/eventSlice";
 
 
-const PlaceSearch = () => {
+const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
     const dispatch = useDispatch();
     const eventData = useSelector((state: any) => state.event);
     console.log(eventData)
@@ -50,6 +50,7 @@ const PlaceSearch = () => {
             <label className="font-semibold">Select Location</label>
             <Select
                 size="large"
+                defaultValue={existingPlace || null}
                 showSearch
                 placeholder="Search a place"
                 style={{ width: "100%" }}

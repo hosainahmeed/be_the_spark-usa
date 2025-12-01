@@ -1,6 +1,6 @@
 
 export function mapEventToEventData(apiEvent: any) {
-
+console.log(apiEvent?.venue)
     return {
         name: apiEvent?.name ?? null,
         shortDescription: apiEvent?.shortDescription ?? null,
@@ -18,6 +18,7 @@ export function mapEventToEventData(apiEvent: any) {
         skillLevel: apiEvent?.skillLevel ?? null,
         availableSlot: apiEvent?.availableSlot ?? null,
 
+        venue: apiEvent?.venue,
         zipCode: apiEvent?.zipCode ?? null,
         address: apiEvent?.address ?? null,
 

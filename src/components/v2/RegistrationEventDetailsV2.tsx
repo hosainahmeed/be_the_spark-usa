@@ -11,9 +11,10 @@ function RegistrationEventDetailsV2() {
   const [form] = Form.useForm();
   const eventData = useSelector((state: any) => state.event.data);
   const dispatch = useDispatch()
+ 
   const [formData, setFormData] = useState({
     websiteLink: eventData?.websiteLink,
-    registrationFee: undefined as number | undefined,
+    registrationFee: eventData?.registrationFee as number | undefined,
   });
   const [content, setContent] = useState<string>("");
 
@@ -47,6 +48,10 @@ function RegistrationEventDetailsV2() {
 
       <Form
         form={form}
+        initialValues={{
+          websiteLink: eventData?.websiteLink,
+          registrationFee: eventData?.registrationFee
+        }}
         layout="vertical"
       >
         <Form.Item
