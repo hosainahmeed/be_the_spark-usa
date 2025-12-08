@@ -7,7 +7,7 @@ const profileApis = baseApis.injectEndpoints({
                 url: '/user/get-my-profile',
                 method: 'GET',
             }),
-            providesTags:['profile']
+            providesTags: ['profile']
         }),
         updateProfile: builder.mutation({
             query: (data: any) => ({
@@ -15,9 +15,16 @@ const profileApis = baseApis.injectEndpoints({
                 method: 'PATCH',
                 body: data,
             }),
-            invalidatesTags:['profile']
+            invalidatesTags: ['profile']
         }),
+        deleteProfile: builder.mutation({
+            query: (data) => ({
+                url: '/user/delete-account',
+                method: 'POST',
+                body: data
+            })
+        })
     })
 })
 
-export const { useGetMyProfileQuery, useUpdateProfileMutation } = profileApis
+export const { useGetMyProfileQuery, useUpdateProfileMutation, useDeleteProfileMutation } = profileApis

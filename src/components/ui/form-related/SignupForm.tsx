@@ -1,68 +1,55 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import Link from 'next/link';
-import { Eye, EyeOff } from 'lucide-react';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUserSignUpMutation } from '@/app/redux/service/authApis';
 import { toast } from 'sonner';
+import {
+    Card,
+    Form,
+    Input,
+    Button,
+    Typography,
+    Divider,
+    Alert,
+    Row,
+    Col,
+    Spin
+} from 'antd';
 
-interface InputField {
-    label: string;
-    type: string;
-    placeholder: string;
-    value?: string;
-    icons?: string;
+const { Title, Text, Paragraph } = Typography;
+
+interface FormValues {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    businessName?: string;
 }
-
 
 export default function SignupForm() {
     const searchParams = useSearchParams();
     const role = searchParams.get('role');
-    const [signUp, { isLoading: signUpLoading }] = useUserSignUpMutation()
-
-    const inputFields: InputField[] = [
-        ...(role === 'organizer'
-            ? [{ label: "businessName", type: "text", placeholder: "Business Name" }]
-            : []
-        ),
-        { label: "name", type: "text", placeholder: "Full Name" },
-        { label: "email", type: "email", placeholder: "Email Address" },
-        { label: "phone", type: "tel", placeholder: "Phone Number" },
-        { label: "password", type: "password", placeholder: "Password" },
-        { label: "confirmPassword", type: "password", placeholder: "Confirm Password" }
-    ];
-
-
+    const [signUp, { isLoading: signUpLoading }] = useUserSignUpMutation();
+    const [form] = Form.useForm();
     const router = useRouter();
-    const [formData, setFormData] = useState<Record<string, string>>(
-        inputFields.reduce((acc, field) => ({ ...acc, [field.label]: "" }), {})
-    );
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const isOrganizer = role === 'organizer';
 
-    const handleChange = (label: string, value: string) => {
-        setFormData(prev => ({ ...prev, [label]: value }));
-    };
-
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (values: FormValues) => {
         try {
             const data = {
-                name: formData.name,
-                email: formData.email,
-                role: role === "organizer" ? "organizer" : "user",
-                businessName: formData.businessName || "",
-                phone: formData.phone,
-                password: formData.password,
-                confirmPassword: formData.confirmPassword
+                name: values.name,
+                email: values.email,
+                role: isOrganizer ? "organizer" : "user",
+                businessName: values.businessName || "",
+                phone: values.phone,
+                password: values.password,
+                confirmPassword: values.confirmPassword
             };
 
             const res = await signUp(data).unwrap();
@@ -72,111 +59,203 @@ export default function SignupForm() {
             }
 
             toast.success("Account created successfully!");
-            router.push(`/one-time-pass?email=${formData.email}?role=${role}`);
+            router.push(`/one-time-pass?email=${values.email}&role=${role}`);
 
         } catch (error: any) {
             toast.error(error?.data?.message || error?.message || 'Something went wrong while signing up!');
         }
     };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
+    const validatePassword = (_: any, value: string) => {
+        if (!value) {
+            return Promise.reject('Please input your password!');
+        }
+        if (value.length < 6) {
+            return Promise.reject('Password must be at least 6 characters!');
+        }
+        return Promise.resolve();
     };
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
+    const validateConfirmPassword = (_: any, value: string) => {
+        const password = form.getFieldValue('password');
+        if (value && value !== password) {
+            return Promise.reject('Passwords do not match!');
+        }
+        return Promise.resolve();
     };
 
     return (
         <div>
-            <CardHeader className="flex flex-col items-start gap-2">
-                <Image
-                    src={IMAGE.brandLogo}
-                    alt="Sports Events Brand Logo"
-                    width={200}
-                    height={50}
-                    priority
-                />
-                <CardTitle className="text-4xl text-[#1F2937] font-bold">
-                    Create Your Account
-                </CardTitle>
-                <CardDescription className="text-gray-400 text-lg">
-                    Sign up with your email and phone number to get started with sports events.
-                </CardDescription>
-            </CardHeader>
+            <Card
+                bordered={false}
+                className="shadow-lg"
+                styles={{
+                    body: { padding: 0 }
+                }}
+            >
+                {/* Header Section */}
+                <div className="p-6 border-b">
+                    <div className="flex flex-col items-start  text-center">
+                        <Image
+                            src={IMAGE.brandLogo}
+                            alt="Sports Events Brand Logo"
+                            width={200}
+                            height={50}
+                            priority
+                            className="mb-2"
+                        />
+                        <Title level={2} className="!mb-2 !text-gray-800">
+                            Create Your Account
+                        </Title>
+                        <Paragraph className="!mb-0 !text-gray-500">
+                            Sign up with your email and phone number to get started with sports events.
+                        </Paragraph>
+                    </div>
+                </div>
 
-            <CardContent>
-                <form onSubmit={handleSubmit} className="flex mt-5 flex-col gap-6">
-                    {inputFields.map((field) => (
-                        <div key={field.label} className="flex flex-col gap-1 relative">
-                            <Label htmlFor={field.label}>{field.label}</Label>
-                            <div className="relative">
+                {/* Form Section */}
+                <div className="p-6">
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        onFinish={handleSubmit}
+                        requiredMark={false}
+                        size="large"
+                    >
+                        {isOrganizer && (
+                            <Form.Item
+                                name="businessName"
+                                label="Business Name"
+                                rules={[
+                                    { required: true, message: 'Please input your business name!' },
+                                    { min: 2, message: 'Business name must be at least 2 characters!' }
+                                ]}
+                            >
                                 <Input
-                                    id={field.label}
-                                    type={
-                                        field.label === "Password"
-                                            ? showPassword ? "text" : "password"
-                                            : field.label === "Confirm Password"
-                                                ? showConfirmPassword ? "text" : "password"
-                                                : field.type
-                                    }
-                                    placeholder={field.placeholder}
-                                    value={formData[field.label]}
-                                    onChange={(e) => handleChange(field.label, e.target.value)}
-                                    required
-                                    className="w-full pr-10"
-                                    aria-required="true"
+
+                                    placeholder="Enter your business name"
                                 />
-                                {(field.label === "password" || field.label === "confirmPassword") && (
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                        onClick={
-                                            field.label === "password"
-                                                ? togglePasswordVisibility
-                                                : toggleConfirmPasswordVisibility
-                                        }
-                                        aria-label={
-                                            (field.label === "password" ? showPassword : showConfirmPassword)
-                                                ? "Hide password"
-                                                : "Show password"
-                                        }
-                                    >
-                                        {(field.label === "password" ? showPassword : showConfirmPassword) ? (
-                                            <EyeOff className="h-4 w-4 text-gray-500" />
-                                        ) : (
-                                            <Eye className="h-4 w-4 text-gray-500" />
-                                        )}
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
+                            </Form.Item>
+                        )}
 
-                    <Button
-                        type="submit"
-                        className="w-full cursor-pointer bg-[var(--blue)] hover:bg-[var(--blue)]"
-                        disabled={signUpLoading}
-                        size="lg"
-                    >
-                        {signUpLoading ? 'Creating Account...' : 'Next'}
-                    </Button>
-                </form>
-            </CardContent>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="name"
+                                    label="Full Name"
+                                    rules={[
+                                        { required: true, message: 'Please input your full name!' },
+                                        { min: 2, message: 'Name must be at least 2 characters!' }
+                                    ]}
+                                >
+                                    <Input
 
-            <CardFooter className="flex flex-col mt-3 gap-2">
-                <p className="text-sm text-center text-gray-600">
-                    Already have an account?{' '}
-                    <Link
-                        className="text-[var(--blue)] hover:underline font-medium"
-                        href="/sign-in"
-                    >
-                        Sign In
-                    </Link>
-                </p>
-            </CardFooter>
+                                        placeholder="Enter your full name"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="email"
+                                    label="Email Address"
+                                    rules={[
+                                        { required: true, message: 'Please input your email!' },
+                                        { type: 'email', message: 'Please enter a valid email!' }
+                                    ]}
+                                >
+                                    <Input
+
+                                        placeholder="example@email.com"
+                                        type="email"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="phone"
+                                    label="Phone Number"
+                                    rules={[
+                                        { required: true, message: 'Please input your phone number!' },
+                                        { pattern: /^[+]?[\d\s-]{10,}$/, message: 'Please enter a valid phone number!' }
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder="+1234567890"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="password"
+                                    label="Password"
+                                    rules={[
+                                        { validator: validatePassword }
+                                    ]}
+                                >
+                                    <Input.Password
+
+                                        placeholder="Enter password"
+                                        iconRender={(visible) =>
+                                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                                        }
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    dependencies={['password']}
+                                    rules={[
+                                        { required: true, message: 'Please confirm your password!' },
+                                        { validator: validateConfirmPassword }
+                                    ]}
+                                >
+                                    <Input.Password
+
+                                        placeholder="Confirm password"
+                                        iconRender={(visible) =>
+                                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                                        }
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Form.Item className="!mb-6">
+                            <Button
+                                htmlType="submit"
+                                block
+                                size="large"
+                                loading={signUpLoading}
+                                className="h-12 !bg-[#002868] !text-white !mt-2 font-semibold"
+                            >
+                                {signUpLoading ? 'Next...' : 'Next'}
+                            </Button>
+                        </Form.Item>
+                    </Form>
+
+                    <Divider plain>Or</Divider>
+
+                    <div className="text-center">
+                        <Text className="text-gray-600">
+                            Already have an account?{' '}
+                            <Link
+                                href="/sign-in"
+                                className="text-blue-600 hover:text-blue-800 font-medium"
+                            >
+                                Sign In
+                            </Link>
+                        </Text>
+                    </div>
+                </div>
+            </Card>
         </div>
     );
 }

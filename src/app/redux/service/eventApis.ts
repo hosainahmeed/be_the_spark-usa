@@ -50,4 +50,4 @@ const eventApis = baseApis.injectEndpoints({
         })
     })
 })
-export const { useGetEventsQuery, useGetSingleEventQuery, useMyEventQuery, useCreateEventMutation, useUpdateEventMutation } = eventApis;
+export const { useGetEventsQuery, useGetSingleEventQuery, useMyEventQuery, useCreateEventMutation, useUpdateEventMutation , useDeleteEventMutation } = eventApis;

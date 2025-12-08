@@ -174,14 +174,6 @@ const ProfilePage: React.FC = () => {
         setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
     };
 
-    const handleDeleteAccount = () => {
-        toast.success('Account deleted successfully!');
-        localStorage.removeItem('user');
-        if (typeof window !== 'undefined') {
-            window.location.reload();
-            router.push('/sign-in');
-        }
-    };
 
     const profileCardsData = [
         { label: 'Business Name', value: response?.data?.businessName || 'N/A' },
@@ -250,7 +242,6 @@ const ProfilePage: React.FC = () => {
                             <ActionButtons
                                 onUpdateProfile={() => setUpdateProfile(true)}
                                 onChangePassword={() => setChangePassword(true)}
-                                onDeleteAccount={handleDeleteAccount}
                             />
                         </>
                     )}

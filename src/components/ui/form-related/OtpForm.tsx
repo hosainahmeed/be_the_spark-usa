@@ -30,7 +30,7 @@ function OtpForm() {
 
             const data = {
                 email,
-                verifyCode,
+                verifyCode: parseInt(verifyCode),
             }
 
             const res = await verifyOtp(data).unwrap()
@@ -41,9 +41,9 @@ function OtpForm() {
 
             setTimeout(() => {
                 if (role === 'organizer') {
-                    router.push(`/subscription-purchase?role=${role}`)
-                } else {
                     router.push(`/sign-in`)
+                } else {
+                    router.push(`/subscription-purchase?role=${role}`)
                 }
             }, 500)
 

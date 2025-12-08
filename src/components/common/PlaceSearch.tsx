@@ -8,7 +8,6 @@ import { setLocation, setLocationCoordinates, updateEventData } from "@/app/redu
 const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
     const dispatch = useDispatch();
     const eventData = useSelector((state: any) => state.event);
-    console.log(eventData)
     const [options, setOptions] = useState<any>([]);
     const [loading, setLoading] = useState(false);
 

@@ -26,6 +26,7 @@ export default function ChooseRoleClient({ roles }: { roles: IChooseRole[] }) {
                     {roles && roles.map((role, index) => (
                         <div
                             key={index}
+                            onPointerDown={() => handleNavigateWithState(role.state)}
                             className={
                                 cn("flex gap-4 items-center p-6 rounded-2xl bg-[#E6ECF5] border border-gray-200 cursor-pointer transition",
                                     "flex-col text-center",
@@ -48,7 +49,7 @@ export default function ChooseRoleClient({ roles }: { roles: IChooseRole[] }) {
                                 )}>{role.description}</p>
                                 <Button
                                     className={cn("primary-btn mt-3 px-4 py-6 rounded cursor-pointer")}
-                                    onClick={() => handleNavigateWithState(role.state)}
+                                    onPointerDown={() => handleNavigateWithState(role.state)}
                                 >{role.buttonText}</Button>
                             </div>
                         </div>

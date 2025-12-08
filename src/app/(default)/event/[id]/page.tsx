@@ -10,7 +10,7 @@ import SingleEventTitleStatus from '@/components/events/SingleEventTitleStatus'
 import UserFeedbackGivenSection from '@/components/events/UserFeedbackGivenSection'
 import Image from 'next/image'
 import { Card } from '@/components/ui/card'
-import { useGetSingleEventQuery } from '@/app/redux/service/eventApis'
+import { useDeleteEventMutation, useGetSingleEventQuery } from '@/app/redux/service/eventApis'
 import { EventDetails } from '@/types/event'
 import { imageUrl } from '@/utils/imageHandler'
 import { useMarkAsBookMarkMutation } from '@/app/redux/service/bookMarkApis'
@@ -23,6 +23,7 @@ function Page() {
     const { id } = useParams()
     const { data: event, isLoading } = useGetSingleEventQuery(id as string, { skip: !id })
     const [markBook, { isLoading: bookMarkLoading }] = useMarkAsBookMarkMutation()
+    const [deleteEvent, { isLoading: eventDeleting }] = useDeleteEventMutation()
     const { user } = useMyProfile()
     const router = useRouter()
 
@@ -80,6 +81,24 @@ function Page() {
             toast.dismiss()
             toast.error(error?.data?.message || error?.message || 'something went wrong while ')
         }
+    }
+
+    const handlerEventDelete = async (id: string) => {
+        try {
+            if (!id) {
+                throw new Error("ID is not found for this event!")
+            }
+            const res = await deleteEvent(id).unwrap()
+            if (!res?.success) {
+                throw new Error(res?.message)
+            }
+            toast.success(res?.message)
+            router.push("/my-events")
+        } catch (error: any) {
+            const errorMessage = error?.data?.message || error?.message || "somthing went wrong!"
+            toast.error(errorMessage)
+        }
+
     }
 
     return (
@@ -283,9 +302,12 @@ function Page() {
             </div>
             {user?.role === 'organizer' && (
                 <div className='flex items-center gap-2'>
-                    <Button className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">Delete</Button>
                     <Button
-                        onClick={()=>router.push(`/list-events-organizer?id=${id}`)}
+                        onPointerDown={() => handlerEventDelete(id as string)}
+                        className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">
+                        {eventDeleting ? "Deleting..." : "Delete"}</Button>
+                    <Button
+                        onClick={() => router.push(`/list-events-organizer?id=${id}`)}
                         className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6"><FaEdit /> Edit</Button>
                 </div>
             )}
