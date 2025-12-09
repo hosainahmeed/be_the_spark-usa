@@ -53,21 +53,21 @@ function page() {
     },
   ];
 
-  useEffect(() => {
-    const handleBeforeUnload = (e: any) => {
-      const data = Object.values(eventData);
-      if (data.some((value) => value !== null || value !== '' || value !== undefined || value !== 0)) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e: any) => {
+  //     const data = Object.values(eventData);
+  //     if (data.some((value) => value !== null || value !== '' || value !== undefined || value !== 0)) {
+  //       e.preventDefault();
+  //       e.returnValue = "";
+  //     }
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
 
   const validateStep = (step: number): boolean => {
     if (!eventData?.data) return false;

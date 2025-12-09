@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, DatePicker, TimePicker, Row, Col } from 'antd';
+import { Form, DatePicker, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import SectionTitleFormal from '../component-layout/SectionTitleFormal';
 import { EventData, updateEventData } from '@/app/redux/slices/eventSlice';
@@ -9,110 +9,150 @@ function EventDatesRegistrationV2() {
   const dispatch = useDispatch();
   const eventData = useSelector((state: any) => state.event.data);
   const [form] = Form.useForm();
+  const [registrationStart, setRegistrationStart] = React.useState<dayjs.Dayjs | null>(null);
+  const [registrationEnd, setRegistrationEnd] = React.useState<dayjs.Dayjs | null>(null);
+  const [eventStart, setEventStart] = React.useState<dayjs.Dayjs | null>(null);
 
-  const validateEventDates = (startDate: any, endDate: any, startTime: any, endTime: any) => {
-    if (!startDate || !endDate || !startTime || !endTime) return true;
+  const disabledRegistrationStartDate = (current: dayjs.Dayjs) => {
+    return current && current.isBefore(dayjs(), 'day');
+  };
 
-    const start = dayjs(startDate)
-      .hour(dayjs(startTime).hour())
-      .minute(dayjs(startTime).minute());
+  const disabledRegistrationEndDate = (current: dayjs.Dayjs) => {
+    if (!registrationStart) {
+      return current && current.isBefore(dayjs(), 'day');
+    }
 
-    const end = dayjs(endDate)
-      .hour(dayjs(endTime).hour())
-      .minute(dayjs(endTime).minute());
+    return current && current.isBefore(registrationStart, 'day');
+  };
 
-    return start.isBefore(end);
+  const disabledEventStartDate = (current: dayjs.Dayjs) => {
+    if (!registrationEnd) {
+      return true;
+    }
+
+    return current && current.isBefore(registrationEnd, 'day');
+  };
+
+  const disabledEventEndDate = (current: dayjs.Dayjs) => {
+    if (!eventStart) {
+      return true;
+    }
+
+    return current && current.isBefore(eventStart, 'day');
+  };
+
+  const validateDates = () => {
+    const values = form.getFieldsValue();
+    const errors: any[] = [];
+
+    if (values.registrationStartDateTime && values.registrationEndDateTime) {
+      if (dayjs(values.registrationEndDateTime).isBefore(values.registrationStartDateTime)) {
+        errors.push({
+          name: 'registrationEndDateTime',
+          errors: ['Registration end must be after registration start'],
+        });
+      }
+    }
+
+    if (values.eventStartDateTime && values.eventEndDateTime) {
+      if (dayjs(values.eventEndDateTime).isBefore(values.eventStartDateTime)) {
+        errors.push({
+          name: 'eventEndDateTime',
+          errors: ['Event end must be after event start'],
+        });
+      }
+    }
+
+    if (values.eventStartDateTime && values.registrationEndDateTime) {
+      if (dayjs(values.eventStartDateTime).isBefore(values.registrationEndDateTime)) {
+        errors.push({
+          name: 'eventStartDateTime',
+          errors: ['Event must start after registration ends'],
+        });
+      }
+    }
+
+    if (errors.length > 0) {
+      form.setFields(errors);
+    } else {
+      form.setFields([
+        { name: 'registrationEndDateTime', errors: [] },
+        { name: 'eventStartDateTime', errors: [] },
+        { name: 'eventEndDateTime', errors: [] },
+      ]);
+    }
   };
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
-    const updates: any = {};
+    if (changedValues.registrationStartDateTime) {
+      setRegistrationStart(changedValues.registrationStartDateTime);
 
-
-    if (changedValues.eventStartDate || changedValues.eventEndDate ||
-      changedValues.eventStartTime || changedValues.eventEndTime) {
-
-      const startDate = allValues.eventStartDate || dayjs(eventData.eventStartDateTime);
-      const endDate = allValues.eventEndDate || dayjs(eventData.eventEndDateTime);
-      const startTime = allValues.eventStartTime || dayjs(eventData.eventStartDateTime);
-      const endTime = allValues.eventEndTime || dayjs(eventData.eventEndDateTime);
-
-      if (startDate && endDate && startTime && endTime) {
-        const isValid = validateEventDates(startDate, endDate, startTime, endTime);
-        if (!isValid) {
-
-          form.setFields([
-            {
-              name: 'eventStartDate',
-              errors: ['Event start date must be before end date'],
-            },
-            {
-              name: 'eventEndDate',
-              errors: ['Event end date must be after start date'],
-            },
-          ]);
-          return;
-        }
-
-        form.setFields([
-          { name: 'eventStartDate', errors: [] },
-          { name: 'eventEndDate', errors: [] },
-        ]);
-      }
+      form.setFieldsValue({
+        registrationEndDateTime: null,
+        eventStartDateTime: null,
+        eventEndDateTime: null
+      });
+      setRegistrationEnd(null);
+      setEventStart(null);
     }
 
-    if (changedValues.registrationStartDate || changedValues.registrationEndTime) {
-      const date = allValues.registrationStartDate || dayjs(eventData.registrationStartDateTime);
-      const time = allValues.registrationEndTime || dayjs(eventData.registrationEndDateTime);
+    if (changedValues.registrationEndDateTime) {
+      setRegistrationEnd(changedValues.registrationEndDateTime);
 
-      if (date && time) {
-        updates.registrationStartDateTime = date
-          .hour(time.hour())
-          .minute(time.minute())
-          .toISOString();
-      }
+      form.setFieldsValue({
+        eventStartDateTime: null,
+        eventEndDateTime: null
+      });
+      setEventStart(null);
     }
 
-    if (changedValues.registrationEndDate || changedValues.registrationEndTime) {
-      const date = allValues.registrationEndDate || dayjs(eventData.registrationEndDateTime);
-      const time = allValues.registrationEndTime || dayjs(eventData.registrationEndDateTime);
+    if (changedValues.eventStartDateTime) {
+      setEventStart(changedValues.eventStartDateTime);
 
-      if (date && time) {
-        updates.registrationEndDateTime = date
-          .hour(time.hour())
-          .minute(time.minute())
-          .toISOString();
-      }
+      form.setFieldsValue({
+        eventEndDateTime: null
+      });
     }
 
-    if (changedValues.eventStartDate || changedValues.eventStartTime) {
-      const date = allValues.eventStartDate || dayjs(eventData.eventStartDateTime);
-      const time = allValues.eventStartTime || dayjs(eventData.eventStartDateTime);
+    validateDates();
 
-      if (date && time) {
-        updates.eventStartDateTime = date
-          .hour(time.hour())
-          .minute(time.minute())
-          .toISOString();
-      }
+    const updates: Partial<EventData> = {};
+
+    if (changedValues.registrationStartDateTime) {
+      updates.registrationStartDateTime = changedValues.registrationStartDateTime.toISOString();
     }
 
-    if (changedValues.eventEndDate || changedValues.eventEndTime) {
-      const date = allValues.eventEndDate || dayjs(eventData.eventEndDateTime);
-      const time = allValues.eventEndTime || dayjs(eventData.eventEndDateTime);
+    if (changedValues.registrationEndDateTime) {
+      updates.registrationEndDateTime = changedValues.registrationEndDateTime.toISOString();
+    }
 
-      if (date && time) {
-        updates.eventEndDateTime = date
-          .hour(time.hour())
-          .minute(time.minute())
-          .toISOString();
-      }
+    if (changedValues.eventStartDateTime) {
+      updates.eventStartDateTime = changedValues.eventStartDateTime.toISOString();
+    }
+
+    if (changedValues.eventEndDateTime) {
+      updates.eventEndDateTime = changedValues.eventEndDateTime.toISOString();
     }
 
     Object.entries(updates).forEach(([field, value]) => {
-      const updatedValue: EventData[keyof EventData] = value as EventData[keyof EventData];
-      dispatch(updateEventData({ field: field as keyof EventData, value: updatedValue }));
+      dispatch(updateEventData({
+        field: field as keyof EventData,
+        value: value as EventData[keyof EventData]
+      }));
     });
   };
+
+  useEffect(() => {
+    if (eventData.registrationStartDateTime) {
+      setRegistrationStart(dayjs(eventData.registrationStartDateTime));
+    }
+    if (eventData.registrationEndDateTime) {
+      setRegistrationEnd(dayjs(eventData.registrationEndDateTime));
+    }
+    if (eventData.eventStartDateTime) {
+      setEventStart(dayjs(eventData.eventStartDateTime));
+    }
+  }, []);
 
   return (
     <div className="p-4">
@@ -128,116 +168,97 @@ function EventDatesRegistrationV2() {
         onValuesChange={handleValuesChange}
         requiredMark={false}
         initialValues={{
-          registrationStartDate: eventData.registrationStartDateTime ? dayjs(eventData.registrationStartDateTime) : null,
-          registrationEndDate: eventData.registrationEndDateTime ? dayjs(eventData.registrationEndDateTime) : null,
-          registrationEndTime: eventData.registrationEndDateTime ? dayjs(eventData.registrationEndDateTime) : null,
-          eventStartDate: eventData.eventStartDateTime ? dayjs(eventData.eventStartDateTime) : null,
-          eventEndDate: eventData.eventEndDateTime ? dayjs(eventData.eventEndDateTime) : null,
-          eventStartTime: eventData.eventStartDateTime ? dayjs(eventData.eventStartDateTime) : null,
-          eventEndTime: eventData.eventEndDateTime ? dayjs(eventData.eventEndDateTime) : null,
+          registrationStartDateTime: eventData.registrationStartDateTime
+            ? dayjs(eventData.registrationStartDateTime)
+            : null,
+          registrationEndDateTime: eventData.registrationEndDateTime
+            ? dayjs(eventData.registrationEndDateTime)
+            : null,
+          eventStartDateTime: eventData.eventStartDateTime
+            ? dayjs(eventData.eventStartDateTime)
+            : null,
+          eventEndDateTime: eventData.eventEndDateTime
+            ? dayjs(eventData.eventEndDateTime)
+            : null,
         }}
       >
-
         <Row gutter={24}>
-          <Col xs={24} md={24}>
+          <Col xs={24} md={12}>
             <Form.Item
-              label="Registration Start Date"
-              name="registrationStartDate"
-              rules={[{ required: true, message: 'Please select registration start date' }]}
+              label="Registration Start Date & Time"
+              name="registrationStartDateTime"
+              rules={[
+                { required: true, message: 'Please select registration start date and time' }
+              ]}
             >
               <DatePicker
+                showTime
                 className="w-full"
                 size="large"
-                placeholder="Select date"
-                format="MM/DD/YYYY"
+                placeholder="Select date and time"
+                format="MM/DD/YYYY hh:mm A"
+                use12Hours
+                disabledDate={disabledRegistrationStartDate}
               />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={12}>
             <Form.Item
-              label="Registration End Date"
-              name="registrationEndDate"
-              rules={[{ required: true, message: 'Please select registration end date' }]}
+              label="Registration End Date & Time"
+              name="registrationEndDateTime"
+              rules={[
+                { required: true, message: 'Please select registration end date and time' }
+              ]}
             >
               <DatePicker
+                showTime
                 className="w-full"
                 size="large"
-                placeholder="Select date"
-                format="MM/DD/YYYY"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              label="Registration End Time"
-              name="registrationEndTime"
-              rules={[{ required: true, message: 'Please select registration end time' }]}
-            >
-              <TimePicker
-                className="w-full"
-                size="large"
-                placeholder="Select time"
-                format="h:mm a"
+                placeholder="Select date and time"
+                format="MM/DD/YYYY hh:mm A"
                 use12Hours
+                disabledDate={disabledRegistrationEndDate}
               />
             </Form.Item>
           </Col>
+
           <Col xs={24} md={12}>
             <Form.Item
-              label="Event Start Date"
-              name="eventStartDate"
-              rules={[{ required: true, message: 'Please select event start date' }]}
+              label="Event Start Date & Time"
+              name="eventStartDateTime"
+              rules={[
+                { required: true, message: 'Please select event start date and time' }
+              ]}
             >
               <DatePicker
+                showTime
                 className="w-full"
                 size="large"
-                placeholder="Select date"
-                format="MM/DD/YYYY"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              label="Event Start Time"
-              name="eventStartTime"
-              rules={[{ required: true, message: 'Please select event start time' }]}
-            >
-              <TimePicker
-                className="w-full"
-                size="large"
-                placeholder="Select time"
-                format="h:mm a"
+                placeholder="Select date and time"
+                format="MM/DD/YYYY hh:mm A"
                 use12Hours
+                disabledDate={disabledEventStartDate}
               />
             </Form.Item>
           </Col>
+
           <Col xs={24} md={12}>
             <Form.Item
-              label="Event End Date"
-              name="eventEndDate"
-              rules={[{ required: true, message: 'Please select event end date' }]}
+              label="Event End Date & Time"
+              name="eventEndDateTime"
+              rules={[
+                { required: true, message: 'Please select event end date and time' }
+              ]}
             >
               <DatePicker
+                showTime
                 className="w-full"
                 size="large"
-                placeholder="Select date"
-                format="MM/DD/YYYY"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              label="Event End Time"
-              name="eventEndTime"
-              rules={[{ required: true, message: 'Please select event end time' }]}
-            >
-              <TimePicker
-                className="w-full"
-                size="large"
-                placeholder="Select time"
-                format="h:mm a"
+                placeholder="Select date and time"
+                format="MM/DD/YYYY hh:mm A"
                 use12Hours
+                disabledDate={disabledEventEndDate}
               />
             </Form.Item>
           </Col>

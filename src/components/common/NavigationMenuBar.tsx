@@ -43,6 +43,7 @@ export const NavigationMenuBar = () => {
     }, []);
 
     const handleToggleDropdown = useCallback(() => {
+        console.log(!isDropdownOpen)
         setIsDropdownOpen(!isDropdownOpen);
     }, [isDropdownOpen]);
 
