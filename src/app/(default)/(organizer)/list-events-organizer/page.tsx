@@ -194,19 +194,19 @@ function page() {
       <div style={contentStyle}>{steps[eventData?.step].content}</div>
       <div style={{ marginTop: 24 }}>
         {eventData?.step > 0 && (
-          <Button size='large' style={buttonStyle} onClick={() => prev()}>
+          <Button size='large' style={buttonStyle} onPointerDown={() => prev()}>
             Previous
           </Button>
         )}
         {eventData?.step < steps.length - 1 && (
           <Button
             style={buttonStyle}
-            size='large' onClick={() => next()}>
+            size='large' onPointerDown={() => next()}>
             Next
           </Button>
         )}
         {eventData?.step === steps.length - 1 && (
-          <Button size='large' style={buttonStyle} onClick={() => handleSubmit()}>
+          <Button size='large' style={buttonStyle} onPointerDown={() => handleSubmit()}>
             {id ? "Update Event" : "Save & Publish"}
           </Button>
         )}

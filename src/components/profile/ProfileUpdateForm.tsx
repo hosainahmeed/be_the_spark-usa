@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Select, Spin } from 'antd';
+import { getPlaceDetails, getPlaceSuggestions } from '@/lib/getPlaceNameAndCoordinates';
 
 interface ProfileForm {
     businessName: string;
@@ -26,6 +28,34 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
     onSubmit,
     updatedLoading
 }) => {
+
+    const [options, setOptions] = useState<any>([]);
+    const [loading, setLoading] = useState(false);
+
+    const handleSearch = async (value: string) => {
+        if (!value) {
+            setOptions([]);
+            return;
+        }
+
+        setLoading(true);
+
+        const results = await getPlaceSuggestions(value);
+        setLoading(false);
+
+        setOptions(
+            results.map((place: any) => ({
+                label: place.name,
+                value: place.placeId,
+            }))
+        );
+    };
+
+    const handleSelect = async (placeId: string) => {
+        const place = await getPlaceDetails(placeId);
+        if (!place) return;
+        onProfileFormChange('location', place?.name || '');
+    };
     return (
         <form onSubmit={onSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'>
             <div>
@@ -51,15 +81,23 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
             </div>
             <div>
                 <Label>Location</Label>
-                <Input
-                    value={profileForm.location}
-                    onChange={(e) => onProfileFormChange('location', e.target.value)}
+                <Select
+                    size="large"
+                    showSearch
+                    placeholder="Search a location"
+                    style={{ width: "100%", height: 48 }}
+                    onSearch={handleSearch}
+                    onSelect={handleSelect}
+                    filterOption={false}
+                    notFoundContent={loading ? <Spin size="small" /> : null}
+                    value={profileForm.location || undefined}
+                    options={options}
                 />
             </div>
             <div className="flex gap-2">
                 <Button
                     type="button"
-                    onClick={onCancel}
+                    onPointerDown={onCancel}
                     className="px-6 py-2.5 bg-white w-fit text-red-600 rounded font-medium border border-red-600 hover:bg-red-50 transition-colors"
                 >
                     Cancel

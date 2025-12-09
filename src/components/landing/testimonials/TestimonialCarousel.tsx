@@ -173,7 +173,7 @@ const TestimonialCarousel: React.FC = memo(() => {
                                 transition={{ delay: 0.5 }}
                             >
                                 <button
-                                    onClick={() => paginate(-1)}
+                                    onPointerDown={() => paginate(-1)}
                                     disabled={isAnimating}
                                     aria-label="Previous testimonial"
                                     className="bg-white/20 hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-2xl p-4 text-white transition-all duration-300 backdrop-blur-sm hover:scale-105 active:scale-95"
@@ -181,7 +181,7 @@ const TestimonialCarousel: React.FC = memo(() => {
                                     <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
                                 </button>
                                 <button
-                                    onClick={() => paginate(1)}
+                                    onPointerDown={() => paginate(1)}
                                     disabled={isAnimating}
                                     aria-label="Next testimonial"
                                     className="bg-white/20 hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-2xl p-4 text-white transition-all duration-300 backdrop-blur-sm hover:scale-105 active:scale-95"
@@ -194,7 +194,7 @@ const TestimonialCarousel: React.FC = memo(() => {
                                     {TESTIMONIALS.map((_, index) => (
                                         <button
                                             key={index}
-                                            onClick={() => {
+                                            onPointerDown={() => {
                                                 if (index !== currentIndex) {
                                                     paginate(index > currentIndex ? 1 : -1);
                                                 }

@@ -61,13 +61,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   return (
     <div className="flex flex-wrap gap-3">
       <Button
-        onClick={onUpdateProfile}
+        onPointerDown={onUpdateProfile}
         className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base transition-colors duration-200 shadow-md hover:shadow-lg"
       >
         Update Profile
       </Button>
       <Button
-        onClick={onChangePassword}
+        onPointerDown={onChangePassword}
         className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base transition-colors duration-200 shadow-md hover:shadow-lg"
       >
         Change Password
@@ -79,7 +79,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           <Button
             variant="outline"
             className="text-red-600 bg-transparent border border-red-600 hover:bg-red-50 hover:text-red-700"
-            onClick={handleInitialDeleteClick}
+            onPointerDown={handleInitialDeleteClick}
           >
             Delete Account
           </Button>
@@ -130,7 +130,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleClosePasswordDialog}
+                onPointerDown={handleClosePasswordDialog}
                 disabled={isDeleting}
               >
                 Cancel
@@ -138,7 +138,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             </DialogClose>
             <Button
               size="sm"
-              onClick={handleConfirmDelete}
+              onPointerDown={handleConfirmDelete}
               disabled={isDeleting || !password.trim()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 md:px-8 md:py-4 1 font-semibold text-sm md:text-base transition-colors duration-200"
             >

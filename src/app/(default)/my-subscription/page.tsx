@@ -10,7 +10,7 @@ function page() {
     return (
         <div className='h-fit py-12 container mx-auto'>
             <h1
-                onClick={() => router.back()}
+                onPointerDown={() => router.back()}
                 className='text-2xl cursor-pointer hover:text-[var(--blue)]/40 font-bold flex items-center gap-2 w-fit'><ArrowLeft />My Subscription</h1>
             <div className='w-full p-28 flex gap-4 items-center justify-center'>
                 <div className='flex gap-4 items-center w-full flex-col'>
@@ -38,7 +38,7 @@ function page() {
                     </div>
                     <Button
                         style={{ fontFamily: 'sans-serif' }}
-                        onClick={() => router.push('/subscription-renew')}
+                        onPointerDown={() => router.push('/subscription-renew')}
                         className='w-fit rounded px-12 cursor-pointer py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'>Renew Subscription</Button>
                 </div>
             </div>

@@ -54,7 +54,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({
       <div className="flex gap-2">
         <Button
           type="button"
-          onClick={onCancel}
+          onPointerDown={onCancel}
           className="px-6 py-2.5 bg-white w-fit text-red-600 rounded font-medium border border-red-600 hover:bg-red-50 transition-colors"
         >
           Cancel

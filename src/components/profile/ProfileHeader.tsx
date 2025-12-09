@@ -11,7 +11,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ title = "My Profile" }) =
 
   return (
     <button 
-      onClick={() => router.back()} 
+      onPointerDown={() => router.back()} 
       className="flex cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors"
     >
       <ChevronLeft className="w-4 h-4 mr-1" />

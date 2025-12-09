@@ -131,7 +131,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen p-6">
       <div className="container mx-auto">
-        <button onClick={() => router.back()} className="flex  cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
+        <button onPointerDown={() => router.back()} className="flex  cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
           <ChevronLeft className="w-4 h-4 mr-1" />
           My Profile
         </button>
@@ -192,7 +192,7 @@ const ProfilePage: React.FC = () => {
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  onClick={handleCancelProfileUpdate}
+                  onPointerDown={handleCancelProfileUpdate}
                   className="px-6 py-2.5 bg-white w-fit text-red-600 rounded font-medium border border-red-600 hover:bg-red-50 transition-colors"
                 >
                   Cancel
@@ -240,7 +240,7 @@ const ProfilePage: React.FC = () => {
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  onClick={handleCancelPasswordChange}
+                  onPointerDown={handleCancelPasswordChange}
                   className="px-6 py-2.5 bg-white w-fit text-red-600 rounded font-medium border border-red-600 hover:bg-red-50 transition-colors"
                 >
                   Cancel
@@ -263,13 +263,13 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex flex-wrap gap-3">
                 <Button
-                  onClick={() => setUpdateProfile(true)}
+                  onPointerDown={() => setUpdateProfile(true)}
                   className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
                   Update Profile
                 </Button>
                 <Button
-                  onClick={() => setChangePassword(true)}
+                  onPointerDown={() => setChangePassword(true)}
                   className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
                   Change Password
@@ -291,7 +291,7 @@ const ProfilePage: React.FC = () => {
                       </DialogClose>
                       <Button
                         size="sm"
-                        onClick={handleDeleteAccount}
+                        onPointerDown={handleDeleteAccount}
                         className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base transition-colors duration-200 shadow-md hover:shadow-lg">Confirm</Button>
                     </DialogFooter>
                   </DialogContent>

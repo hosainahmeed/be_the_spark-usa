@@ -41,14 +41,14 @@ function FieldCheckerForCreateEvent({
                 <Button
                     disabled={index === 0}
                     className="bg-[var(--blue)] text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white"
-                    onClick={prevStep}
+                    onPointerDown={prevStep}
                 >
                     Previous
                 </Button>
                 {index < totalSteps - 1 ? (
                     <Button
                         className="bg-[var(--blue)] text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white"
-                        onClick={handleNext}
+                        onPointerDown={handleNext}
                         disabled={!canProceed}
                     >
                         Next
@@ -56,7 +56,7 @@ function FieldCheckerForCreateEvent({
                 ) : (
                     <Button
                         className="bg-[var(--blue)] text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 rounded cursor-pointer hover:!bg-white"
-                        onClick={handleSubmit}
+                        onPointerDown={handleSubmit}
                         disabled={!canProceed}
                     >
                         Save & Publish

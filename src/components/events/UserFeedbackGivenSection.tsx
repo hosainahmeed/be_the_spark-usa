@@ -76,7 +76,7 @@ function UserFeedbackGivenSection() {
                     key={starNumber}
                     type="button"
                     className="p-1 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full"
-                    onClick={() => handleRatingClick(starNumber)}
+                    onPointerDown={() => handleRatingClick(starNumber)}
                     onMouseEnter={() => handleRatingHover(starNumber)}
                     onMouseLeave={handleRatingLeave}
                     disabled={isSubmitting}
@@ -95,7 +95,7 @@ function UserFeedbackGivenSection() {
     return (
         <div>
             <Button
-                onClick={handleOpenModal}
+                onPointerDown={handleOpenModal}
                 className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
             >
                 Give Feedback
@@ -109,7 +109,7 @@ function UserFeedbackGivenSection() {
                         <div className="flex items-center justify-between p-6 border-b border-gray-200">
                             <h1 className="text-xl font-semibold text-gray-900">Leave Feedback</h1>
                             <button
-                                onClick={handleCloseModal}
+                                onPointerDown={handleCloseModal}
                                 disabled={isSubmitting}
                                 className="cursor-pointer bg-[var(--blue)] rounded-full p-2 w-8 h-8 flex items-center justify-center text-white hover:bg-[var(--blue)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >

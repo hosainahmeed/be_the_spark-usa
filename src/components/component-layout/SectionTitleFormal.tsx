@@ -36,7 +36,7 @@ function SectionTitleFormal(
             </div>
             {button && (
                 <Button
-                    onClick={() => {
+                    onPointerDown={() => {
                         if (routes && typeof routes === 'string') {
                             router.push(routes)
                         }

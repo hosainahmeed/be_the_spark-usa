@@ -11,7 +11,7 @@ function ImageUpload({ file, setFile, title, className, required, onUpdate }: { 
             {file && file instanceof File ? <>
                 <h1 className='text-lg font-normal my-3'>{title}</h1>
                 <div className='w-[300px] rounded border border-dashed relative h-[200px]'>
-                    <div className='absolute bg-[var(--blue)] text-white flex items-center justify-center rounded-full p-2 top-2 right-2 cursor-pointer' onClick={() => setFile(null)}>
+                    <div className='absolute bg-[var(--blue)] text-white flex items-center justify-center rounded-full p-2 top-2 right-2 cursor-pointer' onPointerDown={() => setFile(null)}>
                         <X />
                     </div>
                     <Image

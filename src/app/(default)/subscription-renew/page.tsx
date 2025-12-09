@@ -9,7 +9,7 @@ function page() {
             <PageTopBanner
                 title='Simple. Fair. One Plan.'
                 description='Everything you need — no tiers, no confusion. Just $15/year to access all events.' />
-            <SubscriptionCard buttonText='Renew Now' onClick={() => alert('Renew option is not available yet , this feature will be available soon')} />
+            <SubscriptionCard buttonText='Renew Now' onPointerDown={() => alert('Renew option is not available yet , this feature will be available soon')} />
         </>
     )
 }

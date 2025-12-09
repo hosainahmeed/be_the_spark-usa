@@ -19,7 +19,7 @@ export const AccordionFilter = ({
     <div className="space-y-2">
         <button
             className="flex justify-between w-full font-medium items-center hover:opacity-80 transition-opacity"
-            onClick={onToggle}
+            onPointerDown={onToggle}
             aria-expanded={isOpen}
             aria-controls={`${section.id}-content`}
         >

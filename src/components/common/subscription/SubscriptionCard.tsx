@@ -5,7 +5,7 @@ import React from 'react'
 import { IMAGE } from '../../../../public/assets/image/index.image'
 import SectionLayout from '@/components/component-layout/SectionLayout'
 
-function SubscriptionCard({buttonText, onClick}: {buttonText: string, onClick: () => void}) {
+function SubscriptionCard({buttonText, onPointerDown}: {buttonText: string, onPointerDown: () => void}) {
     const subscriptionData = [
         {
             title: 'Annual Access',
@@ -55,7 +55,7 @@ function SubscriptionCard({buttonText, onClick}: {buttonText: string, onClick: (
                                 </ul>
                             </div>
                             <Button
-                                onClick={onClick}
+                                onPointerDown={onPointerDown}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
                             >{buttonText}</Button>
                         </CardContent>

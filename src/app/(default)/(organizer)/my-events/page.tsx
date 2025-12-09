@@ -35,7 +35,7 @@ export default function Page() {
                     {FILTERS.map((item) => (
                         <Button
                             key={item.status}
-                            onClick={() => setActiveFilter(item.status)}
+                            onPointerDown={() => setActiveFilter(item.status)}
                             className={cn(
                                 "rounded text-lg md:px-6 px-4 md:py-6 py-4 cursor-pointer transition",
                                 activeFilter === item.status

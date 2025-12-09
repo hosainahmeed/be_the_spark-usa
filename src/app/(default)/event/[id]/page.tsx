@@ -206,7 +206,7 @@ function Page() {
                                     <p className="text-2xl font-bold">${eventData?.registrationFee}</p>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onClick={() => {
+                                    <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onPointerDown={() => {
                                         if (!bookMarkLoading) {
                                             handleEventBookMark(eventData?._id)
                                         }
@@ -215,13 +215,13 @@ function Page() {
                                             :
                                             <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />}
                                     </IconShader>
-                                    <IconShader className='cursor-pointer' onClick={() => handleShare(eventData)}>
+                                    <IconShader className='cursor-pointer' onPointerDown={() => handleShare(eventData)}>
                                         <ShareIcon />
                                     </IconShader>
                                 </div>
                             </div>
                             <Button
-                                onClick={() => window.open(eventData?.websiteLink, '_blank')}
+                                onPointerDown={() => window.open(eventData?.websiteLink, '_blank')}
                                 className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
                             >Go to Event Registration Link</Button>
                         </div>
@@ -307,7 +307,7 @@ function Page() {
                         className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">
                         {eventDeleting ? "Deleting..." : "Delete"}</Button>
                     <Button
-                        onClick={() => router.push(`/list-events-organizer?id=${id}`)}
+                        onPointerDown={() => router.push(`/list-events-organizer?id=${id}`)}
                         className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6"><FaEdit /> Edit</Button>
                 </div>
             )}
@@ -318,9 +318,9 @@ function Page() {
 export default Page
 
 
-const IconShader = ({ children, onClick, className }: { children: React.ReactNode, onClick?: () => void, className?: string }) => {
+const IconShader = ({ children, onPointerDown, className }: { children: React.ReactNode, onPointerDown?: () => void, className?: string }) => {
     return (
-        <div onClick={onClick} className={cn("flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2", className)}>
+        <div onPointerDown={onPointerDown} className={cn("flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2", className)}>
             {children}
         </div>
     )

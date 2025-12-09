@@ -32,16 +32,16 @@ export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: Pr
     const getMenuItems = () => {
         if (user?.role === 'user') {
             return [
-                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onClick: () => handleNavigate('/my-shortlisted-events') },
-                { label: 'My Subscription', icons: ICONS.subscription, onClick: () => handleNavigate('/my-subscription') },
-                { label: 'My Profile', icons: ICONS.userSetting, onClick: () => handleNavigate('/my-profile') }
+                { label: 'Shortlisted Events', icons: ICONS.shortlisted, onPointerDown: () => handleNavigate('/my-shortlisted-events') },
+                { label: 'My Subscription', icons: ICONS.subscription, onPointerDown: () => handleNavigate('/my-subscription') },
+                { label: 'My Profile', icons: ICONS.userSetting, onPointerDown: () => handleNavigate('/my-profile') }
             ];
         }
 
         if (user.role === 'organizer') {
             return [
-                { label: 'My Events', icons: ICONS.calender, onClick: () => handleNavigate('/my-events') },
-                { label: 'My Profile', icons: ICONS.userSetting, onClick: () => handleNavigate('/my-profile-organizer') }
+                { label: 'My Events', icons: ICONS.calender, onPointerDown: () => handleNavigate('/my-events') },
+                { label: 'My Profile', icons: ICONS.userSetting, onPointerDown: () => handleNavigate('/my-profile-organizer') }
             ];
         }
 
@@ -91,7 +91,7 @@ export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: Pr
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: index * 0.1 }}
-                                    onClick={item.onClick}
+                                    onPointerDown={item.onPointerDown}
                                     className="w-full flex cursor-pointer items-center gap-2 text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors duration-200"
                                 >
                                     <Image src={item.icons} width={20} height={20} alt={item.label} />  {item.label}
@@ -105,7 +105,7 @@ export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: Pr
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3 }}
-                                onClick={onLogout}
+                                onPointerDown={onLogout}
                                 className="w-full flex items-center gap-2 text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
                             >
                                 <LogOut className="w-5 h-5" />   Sign Out
@@ -122,7 +122,7 @@ export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: Pr
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            onClick={item.onClick}
+                            onPointerDown={item.onPointerDown}
                             className="w-full flex cursor-pointer items-center gap-2 text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors duration-200"
                         >
                             <Image src={item.icons} width={20} height={20} alt={item.label} />  {item.label}

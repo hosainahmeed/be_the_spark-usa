@@ -23,9 +23,9 @@ export const NavigationItems = ({ items }: NavigationItemsProps) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                 >
-                    {item.onClick ? (
+                    {item.onPointerDown ? (
                         <button
-                            onClick={item.onClick}
+                            onPointerDown={item.onPointerDown}
                             className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-sm"
                         >
                             {item.label}

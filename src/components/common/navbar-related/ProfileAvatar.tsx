@@ -17,7 +17,7 @@ export const ProfileAvatar = ({ user, isDropdownOpen, onToggleDropdown }: Profil
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onToggleDropdown}
+            onPointerDown={onToggleDropdown}
             className="flex items-center cursor-pointer space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
         >
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">

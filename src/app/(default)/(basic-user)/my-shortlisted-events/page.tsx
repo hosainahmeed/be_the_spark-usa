@@ -80,7 +80,7 @@ function MyShortlistedEvents() {
                                             'bg-[var(--blue)] rounded text-white hover:text-[var(--blue)] md:px-6 px-4 text-lg md:py-6 py-4 cursor-pointer hover:!bg-white border hover:border-[var(--blue)]',
                                             activeButton !== item.activeFlag ? 'bg-[#E6ECF5] text-[var(--blue)] hover:text-[var(--blue)]' : 'bg-[var(--blue)]'
                                         )}
-                                        onClick={() => {
+                                        onPointerDown={() => {
                                             setEventStatus(item.status)
                                             setActiveButton(item.activeFlag)
                                         }}

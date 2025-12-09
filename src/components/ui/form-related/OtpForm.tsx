@@ -113,7 +113,7 @@ function OtpForm() {
                     Didn’t receive the OTP?{' '}
                     <span
                         className="hover:underline cursor-pointer"
-                        onClick={() => toast.info("Resend OTP coming soon")}
+                        onPointerDown={() => toast.info("Resend OTP coming soon")}
                     >
                         Resend OTP
                     </span>
