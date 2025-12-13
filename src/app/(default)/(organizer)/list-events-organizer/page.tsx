@@ -18,12 +18,12 @@ function page() {
   const { token } = theme.useToken();
   const eventData = useSelector((state: any) => state.event)
   const dispatch = useDispatch()
-  const [createEvent] = useCreateEventMutation()
+  const [createEvent, { isLoading: isCreating }] = useCreateEventMutation()
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const router = useRouter()
   const { data: singleEventResponse, isLoading } = useGetSingleEventQuery(id as string, { skip: !id })
-  const [updateEvent] = useUpdateEventMutation()
+  const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation()
 
   useEffect(() => {
     if (!id) {
@@ -206,7 +206,7 @@ function page() {
           </Button>
         )}
         {eventData?.step === steps.length - 1 && (
-          <Button size='large' style={buttonStyle} onPointerDown={() => handleSubmit()}>
+          <Button loading={isCreating || isUpdating} size='large' style={buttonStyle} onPointerDown={() => handleSubmit()}>
             {id ? "Update Event" : "Save & Publish"}
           </Button>
         )}

@@ -6,9 +6,17 @@ const ratingApis = baseApis.injectEndpoints({
             query: () => ({
                 url: '/rating/my-feedback',
                 method: 'GET'
-            })
+            }),
+            providesTags: ['rating']
+        }),
+        giveRating: builder.mutation({
+            query: () => ({
+                url: '/rating/add-rating',
+                method: 'POST'
+            }),
+            invalidatesTags: ['rating']
         })
     })
 })
 
-export const { useMyFeedbackQuery } = ratingApis
+export const { useMyFeedbackQuery, useGiveRatingMutation } = ratingApis

@@ -152,3 +152,8 @@ body {
 .hide-scroll-bar::-webkit-scrollbar {
   display: none;
 }
+
+.PhoneInputInput:focus{
+  border: none;
+  outline: none;
+}

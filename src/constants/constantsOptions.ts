@@ -1,7 +1,6 @@
 import { FilterSection } from "@/types/global";
 
 export const AgeOptions: { value: string; label: string }[] = [
-    { value: '0-100000', label: 'Any Age' },
     { value: '2-4', label: '2–4 years' },
     { value: '5-7', label: '5–7 years' },
     { value: '8-10', label: '8–10 years' },

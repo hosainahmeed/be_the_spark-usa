@@ -1,7 +1,7 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Star, ChevronLeft, Camera } from 'lucide-react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { IMAGE } from '../../../../../public/assets/image/index.image';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,11 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useRouter } from 'next/navigation';
+import PasswordChangeForm from '@/components/profile/PasswordChangeForm';
+import { useGetMyProfileQuery, useUpdateProfileMutation } from '@/app/redux/service/profileApis';
+import { Skeleton, Card, Select, Spin } from 'antd';
+import { getPlaceDetails, getPlaceSuggestions } from '@/lib/getPlaceNameAndCoordinates';
+import { useChangePasswordMutation } from '@/app/redux/service/authApis';
 
 interface ProfileData {
   name: string;
@@ -25,21 +30,42 @@ interface PasswordData {
 }
 
 const ProfilePage: React.FC = () => {
-  const [avatar, setAvatar] = useState<any>(IMAGE.defaultProfileImage);
+  const [avatar, setAvatar] = useState<string | File | StaticImageData>(IMAGE.defaultProfileImage);
   const [updateProfile, setUpdateProfile] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const router = useRouter();
-
-  // Form state for profile update
+  const [updateProfileMutation, { isLoading: updatedLoading }] = useUpdateProfileMutation();
+  const { data: profileDatas, isLoading: profileLoading } = useGetMyProfileQuery({})
+  const [changePasswordHandler] = useChangePasswordMutation();
+  // Initialize form with empty values
   const [profileForm, setProfileForm] = useState({
-    subtitle: 'youth Sport club',
-    name: 'Wade Warren',
-    email: 'info@youthSportclub.com',
-    phone: '+1 (555) 123-4567',
-    location: '1234 Maple Avenue, Suite 5B - San Diego, California, 92103, USA',
+    name: '',
+    email: '',
+    phone: '',
+    location: '',
   });
 
-  // Form state for password change
+  const [options, setOptions] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    if (profileDatas?.data) {
+      const { address, profile_image, phone, name, email } = profileDatas.data;
+      setProfileForm(prev => ({
+        ...prev,
+        name: name || '',
+        email: email || '',
+        phone: phone || '',
+        location: address || '',
+      }));
+
+      if (profile_image) {
+        setAvatar(profile_image);
+      }
+    }
+  }, [profileDatas]);
+
   const [passwordForm, setPasswordForm] = useState<PasswordData>({
     oldPassword: '',
     newPassword: '',
@@ -48,11 +74,9 @@ const ProfilePage: React.FC = () => {
 
   const profileData: ProfileData = {
     ...profileForm,
-    avatar: avatar
+    avatar: typeof avatar === 'string' ? avatar : ''
   };
 
-
-  // Handle profile form input changes
   const handleProfileInputChange = (field: keyof typeof profileForm, value: string) => {
     setProfileForm(prev => ({
       ...prev,
@@ -60,7 +84,7 @@ const ProfilePage: React.FC = () => {
     }));
   };
 
-  // Handle password form input changes
+
   const handlePasswordInputChange = (field: keyof PasswordData, value: string) => {
     setPasswordForm(prev => ({
       ...prev,
@@ -68,44 +92,99 @@ const ProfilePage: React.FC = () => {
     }));
   };
 
-  // Handle profile update submission
-  const handleProfileUpdate = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Profile Update Data:', {
-      ...profileForm,
-      avatar: avatar instanceof File ? avatar.name : 'Default avatar'
-    });
-    // Here you would typically send this data to your API
-    setUpdateProfile(false);
-    toast.dismiss();
-    toast.success('Profile updated successfully!');
-  };
 
-  // Handle password change submission
-  const handlePasswordChange = (e: React.FormEvent) => {
+  const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Password Change Data:', passwordForm);
+    const formData = new FormData();
 
-    // Basic validation
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      alert("New password and confirm password don't match!");
-      return;
+    if (avatar instanceof File) {
+      formData.append('profile_image', avatar);
     }
 
-    // Here you would typically send this data to your API
-    setChangePassword(false);
-    toast.dismiss();
-    toast.success('Password changed successfully!');
-    setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    const data = {
+      name: profileForm?.name,
+      phone: profileForm?.phone,
+      address: profileForm?.location,
+    }
+    try {
+
+      formData.append('data', JSON.stringify(data))
+      const res = await updateProfileMutation(formData).unwrap()
+      if (!res?.success) {
+        throw new Error(res?.message)
+      }
+
+      setUpdateProfile(false);
+      toast.dismiss();
+      toast.success('Profile updated successfully!');
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error?.data?.message || error?.message || 'Somthing went wrong!')
+    }
   };
 
-  // Cancel profile update
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      toast.error("New password and confirm password don't match!");
+      return;
+    }
+    const data = {
+      oldPassword: passwordForm.oldPassword,
+      newPassword: passwordForm.newPassword,
+      confirmNewPassword: passwordForm.confirmPassword
+    }
+
+    try {
+      await changePasswordHandler(data).unwrap();
+      setChangePassword(false);
+      toast.success('Password changed successfully!');
+      setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || 'Failed to change password');
+    }
+  };
+
+
   const handleCancelProfileUpdate = () => {
     setUpdateProfile(false);
     toast.dismiss();
   };
 
-  // Cancel password change
+
+
+
+  const handleSearch = async (value: string) => {
+    if (!value) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+
+    const results = await getPlaceSuggestions(value);
+    setLoading(false);
+
+    setOptions(
+      results.map((place: any) => ({
+        label: place.name,
+        value: place.placeId,
+      }))
+    );
+  };
+
+  const handleSelect = async (placeId: string) => {
+    const place = await getPlaceDetails(placeId);
+    if (!place) return;
+    setProfileForm(prev => ({
+      ...prev,
+      location: place?.name || '',
+    }));
+  };
+
+
   const handleCancelPasswordChange = () => {
     setChangePassword(false);
     toast.dismiss();
@@ -128,10 +207,38 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  // Skeleton loading state
+  if (profileLoading) {
+    return (
+      <div className="min-h-screen p-6">
+        <div className="container mx-auto">
+          <Skeleton.Button active style={{ width: 200, height: 24 }} className="mb-8" />
+
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8">
+            <Skeleton.Avatar active size={112} shape="circle" className="mb-6 md:mb-0" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {[1, 2, 3, 4].map((item) => (
+              <Card key={item} className="p-4">
+                <Skeleton active paragraph={{ rows: 1 }} />
+              </Card>
+            ))}
+          </div>
+
+          <div className="flex gap-3">
+            <Skeleton.Button active style={{ width: 150, height: 48 }} />
+            <Skeleton.Button active style={{ width: 180, height: 48 }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-6">
       <div className="container mx-auto">
-        <button onPointerDown={() => router.back()} className="flex  cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
+        <button onPointerDown={() => router.back()} className="flex cursor-pointer items-center text-gray-700 text-sm mb-8 hover:text-gray-900 transition-colors">
           <ChevronLeft className="w-4 h-4 mr-1" />
           My Profile
         </button>
@@ -139,29 +246,40 @@ const ProfilePage: React.FC = () => {
         <div>
           <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8">
             <div className="flex items-start gap-6 mb-6 md:mb-0">
-              {(updateProfile && !changePassword) ? (
-                <div className="w-28 relative h-28 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 border border-gray-100">
-                  <Image
-                    className='rounded-full object-cover cursor-pointer w-full h-full overflow-hidden'
-                    src={avatar ? avatar instanceof File ? URL.createObjectURL(avatar) : avatar : profileData.avatar}
-                    alt="Logo"
-                    width={200}
-                    height={100}
-                  />
+              <div className="w-28 relative h-28 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 border border-gray-100">
+                <Image
+                  className='rounded-full object-cover cursor-pointer w-full h-full overflow-hidden'
+                  src={
+                    avatar instanceof File
+                      ? URL.createObjectURL(avatar)
+                      : typeof avatar === 'string'
+                        ? avatar
+                        : IMAGE.defaultProfileImage.src
+                  }
+                  alt="Profile"
+                  width={200}
+                  height={200}
+                  onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = IMAGE.defaultProfileImage.src;
+                  }}
+                />
+                {updateProfile && !changePassword && (
                   <div className="absolute cursor-pointer bottom-0 z-10 rounded-full bg-[var(--blue)] right-0 w-6 h-6 flex items-center justify-center">
                     <Camera className="w-4 h-4 cursor-pointer text-white" />
                     <input
-                      onChange={(e) => setAvatar(e.target.files?.[0])}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.target.files?.[0]) {
+                          setAvatar(e.target.files[0]);
+                        }
+                      }}
                       type="file"
+                      accept="image/*"
                       className="absolute cursor-pointer opacity-0 top-0 left-0 w-full h-full"
                     />
                   </div>
-                </div>
-              ) : (
-                <div className="w-28 h-28 overflow-hidden rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 border border-gray-100">
-                  <Image src={IMAGE.defaultProfileImage} alt="Logo" width={200} height={100} />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 
@@ -184,9 +302,17 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="col-span-2">
                 <Label>Location</Label>
-                <Input
-                  value={profileForm.location}
-                  onChange={(e) => handleProfileInputChange('location', e.target.value)}
+                <Select
+                  size="large"
+                  showSearch
+                  placeholder="Search a location"
+                  style={{ width: "100%", height: 48 }}
+                  onSearch={handleSearch}
+                  onSelect={handleSelect}
+                  filterOption={false}
+                  notFoundContent={loading ? <Spin size="small" /> : null}
+                  value={profileForm.location || undefined}
+                  options={options}
                 />
               </div>
               <div className="flex gap-2">
@@ -198,10 +324,11 @@ const ProfilePage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button
+                  disabled={updatedLoading}
                   type="submit"
                   className='bg-[var(--blue)] w-fit text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base hover:bg-primary/90 transition-colors duration-200 shadow-md hover:shadow-lg'
                 >
-                  Update Profile
+                  {updatedLoading ? 'Updating...' : 'Update Profile'}
                 </Button>
               </div>
             </form>
@@ -209,50 +336,7 @@ const ProfilePage: React.FC = () => {
 
           {/* Password Change Form */}
           {changePassword && !updateProfile && (
-            <form onSubmit={handlePasswordChange} className='grid grid-cols-1 md:grid-cols-1 gap-4 mb-8'>
-              <div>
-                <Label>Old Password</Label>
-                <Input
-                  placeholder="Old Password"
-                  type="text"
-                  value={passwordForm.oldPassword}
-                  onChange={(e) => handlePasswordInputChange('oldPassword', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label>New Password</Label>
-                <Input
-                  placeholder="New Password"
-                  type="text"
-                  value={passwordForm.newPassword}
-                  onChange={(e) => handlePasswordInputChange('newPassword', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label>Confirm Password</Label>
-                <Input
-                  placeholder="Confirm New Password"
-                  type="text"
-                  value={passwordForm.confirmPassword}
-                  onChange={(e) => handlePasswordInputChange('confirmPassword', e.target.value)}
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  onPointerDown={handleCancelPasswordChange}
-                  className="px-6 py-2.5 bg-white w-fit text-red-600 rounded font-medium border border-red-600 hover:bg-red-50 transition-colors"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className='bg-[var(--blue)] w-fit text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base hover:bg-primary/90 transition-colors duration-200 shadow-md hover:shadow-lg'
-                >
-                  Update Password
-                </Button>
-              </div>
-            </form>
+            <PasswordChangeForm passwordForm={passwordForm} onCancel={handleCancelPasswordChange} onPasswordFormChange={handlePasswordInputChange} onSubmit={handlePasswordChange} />
           )}
 
           {/* Default View - Profile Information and Buttons */}

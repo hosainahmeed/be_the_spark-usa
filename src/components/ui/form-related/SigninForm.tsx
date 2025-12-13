@@ -70,9 +70,9 @@ export default function SigninForm() {
     };
 
     return (
-        <div>
+        <Card>
             {/* Header Section */}
-            <div className="p-6">
+            <div>
                 <div className="flex flex-col items-start text-center">
                     <Image
                         src={IMAGE.brandLogo}
@@ -90,9 +90,9 @@ export default function SigninForm() {
                     </Paragraph>
                 </div>
             </div>
-
+            <Divider />
             {/* Form Section */}
-            <div className="p-6">
+            <div>
                 <Form
                     form={form}
                     layout="vertical"
@@ -177,6 +177,6 @@ export default function SigninForm() {
                     </Text>
                 </div>
             </div>
-        </div>
+        </Card>
     );
 }

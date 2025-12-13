@@ -3,18 +3,20 @@ import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { X, Star } from 'lucide-react'
 import { toast } from 'sonner'
+import { EventDetails } from '@/types/event'
+import { useGiveRatingMutation } from '@/app/redux/service/ratingApis'
 
 interface FeedbackFormData {
     rating: number
 }
 
-function UserFeedbackGivenSection() {
+function UserFeedbackGivenSection({ eventData }: { eventData: EventDetails }) {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState<FeedbackFormData>({
         rating: 0,
     })
     const [hoveredRating, setHoveredRating] = useState(0)
+    const [giveRating, { isLoading: ratingLoading }] = useGiveRatingMutation()
 
     const handleOpenModal = () => setIsModalOpen(true)
     const handleCloseModal = () => {
@@ -43,25 +45,24 @@ function UserFeedbackGivenSection() {
             return
         }
 
-        setIsSubmitting(true)
-
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500))
-            console.log('Feedback submitted:', {
-                event: "6915ac1438d97b3abbf63982",
+            const data = {
+                event: eventData?._id,
                 rating: formData?.rating
-            })
+            }
+            const res = await giveRating(data).unwrap()
+            if (!res?.success) {
+                throw new Error(res?.message)
+            }
             toast.success('Thank you for your feedback!', {
                 description: 'Your review has been submitted successfully.',
                 duration: 4000,
             })
             handleCloseModal()
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error submitting feedback:', error)
-            toast.error('Failed to submit feedback. Please try again.')
-        } finally {
-            setIsSubmitting(false)
+            toast.error(error?.data?.message || error?.message || 'Failed to submit feedback. Please try again.')
         }
     }
 
@@ -79,7 +80,7 @@ function UserFeedbackGivenSection() {
                     onPointerDown={() => handleRatingClick(starNumber)}
                     onMouseEnter={() => handleRatingHover(starNumber)}
                     onMouseLeave={handleRatingLeave}
-                    disabled={isSubmitting}
+                    disabled={ratingLoading}
                 >
                     <Star
                         className={`w-8 h-8 ${isFilled
@@ -110,7 +111,7 @@ function UserFeedbackGivenSection() {
                             <h1 className="text-xl font-semibold text-gray-900">Leave Feedback</h1>
                             <button
                                 onPointerDown={handleCloseModal}
-                                disabled={isSubmitting}
+                                disabled={ratingLoading}
                                 className="cursor-pointer bg-[var(--blue)] rounded-full p-2 w-8 h-8 flex items-center justify-center text-white hover:bg-[var(--blue)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <X className="w-4 h-4" />
@@ -141,24 +142,15 @@ function UserFeedbackGivenSection() {
                                 <div className="flex justify-center space-x-1 mb-4">
                                     {renderStars()}
                                 </div>
-
-                                {/* Rating Labels */}
-                                <div className="flex justify-between text-xs text-gray-500 px-2">
-                                    <span>Poor</span>
-                                    <span>Fair</span>
-                                    <span>Good</span>
-                                    <span>Very Good</span>
-                                    <span>Excellent</span>
-                                </div>
                             </div>
 
                             {/* Submit Button */}
                             <Button
                                 type="submit"
-                                disabled={isSubmitting || formData.rating === 0}
+                                disabled={ratingLoading || formData.rating === 0}
                                 className="w-full rounded bg-[var(--blue)] hover:bg-[var(--blue)] text-white font-semibold py-3 px-4 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isSubmitting ? (
+                                {ratingLoading ? (
                                     <div className="flex items-center justify-center">
                                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                                         Submitting...

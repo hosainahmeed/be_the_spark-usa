@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface PasswordData {
   oldPassword: string;
@@ -22,34 +23,77 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({
   onCancel,
   onSubmit
 }) => {
+  const [showPassword, setShowPassword] = useState({
+    oldPassword: false,
+    newPassword: false,
+    confirmPassword: false
+  });
+
+  const togglePasswordVisibility = (field: keyof typeof showPassword) => {
+    setShowPassword(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
+
   return (
     <form onSubmit={onSubmit} className='grid grid-cols-1 md:grid-cols-1 gap-4 mb-8'>
-      <div>
+      <div className="relative">
         <Label>Old Password</Label>
-        <Input
-          placeholder="Old Password"
-          type="password"
-          value={passwordForm.oldPassword}
-          onChange={(e) => onPasswordFormChange('oldPassword', e.target.value)}
-        />
+        <div className="relative">
+          <Input
+            placeholder="Old Password"
+            type={showPassword.oldPassword ? "text" : "password"}
+            value={passwordForm.oldPassword}
+            onChange={(e) => onPasswordFormChange('oldPassword', e.target.value)}
+            className="pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => togglePasswordVisibility('oldPassword')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword.oldPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
-      <div>
+      <div className="relative">
         <Label>New Password</Label>
-        <Input
-          placeholder="New Password"
-          type="password"
-          value={passwordForm.newPassword}
-          onChange={(e) => onPasswordFormChange('newPassword', e.target.value)}
-        />
+        <div className="relative">
+          <Input
+            placeholder="New Password"
+            type={showPassword.newPassword ? "text" : "password"}
+            value={passwordForm.newPassword}
+            onChange={(e) => onPasswordFormChange('newPassword', e.target.value)}
+            className="pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => togglePasswordVisibility('newPassword')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword.newPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
-      <div>
+      <div className="relative">
         <Label>Confirm Password</Label>
-        <Input
-          placeholder="Confirm New Password"
-          type="password"
-          value={passwordForm.confirmPassword}
-          onChange={(e) => onPasswordFormChange('confirmPassword', e.target.value)}
-        />
+        <div className="relative">
+          <Input
+            placeholder="Confirm New Password"
+            type={showPassword.confirmPassword ? "text" : "password"}
+            value={passwordForm.confirmPassword}
+            onChange={(e) => onPasswordFormChange('confirmPassword', e.target.value)}
+            className="pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => togglePasswordVisibility('confirmPassword')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword.confirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
       <div className="flex gap-2">
         <Button

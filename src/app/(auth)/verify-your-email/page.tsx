@@ -18,10 +18,7 @@ export const metadata: Metadata = {
 function page() {
     return (
         <main className="grid grid-cols-1 md:grid-cols-2 items-center justify-center max-w-screen-xl mx-auto min-h-screen md:p-4 gap-8 content-center">
-            {/* Left side image */}
             <SideImage image={IMAGE.lockImage} />
-
-            {/* Right side form card */}
             <EmailVarify />
         </main>
     )

@@ -206,15 +206,17 @@ function Page() {
                                     <p className="text-2xl font-bold">${eventData?.registrationFee}</p>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onPointerDown={() => {
+                                    {user?.role !== 'organizer' && <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onPointerDown={() => {
                                         if (!bookMarkLoading) {
                                             handleEventBookMark(eventData?._id)
                                         }
                                     }}>
-                                        {bookMarkLoading ? <div className="w-5 h-5 border-red-400 rounded-full animate-spin border-t border-l"></div>
+                                        {bookMarkLoading ?
+                                            <div className="w-5 h-5 border-red-400 rounded-full animate-spin border-t border-l"></div>
                                             :
-                                            <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />}
-                                    </IconShader>
+                                            <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />
+                                        }
+                                    </IconShader>}
                                     <IconShader className='cursor-pointer' onPointerDown={() => handleShare(eventData)}>
                                         <ShareIcon />
                                     </IconShader>
@@ -233,7 +235,7 @@ function Page() {
                                     alt="Avatar"
                                     width={50}
                                     height={50}
-                                    className='rounded-full overflow-hidden'
+                                    className='rounded-full w-12 h-12 object-cover overflow-hidden'
                                 />
                                 <div>
                                     <p className="font-black">Organized By: </p>
@@ -297,7 +299,7 @@ function Page() {
                         </div>
                     </div>
 
-                    {!event?.isMyFeedbackGiven && user?.role !== 'organizer' && <UserFeedbackGivenSection />}
+                    {!event?.isMyFeedbackGiven && user?.role !== 'organizer' && <UserFeedbackGivenSection eventData={eventData} />}
                 </div>
             </div>
             {user?.role === 'organizer' && (

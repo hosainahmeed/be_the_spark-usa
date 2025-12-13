@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
 import { IMAGE } from '../../../../public/assets/image/index.image';
 import Link from 'next/link';
@@ -7,6 +6,9 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUserSignUpMutation } from '@/app/redux/service/authApis';
 import { toast } from 'sonner';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+
 import {
     Card,
     Form,
@@ -58,7 +60,7 @@ export default function SignupForm() {
                 throw new Error(res?.message);
             }
 
-            toast.success("Account created successfully!");
+            toast.success(res?.message || "Account created successfully!");
             router.push(`/one-time-pass?email=${values.email}&role=${role}`);
 
         } catch (error: any) {
@@ -157,7 +159,7 @@ export default function SignupForm() {
                         </Row>
 
                         <Row gutter={16}>
-                            <Col span={12}>
+                            <Col span={24} sm={24} lg={12}>
                                 <Form.Item
                                     name="email"
                                     label="Email Address"
@@ -173,24 +175,37 @@ export default function SignupForm() {
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col span={12}>
+                            <Col span={24} sm={24} lg={12}>
                                 <Form.Item
                                     name="phone"
                                     label="Phone Number"
                                     rules={[
                                         { required: true, message: 'Please input your phone number!' },
-                                        { pattern: /^[+]?[\d\s-]{10,}$/, message: 'Please enter a valid phone number!' }
+                                        {
+                                            validator: (_, value) => {
+                                                if (!value) {
+                                                    return Promise.reject('Please enter a phone number')
+                                                }
+                                                return Promise.resolve()
+                                            }
+                                        }
                                     ]}
                                 >
-                                    <Input
-                                        placeholder="+1234567890"
+                                    <PhoneInput
+                                        international
+                                        defaultCountry="US"
+                                        placeholder="Enter phone number"
+                                        className='border border-gray-300 h-10 rounded px-2 py-1'
+                                        value={form.getFieldValue('phone')}
+                                        onChange={(value) => form.setFieldsValue({ phone: value })}
+                                        style={{ width: '100%' }}
                                     />
                                 </Form.Item>
                             </Col>
                         </Row>
 
                         <Row gutter={16}>
-                            <Col span={12}>
+                            <Col span={24} sm={24} lg={12}>
                                 <Form.Item
                                     name="password"
                                     label="Password"
@@ -207,7 +222,7 @@ export default function SignupForm() {
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col span={12}>
+                            <Col span={24} sm={24} lg={12}>
                                 <Form.Item
                                     name="confirmPassword"
                                     label="Confirm Password"

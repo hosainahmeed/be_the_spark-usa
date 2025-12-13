@@ -136,13 +136,21 @@ const ProfilePage: React.FC = () => {
             address: profileForm?.location,
             businessName: profileForm?.businessName
         }
-        formData.append('data', JSON.stringify(data))
+        try {
+            
+            formData.append('data', JSON.stringify(data))
+            const res = await updateProfileMutation(formData).unwrap()
+            if (!res?.success) {
+                throw new Error(res?.message)
+            }
 
-        await updateProfileMutation(formData).unwrap()
-
-        setUpdateProfile(false);
-        toast.dismiss();
-        toast.success('Profile updated successfully!');
+            setUpdateProfile(false);
+            toast.dismiss();
+            toast.success('Profile updated successfully!');
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error?.data?.message || error?.message || 'Somthing went wrong!')
+        }
     };
 
     const handlePasswordChange = async (e: React.FormEvent) => {
