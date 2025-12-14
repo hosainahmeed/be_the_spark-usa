@@ -1,6 +1,5 @@
 
 export function mapEventToEventData(apiEvent: any) {
-console.log(apiEvent?.venue)
     return {
         name: apiEvent?.name ?? null,
         shortDescription: apiEvent?.shortDescription ?? null,

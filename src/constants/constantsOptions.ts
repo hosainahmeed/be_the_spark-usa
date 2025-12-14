@@ -9,39 +9,39 @@ export const AgeOptions: { value: string; label: string }[] = [
     { value: '17-100000', label: '17+ years' }
 ]
 
-export const SportOptions: { value: string; label: string }[] = [
-    { value: 'all-sport', label: 'All Sport' },
-    { value: 'badminton', label: 'Badminton' },
-    { value: 'baseball', label: 'Baseball' },
-    { value: 'basketball', label: 'Basketball' },
-    { value: 'boxing', label: 'Boxing' },
-    { value: 'cheerleading', label: 'Cheerleading' },
-    { value: 'climbing', label: 'Climbing' },
-    { value: 'cross-country', label: 'Cross Country' },
-    { value: 'dance', label: 'Dance' },
-    { value: 'football-flag', label: 'Football - Flag' },
-    { value: 'football-tackle', label: 'Football - Tackle' },
-    { value: 'golf', label: 'Golf' },
-    { value: 'gymnastics', label: 'Gymnastics' },
-    { value: 'hockey-field', label: 'Hockey - Field' },
-    { value: 'hockey-ice', label: 'Hockey - Ice' },
-    { value: 'horse-riding', label: 'Horse Riding' },
-    { value: 'lacrosse', label: 'Lacrosse' },
-    { value: 'martial-arts', label: 'Martial Arts' },
-    { value: 'pickleball', label: 'Pickleball' },
-    { value: 'skateboarding', label: 'Skateboarding' },
-    { value: 'skiing', label: 'Skiing' },
-    { value: 'snowboarding', label: 'Snowboarding' },
-    { value: 'soccer', label: 'Soccer' },
-    { value: 'softball', label: 'Softball' },
-    { value: 'squash', label: 'Squash' },
-    { value: 'swimming', label: 'Swimming' },
-    { value: 'table-tennis', label: 'Table Tennis' },
-    { value: 'tennis', label: 'Tennis' },
-    { value: 'track-field', label: 'Track & Field' },
-    { value: 'volleyball', label: 'Volleyball' },
-    { value: 'wrestling', label: 'Wrestling' }
-]
+// export const SportOptions: { value: string; label: string }[] = [
+//     { value: 'all-sport', label: 'All Sport' },
+//     { value: 'badminton', label: 'Badminton' },
+//     { value: 'baseball', label: 'Baseball' },
+//     { value: 'basketball', label: 'Basketball' },
+//     { value: 'boxing', label: 'Boxing' },
+//     { value: 'cheerleading', label: 'Cheerleading' },
+//     { value: 'climbing', label: 'Climbing' },
+//     { value: 'cross-country', label: 'Cross Country' },
+//     { value: 'dance', label: 'Dance' },
+//     { value: 'football-flag', label: 'Football - Flag' },
+//     { value: 'football-tackle', label: 'Football - Tackle' },
+//     { value: 'golf', label: 'Golf' },
+//     { value: 'gymnastics', label: 'Gymnastics' },
+//     { value: 'hockey-field', label: 'Hockey - Field' },
+//     { value: 'hockey-ice', label: 'Hockey - Ice' },
+//     { value: 'horse-riding', label: 'Horse Riding' },
+//     { value: 'lacrosse', label: 'Lacrosse' },
+//     { value: 'martial-arts', label: 'Martial Arts' },
+//     { value: 'pickleball', label: 'Pickleball' },
+//     { value: 'skateboarding', label: 'Skateboarding' },
+//     { value: 'skiing', label: 'Skiing' },
+//     { value: 'snowboarding', label: 'Snowboarding' },
+//     { value: 'soccer', label: 'Soccer' },
+//     { value: 'softball', label: 'Softball' },
+//     { value: 'squash', label: 'Squash' },
+//     { value: 'swimming', label: 'Swimming' },
+//     { value: 'table-tennis', label: 'Table Tennis' },
+//     { value: 'tennis', label: 'Tennis' },
+//     { value: 'track-field', label: 'Track & Field' },
+//     { value: 'volleyball', label: 'Volleyball' },
+//     { value: 'wrestling', label: 'Wrestling' }
+// ]
 
 export const EventTypes: { value: string; label: string }[] = [
     { value: 'league', label: 'League' },
@@ -87,7 +87,7 @@ export const FILTER_SECTIONS: FilterSection[] = [
         type: 'select',
         label: 'Sport',
         placeholder: 'All Sport',
-        options: SportOptions
+        options: []
     },
     {
         id: 'age',
@@ -100,7 +100,7 @@ export const FILTER_SECTIONS: FilterSection[] = [
         type: 'select',
         label: 'Event Type',
         placeholder: 'Event Type',
-        options: EventTypes
+        options: []
     },
     {
         id: 'eventStatus',
