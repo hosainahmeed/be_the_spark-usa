@@ -1,124 +1,88 @@
 'use client';
+import { Form, Input, Spin } from 'antd';
 import React, { useState } from 'react';
-import { Input } from './input';
 import { Button } from './button';
+import TextArea from 'antd/es/input/TextArea';
+import { useContactSubmitMutation } from '@/app/redux/service/contactApis';
+import { toast } from 'sonner';
 
 function ContactForm() {
-    const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        phone: '',
-        description: '',
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log('Form submitted:', formData);
-        alert('Form submitted successfully!');
+    const [submitContact, { isLoading }] = useContactSubmitMutation()
+    const [form] = Form.useForm()
+    const handleSubmit = async (values: any) => {
+        try {
+            const data = {
+                name: values?.fullName,
+                email: values?.email,
+                message: values?.description
+            }
+            const response = await submitContact(data).unwrap()
+            if (!response?.success) {
+                throw new Error(response?.message || '')
+            }
+            toast.success(response?.message)
+            form.resetFields()
+        } catch (error: any) {
+            toast.error(error?.data?.message || error?.message || 'Something went wrong!')
+            form.resetFields()
+        }
     };
     return (
         <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name Fields */}
-                <div className="grid gap-4">
-                    <div>
-                        <label
-                            htmlFor="fullName"
-                            className="block text-sm font-medium text-gray-700 mb-2"
-                        >
-                            Full Name
-                        </label>
+            <div className="grid gap-4">
+                <Form requiredMark={false} layout='vertical' onFinish={handleSubmit} form={form}>
+                    <Form.Item
+                        name="fullName"
+                        label="Full Name"
+                        rules={[{ required: true, message: 'Please input your full name!' }]}
+                    >
                         <Input
-                            id="fullName"
-                            name="fullName"
-                            type="text"
-                            placeholder="First Name"
-                            value={formData.fullName}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#022C22] focus:border-transparent"
-                            required
+                            size='large'
+                            placeholder="Full Name"
                         />
-                    </div>
-                </div>
-
-                {/* Email Field */}
-                <div>
-                    <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                        Email Address
-                    </label>
-                    <Input
-                        id="email"
+                    </Form.Item>
+                    <Form.Item
                         name="email"
-                        type="email"
-                        placeholder="Email Address"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#022C22] focus:border-transparent"
-                        required
-                    />
-                </div>
-
-                {/* Phone Field */}
-                <div>
-                    <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        label="Email"
+                        rules={[{ required: true, message: 'Please input your email!' }]}
                     >
-                        Phone Number
-                    </label>
-                    <Input
-                        id="phone"
+                        <Input
+                            size='large'
+                            placeholder="Email"
+                        />
+                    </Form.Item>
+                    {/* <Form.Item
                         name="phone"
-                        type="tel"
-                        placeholder="Phone Number"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#022C22] focus:border-transparent"
-                    />
-                </div>
-
-                {/* Description Field */}
-                <div>
-                    <label
-                        htmlFor="description"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        label="Phone Number"
+                        rules={[{ required: true, message: 'Please input your phone!' }]}
                     >
-                        Description
-                    </label>
-                    <textarea
-                        id="description"
+                        <Input
+                            size='large'
+                            placeholder="Phone"
+                        />
+                    </Form.Item> */}
+                    <Form.Item
                         name="description"
-                        rows={4}
-                        placeholder="Type Your Message"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#022C22] focus:border-transparent resize-none"
-                        required
-                    />
-                </div>
-
-                {/* Submit Button */}
-                <div>
-                    <Button
-                        type="submit"
-                        className="bg-[var(--blue)] cursor-pointer hover:bg-[var(--blue)]/70 text-white px-8 py-3 rounded-md font-medium transition-colors duration-200 focus:ring-[var(--blue)] focus:ring-offset-2"
+                        label="Description"
+                        rules={[{ required: true, message: 'Please input your description!' }]}
                     >
-                        Submit
-                    </Button>
-                </div>
-            </form>
+                        <TextArea
+                            size='large'
+                            placeholder="Description"
+                            rows={4}
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="submit"
+                            className="bg-[#003F91] cursor-pointer rounded text-white px-8 py-3 font-medium transition-colors duration-200 focus:ring-[var(--blue)] focus:ring-offset-2"
+                        >
+                            {isLoading ? <Spin size='small' /> : 'Submit'}
+                        </Button>
+                    </Form.Item>
+                </Form>
+
+            </div>
         </div>
     );
 }

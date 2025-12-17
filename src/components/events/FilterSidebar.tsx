@@ -1,19 +1,22 @@
 import { useGetCategoryQuery } from '@/app/redux/service/categoryApis'
-import { AgeOptions, EventStatus } from '@/constants/constantsOptions'
-import { Input, Select } from 'antd'
+import { AgeOptions, EventStatus, SkillLevel } from '@/constants/constantsOptions'
+import { Collapse, Input, Radio, Select } from 'antd'
 import React from 'react'
 
-function FilterSidebar({ setFilters }: { setFilters: any }) {
+function FilterSidebar({ setAge, setSport, setEventType, setStatus, setSkillLevel , filters }: { setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any , filters: any }) {
   const { data: sportCategories } = useGetCategoryQuery({ type: 'sports' })
   const { data: eventTypeCategories } = useGetCategoryQuery({ type: 'event' })
+
   return (
     <div>
-      <Input onChange={(e) => setFilters({ location: e.target.value })} size='middle' placeholder='Location (ZIP Code or City)' />
+      <Input onChange={(e) => setAge(e.target.value)} size='middle' placeholder='Location (ZIP Code or City)' />
       <Select
-        onClear={() => setFilters({ sport: '' })}
+        onClear={() => setAge('')}
         style={{ width: '100%', margin: '0.5rem 0' }}
         placeholder='Sport'
-        onChange={(value) => setFilters({ sport: value })}
+        onChange={(value) => {
+          setSport(value)
+        }}
         allowClear
       >
         {sportCategories?.data?.result?.map((item: any) => (
@@ -22,23 +25,35 @@ function FilterSidebar({ setFilters }: { setFilters: any }) {
           </Select.Option>
         ))}
       </Select>
+      <Collapse
+        defaultActiveKey={['1']}
+        expandIconPlacement='end'
+      >
+        <Collapse.Panel
+          header="Age Group"
+          key="1"
+        >
+          <Radio.Group
+            vertical
+            onChange={(e) => {
+              const data = e.target.value.split('-')
+              setAge({ minAge: data[0], maxAge: data[1] })
+            }}
+            value={filters?.minAge + '-' + filters?.maxAge}
+          >
+            {AgeOptions.map((option: any) => (
+              <Radio key={option.value} value={option.value}>{option.label}</Radio>
+            ))}
+          </Radio.Group>
+        </Collapse.Panel>
+      </Collapse>
       <Select
-        onClear={() => setFilters({ age_group: '' })}
-        style={{ width: '100%', margin: '0.5rem 0' }}
-        placeholder='Age Group'
-        onChange={(value) => {
-          const data = value.split('-')
-          setFilters({ minAge: data[0], maxAge: data[1] })
-        }}
-        allowClear
-        options={AgeOptions}
-      />
-
-      <Select
-        onClear={() => setFilters({ event_type: '' })}
+        onClear={() => setAge('')}
         style={{ width: '100%', margin: '0.5rem 0' }}
         placeholder='Event Type'
-        onChange={(value) => setFilters({ event_type: value })}
+        onChange={(value) => {
+          setEventType(value)
+        }}
         allowClear
       >
         {eventTypeCategories?.data?.result?.map((item: any) => (
@@ -48,15 +63,20 @@ function FilterSidebar({ setFilters }: { setFilters: any }) {
         ))}
       </Select>
       <Select
-        onClear={() => setFilters({ age_group: '' })}
+        onClear={() => setStatus('')}
         style={{ width: '100%', margin: '0.5rem 0' }}
-        placeholder='Age Group'
-        onChange={(value) => {
-          const data = value.split('-')
-          setFilters({ minAge: data[0], maxAge: data[1] })
-        }}
+        placeholder='Event Status'
+        onChange={(value) => setStatus(value)}
         allowClear
         options={EventStatus}
+      />
+      <Select
+        onClear={() => setSkillLevel('')}
+        style={{ width: '100%', margin: '0.5rem 0' }}
+        placeholder='Skill Level'
+        onChange={(value) => setSkillLevel(value)}
+        allowClear
+        options={SkillLevel}
       />
     </div>
   )

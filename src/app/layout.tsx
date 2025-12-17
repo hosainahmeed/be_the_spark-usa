@@ -50,6 +50,13 @@ export default function RootLayout({
         fontSizeSM: 16,
         fontSizeXL: 16
       },
+      Pagination: {
+        itemActiveBg: "rgb(16.08% 29.02% 50.2%)",
+        itemActiveColor: "rgb(100% 100% 100%)",
+        itemActiveColorHover: "rgb(100% 100% 100%)",
+        colorPrimaryBorder: "rgb(100% 100% 100%)",
+        motionDurationMid: "0s"
+      },
       Input: {
         fontSizeLG: 20,
         borderRadius: 2

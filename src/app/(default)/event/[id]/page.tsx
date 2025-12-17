@@ -299,7 +299,27 @@ function Page() {
                         </div>
                     </div>
 
-                    {!event?.isMyFeedbackGiven && user?.role !== 'organizer' && <UserFeedbackGivenSection eventData={eventData} />}
+                    {user?.role !== 'organizer' &&
+                        event?.data?.ratingData ?
+                        <Card style={{ width: '100%', marginTop: 20 }} className="flex flex-col p-6">
+                            <h1>My Feedback</h1>
+                            <div className='flex items-center gap-4'>
+                                <div className="border-2 overflow-hidden rounded-full w-12 h-12 ">
+                                    <Image
+                                        width={40}
+                                        height={40}
+                                        src={imageUrl({ image: event?.data?.ratingData?.user?.profile_image })}
+                                        alt={event?.data?.ratingData?.user?.name}
+                                        className='object-cover w-full h-full'
+                                    />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='font-semibold'>{event?.data?.ratingData?.user?.name}</p>
+                                    <p className='text-sm text-gray-500'>Rating :{event?.data?.ratingData?.rating}</p>
+                                </div>
+                            </div>
+                        </Card>
+                        : <UserFeedbackGivenSection eventData={eventData} />}
                 </div>
             </div>
             {user?.role === 'organizer' && (

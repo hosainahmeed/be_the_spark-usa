@@ -53,19 +53,19 @@ export const EventTypes: { value: string; label: string }[] = [
     { value: 'skills-academy', label: 'Skills Academy' },
     { value: 'open-play', label: 'Open Play / Scrimmage' }
 ]
-
 export const EventStatus: { value: string; label: string }[] = [
-    { value: 'all', label: 'All Status' },
-    { value: 'registration-open', label: 'Registration Open' },
-    { value: 'event-started', label: 'Event Started' },
-    { value: 'event-finished', label: 'Event Finished' }
+    { value: '', label: 'All Status' },
+    { value: 'UPCOMING', label: 'Upcoming' },
+    { value: 'REGISTRATION_OPEN', label: 'Registration Open' },
+    { value: 'EVENT_STARTED', label: 'Event Started' },
+    { value: 'EVENT_FINISHED', label: 'Event Finished' }
 ]
 
 export const SkillLevel: { value: string; label: string }[] = [
-    { value: 'all', label: 'All Types' },
-    { value: 'beginner', label: 'Beginner' },
-    { value: 'intermediate', label: 'Intermediate' },
-    { value: 'advanced', label: 'Advanced' }
+    { value: '', label: 'All Types' },
+    { value: 'Beginner', label: 'Beginner' },
+    { value: 'Intermediate', label: 'Intermediate' },
+    { value: 'Advanced', label: 'Advanced' }
 ]
 
 export const DateRange: { value: string; label: string }[] = [

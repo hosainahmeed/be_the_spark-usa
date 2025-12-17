@@ -5,16 +5,20 @@ import { X, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { EventDetails } from '@/types/event'
 import { useGiveRatingMutation } from '@/app/redux/service/ratingApis'
+import { useGetOrganizerQuery } from '@/app/redux/service/organizerRatingApis'
+import { Card } from 'antd'
 
 interface FeedbackFormData {
     rating: number
 }
 
 function UserFeedbackGivenSection({ eventData }: { eventData: EventDetails }) {
+    const { data, isLoading } = useGetOrganizerQuery(eventData?.organizer?._id as string, { skip: !eventData?.organizer?._id })
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [formData, setFormData] = useState<FeedbackFormData>({
         rating: 0,
     })
+
     const [hoveredRating, setHoveredRating] = useState(0)
     const [giveRating, { isLoading: ratingLoading }] = useGiveRatingMutation()
 
@@ -51,7 +55,7 @@ function UserFeedbackGivenSection({ eventData }: { eventData: EventDetails }) {
                 rating: formData?.rating
             }
             const res = await giveRating(data).unwrap()
-            if (!res?.success) {
+            if ('success' in res && !res?.success) {
                 throw new Error(res?.message)
             }
             toast.success('Thank you for your feedback!', {
@@ -92,7 +96,11 @@ function UserFeedbackGivenSection({ eventData }: { eventData: EventDetails }) {
             )
         })
     }
-
+    if (isLoading) {
+        return (
+            <Card loading />
+        )
+    }
     return (
         <div>
             <Button
@@ -122,11 +130,11 @@ function UserFeedbackGivenSection({ eventData }: { eventData: EventDetails }) {
                         <div className="p-6 border-b flex justify-between border-gray-200">
                             <div className="mb-2">
                                 <span className="text-sm font-medium text-gray-600">Organized By</span>
-                                <p className="text-lg font-semibold text-gray-900">Marvin Fey</p>
+                                <p className="text-lg font-semibold text-gray-900">{data?.data?.name || "N/A"}</p>
                             </div>
                             <div>
                                 <span className="text-sm font-medium text-gray-600">Ratings</span>
-                                <p className="text-lg font-semibold text-gray-900">4.9 (24)</p>
+                                <p className="text-lg font-semibold text-gray-900">{data?.data?.averageRating} ({data?.data?.totalRatings})</p>
                             </div>
                         </div>
 

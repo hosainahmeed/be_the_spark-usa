@@ -10,11 +10,12 @@ const ratingApis = baseApis.injectEndpoints({
             providesTags: ['rating']
         }),
         giveRating: builder.mutation({
-            query: () => ({
+            query: (data) => ({
                 url: '/rating/add-rating',
-                method: 'POST'
+                method: 'POST',
+                body: data
             }),
-            invalidatesTags: ['rating']
+            invalidatesTags: ['rating','event']
         })
     })
 })

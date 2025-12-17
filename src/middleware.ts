@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-// import { useMyProfile } from './app/hooks/useMyProfile';
+
 
 export function middleware(request: NextRequest) {
-    // const { user } = useMyProfile()
     const { pathname } = request.nextUrl;
     const orgUserPath = ['/browse-events', '/list-events-organizer', '/contact-us'];
+    const userPath = ['/', '/contact-us'];
 
     const token = request.cookies.get('accessTokenForPlayFinder');
 
