@@ -41,7 +41,7 @@ function FeaturedEventsCard({ event }: { event: EventDetails }) {
                 <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                     <div className="space-y-1">
                         <p className="text-base font-medium text-gray-700">Ages</p>
-                        <p className="text-sm text-gray-600">{event?.minAge} - {event?.maxAge}</p>
+                        <p className="text-sm text-gray-600">{event?.minAge === 17 ? '17+' : `${event?.minAge}-${event?.maxAge}`}</p>
                     </div>
                     <div className="space-y-1">
                         <p className="text-base font-medium text-gray-700">Sport</p>

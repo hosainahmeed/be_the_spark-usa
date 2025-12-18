@@ -2,47 +2,70 @@ import React from "react";
 import FeaturedEventsCard from "../landing/Featured Events/FeaturedEventsCard";
 import { EventDetails } from "@/types/event";
 import { Search, SearchIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { Input, Pagination } from "antd";
+import { Button, Input, Pagination } from "antd";
+import { FiFilter } from "react-icons/fi";
 
-export function EventCardGrid({ data, setSearchTerm, page, setPage, searchTerm, setFilters }: { data: any, page: number, setPage: any, searchTerm: string, setSearchTerm: (value: string) => void, setFilters: any }) {
+export function EventCardGrid({ data, setSearchTerm, page, setShowMobileFilter, setPage, searchTerm, setFilters }: { setShowMobileFilter: any, data: any, page: number, setPage: any, searchTerm: string, setSearchTerm: (value: string) => void, setFilters: any }) {
     return (
         <React.Fragment>
             <div className="flex gap-2">
+                <div className="lg:hidden mb-4">
+                    <Button
+                        icon={<FiFilter />}
+                        onPointerDown={() => setShowMobileFilter(true)}
+                        className="flex items-center gap-2 !h-11"
+                        size="large"
+                    />
+                </div>
                 <Input
                     prefix={<SearchIcon />}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     value={searchTerm}
-                    className="w-full mb-6 border shadow-none h-12 px-6"
+                    size="middle"
+                    className="w-full mb-6 border shadow-none h-11 px-6"
                     placeholder="Search your perfect event" />
                 <Button
-                    variant="outline"
-                    onClick={() => {
+                    size="large"
+                    onPointerDown={() => {
                         setFilters({})
                         setSearchTerm('')
                     }}
-                    className="border-gray-300"
+                    className="border-gray-300 !h-11"
                 >
                     Clear
                 </Button>
             </div>
-            {data?.data?.meta?.total > 8 && <div className="mb-4">
-                <Pagination
-                    size="small"
-                    align="start"
-                    current={page}
-                    defaultCurrent={data?.data?.meta?.page}
-                    total={data?.data?.meta?.total}
-                    pageSize={data?.data?.meta?.limit}
-                    onChange={(page) => setPage(page)}
-                />
-            </div>}
             {data?.data?.result?.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {data.data.result.map((event: EventDetails) => (
-                        <FeaturedEventsCard key={event?._id} event={event} />
-                    ))}
-                </div>
+                <>
+                    {data?.data?.meta?.total > 8 && <div className="mb-4">
+                        <Pagination
+                            size="default"
+                            align="start"
+                            current={page}
+                            defaultCurrent={data?.data?.meta?.page}
+                            total={data?.data?.meta?.total}
+                            pageSize={data?.data?.meta?.limit}
+                            onChange={(page) => setPage(page)}
+                        />
+                    </div>}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {data.data.result.map((event: EventDetails) => (
+                            <FeaturedEventsCard key={event?._id} event={event} />
+                        ))}
+                    </div>
+                    {data?.data?.meta?.total > 8 && <div className="mt-4 md:hidden block">
+                        <Pagination
+                            size="default"
+                            align="start"
+                            current={page}
+                            defaultCurrent={data?.data?.meta?.page}
+                            total={data?.data?.meta?.total}
+                            pageSize={data?.data?.meta?.limit}
+                            onChange={(page) => setPage(page)}
+                        />
+                    </div>}
+                </>
+
             ) : (
                 <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
                     <div className="bg-gray-100 p-6 rounded-full mb-6">
@@ -53,8 +76,9 @@ export function EventCardGrid({ data, setSearchTerm, page, setPage, searchTerm, 
                         We couldn't find any events matching your search. Try adjusting your filters or check back later for new events.
                     </p>
                     <Button
-                        variant="outline"
-                        onClick={() => {
+                        type="primary"
+                        size="large"
+                        onPointerDown={() => {
                             setFilters({})
                         }}
                         className="border-gray-300"

@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { EventDetails, EventStatus } from '@/types/event'
 import { useMyBookmarkQuery } from '@/app/redux/service/bookMarkApis'
+import Image from 'next/image'
+import { IMAGE } from '../../../../../public/assets/image/index.image'
+import EmptyBox from '@/components/ui/EmptyBox'
 
 interface IButton {
     title: string,
@@ -98,7 +101,7 @@ function MyShortlistedEvents() {
                                         event={item?.event}
                                     />
                                 )) : <div className="w-full h-48 col-span-5 flex items-center justify-center">
-                                    <p>No events found</p>
+                                    <EmptyBox text='No events found' />
                                 </div>
                             }
                         </div>

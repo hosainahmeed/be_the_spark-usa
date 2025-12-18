@@ -79,11 +79,11 @@ function Page() {
                                 </div>
 
                                 {/* Optional CTA Button */}
-                                <div className="pt-4 md:pt-6">
+                                {/* <div className="pt-4 md:pt-6">
                                     <button className="bg-[var(--blue)] text-white px-6 py-3 md:px-8 md:py-4 rounded hover:bg-[var(--blue)] font-semibold text-sm md:text-base  transition-colors duration-200 shadow-md hover:shadow-lg">
                                         Get Started
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

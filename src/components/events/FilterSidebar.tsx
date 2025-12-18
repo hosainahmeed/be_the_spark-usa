@@ -1,9 +1,9 @@
 import { useGetCategoryQuery } from '@/app/redux/service/categoryApis'
-import { AgeOptions, EventStatus, SkillLevel } from '@/constants/constantsOptions'
+import { AgeOptionsForFilter, EventStatus, SkillLevel } from '@/constants/constantsOptions'
 import { Collapse, Input, Radio, Select } from 'antd'
 import React from 'react'
 
-function FilterSidebar({ setAge, setSport, setEventType, setStatus, setSkillLevel , filters }: { setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any , filters: any }) {
+function FilterSidebar({ setAge, setSport, setEventType, setStatus, setSkillLevel, filters }: { setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any, filters: any }) {
   const { data: sportCategories } = useGetCategoryQuery({ type: 'sports' })
   const { data: eventTypeCategories } = useGetCategoryQuery({ type: 'event' })
 
@@ -39,9 +39,9 @@ function FilterSidebar({ setAge, setSport, setEventType, setStatus, setSkillLeve
               const data = e.target.value.split('-')
               setAge({ minAge: data[0], maxAge: data[1] })
             }}
-            value={filters?.minAge + '-' + filters?.maxAge}
+            value={filters.minAge ? filters?.minAge + '-' + filters?.maxAge : ''}
           >
-            {AgeOptions.map((option: any) => (
+            {AgeOptionsForFilter.map((option: any) => (
               <Radio key={option.value} value={option.value}>{option.label}</Radio>
             ))}
           </Radio.Group>

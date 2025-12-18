@@ -3,6 +3,7 @@ import { useMyEventQuery } from "@/app/redux/service/eventApis";
 import PageTopBanner from "@/components/common/status-banner/PageTopBanner";
 import FeaturedEventsCard from "@/components/landing/Featured Events/FeaturedEventsCard";
 import { Button } from "@/components/ui/button";
+import EmptyBox from "@/components/ui/EmptyBox";
 import { cn } from "@/lib/utils";
 import { EventDetails, EventStatus } from "@/types/event";
 import React, { useState, useMemo } from "react";
@@ -59,8 +60,8 @@ export default function Page() {
                             <FeaturedEventsCard key={index} event={event} />
                         ))
                     ) : (
-                        <div className="flex items-center col-span-5 justify-center h-[40vh]">
-                            <p>No events found</p>
+                        <div className="w-full h-48 col-span-5 flex items-center justify-center">
+                            <EmptyBox text='No events found' />
                         </div>
                     )}
                 </div>

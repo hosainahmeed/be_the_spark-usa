@@ -1,24 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-
 export function middleware(request: NextRequest) {
-    const { pathname } = request.nextUrl;
-    const orgUserPath = ['/browse-events', '/list-events-organizer', '/contact-us'];
-    const userPath = ['/', '/contact-us'];
+  const { pathname } = request.nextUrl;
 
-    const token = request.cookies.get('accessTokenForPlayFinder');
+  const token = request.cookies.get('accessTokenForPlayFinder');
 
-    if (!token) {
-        return NextResponse.redirect(new URL('/sign-in', request.url));
-    }
+  if (!token && pathname !== '/sign-in') {
+    return NextResponse.redirect(new URL('/sign-in', request.url));
+  }
 
-    return NextResponse.next();
+  return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        '/event/:id',
-        '/list-events-organizer'
-    ],
+  matcher: [
+    '/list-events-organizer',
+    '/event/:path*',
+  ],
 };

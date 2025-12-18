@@ -50,7 +50,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({
           />
           <button
             type="button"
-            onClick={() => togglePasswordVisibility('oldPassword')}
+            onPointerDown={() => togglePasswordVisibility('oldPassword')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
           >
             {showPassword.oldPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -69,7 +69,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({
           />
           <button
             type="button"
-            onClick={() => togglePasswordVisibility('newPassword')}
+            onPointerDown={() => togglePasswordVisibility('newPassword')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
           >
             {showPassword.newPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -88,7 +88,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({
           />
           <button
             type="button"
-            onClick={() => togglePasswordVisibility('confirmPassword')}
+            onPointerDown={() => togglePasswordVisibility('confirmPassword')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
           >
             {showPassword.confirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}

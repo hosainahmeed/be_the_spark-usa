@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import ReduxWrapper from "./redux/ReduxWrapper";
 import { ConfigProvider, ThemeConfig } from "antd";
+import RoutingSafe from "@/utils/RoutingSafe";
 
 // export const poppins = localFont({
 //   src: "../../public/fonts/poppins/Poppins-Black.ttf",
@@ -74,13 +75,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={optima.className}>
         <ReduxWrapper>
-          <Toaster />
-          <NextTopLoader
-            color='#002868'
-          />
-          <ConfigProvider theme={themeConfig}>
-            {children}
-          </ConfigProvider>
+          <RoutingSafe>
+            <Toaster />
+            <NextTopLoader
+              color='#002868'
+            />
+            <ConfigProvider theme={themeConfig}>
+              {children}
+            </ConfigProvider>
+          </RoutingSafe>
         </ReduxWrapper>
       </body>
     </html>

@@ -326,7 +326,7 @@ const ProfilePage: React.FC = () => {
                 <Button
                   disabled={updatedLoading}
                   type="submit"
-                  className='bg-[var(--blue)] w-fit text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base hover:bg-primary/90 transition-colors duration-200 shadow-md hover:shadow-lg'
+                  className='bg-[var(--blue)] hover:bg-[var(--blue)] w-fit text-white px-6 py-3 md:px-8 md:py-4 rounded font-semibold text-sm md:text-base  transition-colors duration-200 shadow-md hover:shadow-lg'
                 >
                   {updatedLoading ? 'Updating...' : 'Update Profile'}
                 </Button>
