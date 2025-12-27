@@ -34,7 +34,6 @@ function RegistrationEventDetailsV2() {
       ...prev,
       [name]: url
     }));
-    console.log(url)
     dispatch(updateEventData({ field: 'websiteLink', value: url }))
   };
 

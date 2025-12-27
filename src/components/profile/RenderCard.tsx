@@ -10,7 +10,6 @@ interface RenderCardProps {
 
 const RenderCard = ({ item, index }: RenderCardProps) => {
     const { label, value } = item
-    console.log(value)
 
     return (
         <div key={index} className='bg-[#F5F7FA] p-4 rounded-sm border'>

@@ -92,7 +92,6 @@ export function useEventForm(totalSteps: number) {
         }
         
         if (isValid) {
-            console.log('Final Form Data:', formData);
             localStorage.removeItem('eventFormData');
             localStorage.removeItem('eventFormStep');
             return true;

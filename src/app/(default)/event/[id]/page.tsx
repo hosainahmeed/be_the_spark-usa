@@ -52,8 +52,6 @@ function Page() {
         )
     }
 
-console.log(window.location.href)
-
     const handleShare = (event: EventDetails) => {
         if (navigator.share) {
             navigator.share({

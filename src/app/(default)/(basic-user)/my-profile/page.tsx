@@ -118,7 +118,6 @@ const ProfilePage: React.FC = () => {
       toast.dismiss();
       toast.success('Profile updated successfully!');
     } catch (error: any) {
-      console.log(error)
       toast.error(error?.data?.message || error?.message || 'Somthing went wrong!')
     }
   };

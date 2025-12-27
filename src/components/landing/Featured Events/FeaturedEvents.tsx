@@ -190,7 +190,6 @@ export const CAMP_DATA: CAMP_DATA[] = [
 
 const FeaturedEvents = () => {
     const { data, isLoading } = useGetEventsQuery({limit:4})
-    console.log(data)
     return (
         <div className="container  mx-auto p-4 sm:p-6 lg:p-8">
             <SectionTitleFormal

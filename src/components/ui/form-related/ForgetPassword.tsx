@@ -28,7 +28,6 @@ function ForgetPassword() {
             toast.success(res?.message || "Forget Password Successful");
             router.push(`/forget-password-otp?email=${values.email}`);
         } catch (error: any) {
-            console.log(error);
             toast.error(error?.data?.message || error?.message || 'Something went wrong while forget password!');
         }
     }
