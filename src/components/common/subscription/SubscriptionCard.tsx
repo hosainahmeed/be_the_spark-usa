@@ -1,65 +1,91 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { IMAGE } from '../../../../public/assets/image/index.image'
 import SectionLayout from '@/components/component-layout/SectionLayout'
+import { useGetAnnualQuery } from '@/app/redux/service/annualApis'
+import { Button } from '@/components/ui/button'
 
-function SubscriptionCard({buttonText, onPointerDown}: {buttonText: string, onPointerDown: () => void}) {
-    const subscriptionData = [
-        {
-            title: 'Annual Access',
-            price: '$9.99',
-            description: 'Subscribe for $19.99/year',
-            discount: 'Service launch discount $10/year',
-            included: [
-                'Search all youth Sport events',
-                'View full event details',
-                'Click external links to register',
-                'Save events to your list',
-            ],
-        },
-    ]
+
+function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { buttonText: string, disable?: boolean, setPrice?: any, onPointerDown: () => void }) {
+    const { data: annualAccessFeeData, isLoading: annualDataLoading } = useGetAnnualQuery({})
+
+    const plan = useMemo(() => {
+        const data = annualAccessFeeData?.data || [];
+        if (!data) return null;
+
+        return {
+            name: 'Annual Access Fee',
+            price: data.fee,
+            discount: data?.discountAmount?.toString(),
+            isDiscountActive: data?.isDiscountActive,
+            previousPrice: (data.fee)?.toString(),
+            discountReason: data?.discountReason,
+            description: data?.description
+        };
+    }, [annualAccessFeeData]);
+
+    useEffect(() => {
+        if (!annualDataLoading && setPrice) {
+            setPrice(plan?.isDiscountActive ? plan?.price - plan?.discount : plan?.price)
+        }
+    }, [plan, annualDataLoading])
+
+
+    if (annualDataLoading) {
+        return (
+            <div className='md:mt-28 mt-16 px-1 h-72 bg-gray-200 max-w-2xl shadow-2xl mx-auto rounded-md mb-12 animate-pulse'></div>
+        )
+    }
+
+
     return (
         <div>
             <div className='md:mt-28 mt-16 px-1'>
                 <SectionLayout>
-                    <Card
-                        style={{
-                            backgroundImage: `url(${IMAGE.subscriptionImage.src})`,
-                            width: IMAGE.subscriptionImage.width,
-                            height: IMAGE.subscriptionImage.height,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                        }}
-                        className='max-w-screen-md mx-auto !h-fit'
-                    >
-                        <CardContent>
-                            <div className='grid grid-cols-2 gap-4 mb-3'>
-                                <h1 className='text-3xl font-bold'>{subscriptionData[0].title}</h1>
-                                <p className='text-4xl font-semibold text-end'>{subscriptionData[0].price}</p>
-                                <p className='text-lg text-start'>{subscriptionData[0].description}</p>
-                                <p className='text-lg text-end'>{subscriptionData[0].discount}</p>
-                            </div>
-                            <div className="w-full h-[1px] bg-gray-200 my-4"></div>
-                            <div>
-                                <h1 className='text-2xl font-bold'>What’s Included</h1>
-                                <ul className='mt-4 flex flex-col gap-3'>
-                                    {subscriptionData[0].included.map((item, index) => (
-                                        <span className='flex gap-3 items-center' key={index}>
-                                            <Icon />
-                                            <li>{item}</li>
+                    <div className="container mx-auto min-w-2xl max-w-2xl">
+                        <div
+                            style={{
+                                backgroundImage: `url(${IMAGE.subscriptionImage.src})`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover',
+                            }}
+                            className="border border-gray-200 p-2 rounded-xl shadow-sm bg-white"
+                        >
+                            {/* Header */}
+                            <div className="p-6 border border-[#FFDAD9] rounded-md flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-2xl font-bold">{plan?.name}</h2>
+                                    <p className="text-gray-500 text-sm">
+                                        {`Join for $${plan?.isDiscountActive ? plan?.price - plan?.discount : plan?.price}/year`}
+                                    </p>
+                                </div>
+
+                                <div className="mb-4 flex flex-col items-end">
+                                    <div>
+                                        <span className="text-black text-4xl font-bold">${plan?.isDiscountActive ? plan?.price - plan?.discount : plan?.price}</span>
+                                        {plan?.isDiscountActive && (
+                                            <span className="text-black ml-1 line-through">
+                                                ${plan?.previousPrice}/year
+                                            </span>
+                                        )}
+                                    </div>
+                                    {plan?.isDiscountActive && (
+                                        <span className="text-gray-500 text-sm">
+                                            {plan?.discountReason} ${plan?.discount}/year
                                         </span>
-                                    ))}
-                                </ul>
+                                    )}
+                                </div>
                             </div>
+                            <div className='my-6 p-2' dangerouslySetInnerHTML={{ __html: plan?.description }} />
                             <Button
+                                disabled={disable}
                                 onPointerDown={onPointerDown}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
                             >{buttonText}</Button>
-                        </CardContent>
-                    </Card>
+                        </div>
+
+                    </div>
                 </SectionLayout>
             </div>
         </div>

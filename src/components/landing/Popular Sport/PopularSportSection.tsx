@@ -26,7 +26,7 @@ export const backgroundImage = [
 ];
 
 const PopularSportSection = () => {
-    const { data, isLoading } = useGetCategoryQuery({ type: 'sports' })
+    const { data, isLoading } = useGetCategoryQuery({ type: 'sports', limit: 8 })
 
     const randomBackgrounds = useMemo(() => {
         if (!data?.data?.result) return [];
@@ -60,7 +60,7 @@ const PopularSportSection = () => {
                 routes="/popular-sports"
             />
 
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="w-full grid mb-28 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {data?.data?.result.map((item: SportCategory, index: number) => (
                     <SportCategoryCard
                         key={index}

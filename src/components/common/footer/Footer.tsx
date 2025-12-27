@@ -9,7 +9,10 @@ import { LOGIN_USER_MENU_ITEMS, NON_USER_MENU_ITEMS, ORGANIZER_MENU_ITEMS } from
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 import { useMyProfile } from '@/app/hooks/useMyProfile';
+import { usePathname, useRouter } from 'next/navigation';
+
 const Footer = () => {
+    const path = usePathname()
     const currentYear = new Date().getFullYear();
     const { user, profile, isLoading } = useMyProfile()
 
@@ -45,6 +48,9 @@ const Footer = () => {
             { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
         ],
     };
+    if (path === `/success-payment`) {
+        return null
+    }
     return (
         <footer
             style={{

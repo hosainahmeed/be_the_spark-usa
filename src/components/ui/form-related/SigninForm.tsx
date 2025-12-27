@@ -16,18 +16,10 @@ import {
     Row,
     Col,
     Divider,
-    Alert,
-    Space,
-    Checkbox
 } from 'antd';
 import {
-    MailOutlined,
-    LockOutlined,
     EyeInvisibleOutlined,
     EyeTwoTone,
-    GoogleOutlined,
-    FacebookOutlined,
-    AppleOutlined
 } from '@ant-design/icons';
 
 const { Title, Text, Paragraph } = Typography;
@@ -52,15 +44,15 @@ export default function SigninForm() {
             }
 
             if (res?.data?.accessToken) {
-                Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken, {
-                    expires: values.remember ? 7 : 1, // 7 days if remember me is checked
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict'
-                });
+                Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken);
 
                 if (Cookies.get('accessTokenForPlayFinder')) {
                     toast.success(res?.message || "Login Successful");
-                    window.location.href = "/";
+                    if (window !== undefined) {
+                        window.location.href = "/";
+                    } else {
+                        router.push('/')
+                    }
                 }
             }
         } catch (error: any) {

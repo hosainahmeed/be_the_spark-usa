@@ -70,7 +70,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
 
                             {role !== 'user' &&
                                 <Link href={role === 'organizer' ? 'list-events-organizer' : '/list-events'}>
-                                    <Button className={cn("px-6 py-6 text-lg rounded",
+                                    <Button variant={role  ?"default" : "outline"} className={cn("px-6 py-6 text-lg rounded",
                                         "bg-white text-[#BF0A30] border border-[#BF0A30] cursor-pointer",
                                         role === 'organizer' && "bg-[var(--blue)] border-none hover:bg-[var(--blue)] text-white  cursor-pointer"
                                     )}>

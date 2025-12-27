@@ -19,7 +19,10 @@ export function EventCardGrid({ data, setSearchTerm, page, setShowMobileFilter, 
                 </div>
                 <Input
                     prefix={<SearchIcon />}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setPage(1)
+                        setSearchTerm(e.target.value)
+                    }}
                     value={searchTerm}
                     size="middle"
                     className="w-full mb-6 border shadow-none h-11 px-6"

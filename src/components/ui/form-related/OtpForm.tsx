@@ -7,7 +7,8 @@ import { IMAGE } from '../../../../public/assets/image/index.image'
 import { Button } from '../button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
-import { useVerifySignUpOtpMutation } from '@/app/redux/service/authApis'
+import { useResendVerifyCodeMutation, useVerifySignUpOtpMutation } from '@/app/redux/service/authApis'
+import Cookies from "js-cookie"
 
 function OtpForm() {
     const router = useRouter()
@@ -18,6 +19,7 @@ function OtpForm() {
     const email = searchParams.get('email');
 
     const [verifyCode, setVerifyCode] = useState("");
+    const [resendVerifyCode, { isLoading: resendVerifyCodeLoading }] = useResendVerifyCodeMutation()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -38,17 +40,38 @@ function OtpForm() {
             if (!res?.success) throw new Error(res?.message)
 
             toast.success(res?.message || "OTP verified successfully")
-
+            Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken);
+            const token = Cookies.get('accessTokenForPlayFinder')
+            // console.log(res?.data)
+            alert(res?.data)
             setTimeout(() => {
                 if (role === 'organizer') {
                     router.push(`/sign-in`)
-                } else {
-                    router.push(`/subscription-purchase?role=${role}`)
+                } else if (token) {
+                    if (window !== undefined) {
+                        window.location.href = `/subscription-purchase?role=${role}`
+                    }
                 }
             }, 500)
 
         } catch (error: any) {
             toast.error(error?.data?.message || error?.message || 'Something went wrong')
+        }
+    }
+
+    const resendOtpHandler = async () => {
+        if (!email) throw new Error('Email is required for verify!')
+        if (!role) throw new Error('Role is required for verify!')
+        try {
+            const data = {
+                email: email
+            }
+            const res = await resendVerifyCode(data).unwrap()
+            if (!res?.success) throw new Error(res?.message)
+            toast.success(res?.message)
+            Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken);
+        } catch (error: any) {
+            toast.error(error?.data?.message || error?.message || 'something went wrong!')
         }
     }
 
@@ -113,7 +136,7 @@ function OtpForm() {
                     Didn’t receive the OTP?{' '}
                     <span
                         className="hover:underline cursor-pointer"
-                        onPointerDown={() => toast.info("Resend OTP coming soon")}
+                        onPointerDown={() => resendOtpHandler()}
                     >
                         Resend OTP
                     </span>

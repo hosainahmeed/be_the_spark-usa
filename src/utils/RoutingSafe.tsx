@@ -17,17 +17,23 @@ const publicRoutes = [
     '/list-events',
     '/sign-in',
     '/sign-up',
-    '/browse-events',
+    '/forget-password-otp',
+    '/forgot-password',
+    '/one-time-pass',
+    '/set-new-password',
+    '/subscription-purchase',
+    '/verify-your-email',
     '/privacy',
     '/terms',
     '/contact-us',
     '/choose-role',
+    '/popular-sports'
 ]
 
 const userRoutes = [
     '/my-profile',
     '/my-shortlisted-events',
-    '/popular-sports',
+    '/browse-events'
 ]
 
 const organizerRoutes = [

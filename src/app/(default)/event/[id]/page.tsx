@@ -52,14 +52,14 @@ function Page() {
         )
     }
 
-
+console.log(window.location.href)
 
     const handleShare = (event: EventDetails) => {
         if (navigator.share) {
             navigator.share({
                 title: event?.name || "Event",
                 text: "Check this out!",
-                url: event?.websiteLink,
+                url: window.location.href,
             });
         } else {
             alert("Share not supported on this device");

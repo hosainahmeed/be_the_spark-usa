@@ -4,7 +4,7 @@ const clubApis = baseApis.injectEndpoints({
     endpoints: (builder) => ({
         contactSubmit: builder.mutation({
             query: (data) => ({
-                url: '/auth/contact-us',
+                url: '/user/contact-us',
                 method: 'POST',
                 body: data
             })
