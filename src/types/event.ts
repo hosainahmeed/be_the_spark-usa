@@ -67,5 +67,6 @@ export interface EventDetails {
   updatedAt: string;
   totalRating: number;
   averageRating: number;
+  avgRating: number;
   isBookmark: boolean
 }
