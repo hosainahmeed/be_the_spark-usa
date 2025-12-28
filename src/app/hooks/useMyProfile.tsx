@@ -30,6 +30,8 @@ export interface IProfileData {
     profile_image: string;
     createdAt: string;
     updatedAt: string;
+    annualAccessExpiryDate?: string;
+    lastPurchaseDate?: string;
 }
 
 export function useMyProfile() {

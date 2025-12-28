@@ -5,7 +5,7 @@ import { getPlaceSuggestions, getPlaceDetails } from "@/lib/getPlaceNameAndCoord
 import { setLocation, setLocationCoordinates, updateEventData } from "@/app/redux/slices/eventSlice";
 
 
-const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
+const PlaceSearch = ({ existingPlace, isTitle = true, setLongitude, setLatitude }: { setLongitude?: any, setLatitude?: any, existingPlace?: string, isTitle?: boolean }) => {
     const dispatch = useDispatch();
     const eventData = useSelector((state: any) => state.event);
     const [options, setOptions] = useState<any>([]);
@@ -32,8 +32,15 @@ const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
 
     const handleSelect = async (placeId: string) => {
         const place = await getPlaceDetails(placeId);
-
         if (!place) return;
+
+        // for browse-events
+        if (setLongitude && setLatitude) {
+            setLongitude(place.longitude)
+            setLatitude(place.latitude)
+        };
+
+        // for event
         dispatch(setLocationCoordinates([place.longitude, place.latitude]))
         dispatch(
             setLocation({
@@ -46,7 +53,7 @@ const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
 
     return (
         <div>
-            <label className="font-semibold">Select Location</label>
+            {isTitle && <label className="font-semibold">Select Location</label>}
             <Select
                 size="large"
                 defaultValue={existingPlace || null}
@@ -55,6 +62,7 @@ const PlaceSearch = ({ existingPlace }: { existingPlace: string }) => {
                 style={{ width: "100%" }}
                 onSearch={handleSearch}
                 onSelect={handleSelect}
+                allowClear
                 filterOption={false}
                 notFoundContent={loading ? <Spin size="small" /> : null}
                 value={eventData.address || undefined}

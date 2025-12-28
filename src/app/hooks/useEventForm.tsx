@@ -68,7 +68,6 @@ export function useEventForm(totalSteps: number) {
             } catch (e) {
                 localStorage.removeItem('eventFormData');
                 localStorage.removeItem('eventFormStep');
-                alert('Failed to parse saved event form data');
                 setFormData({ basics: {}, dates: {}, location: {}, details: {} });
                 setCurrentIndex(0);
             }

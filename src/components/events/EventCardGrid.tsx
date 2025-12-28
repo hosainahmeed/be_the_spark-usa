@@ -4,8 +4,11 @@ import { EventDetails } from "@/types/event";
 import { Search, SearchIcon } from "lucide-react";
 import { Button, Input, Pagination } from "antd";
 import { FiFilter } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { updateEventData } from "@/app/redux/slices/eventSlice";
 
-export function EventCardGrid({ data, setSearchTerm, page, setShowMobileFilter, setPage, searchTerm, setFilters }: { setShowMobileFilter: any, data: any, page: number, setPage: any, searchTerm: string, setSearchTerm: (value: string) => void, setFilters: any }) {
+export function EventCardGrid({ data, setSearchTerm, setDistance, setLatitude, setLongitude, page, setShowMobileFilter, setPage, searchTerm, setFilters }: { setDistance?: any, setLatitude?: any, setLongitude?: any, setShowMobileFilter: any, data: any, page: number, setPage: any, searchTerm: string, setSearchTerm: (value: string) => void, setFilters: any }) {
+    const dispatch = useDispatch()
     return (
         <React.Fragment>
             <div className="flex gap-2">
@@ -32,6 +35,10 @@ export function EventCardGrid({ data, setSearchTerm, page, setShowMobileFilter, 
                     onPointerDown={() => {
                         setFilters({})
                         setSearchTerm('')
+                        if (setDistance) setDistance('')
+                        if (setLatitude) setLatitude('')
+                        if (setLongitude) setLongitude('')
+                        dispatch(updateEventData({ field: 'address', value: '' }))
                     }}
                     className="border-gray-300 !h-11"
                 >
@@ -83,6 +90,9 @@ export function EventCardGrid({ data, setSearchTerm, page, setShowMobileFilter, 
                         size="large"
                         onPointerDown={() => {
                             setFilters({})
+                            if (setDistance) setDistance('')
+                            if (setLatitude) setLatitude('')
+                            if (setLongitude) setLongitude('')
                         }}
                         className="border-gray-300"
                     >

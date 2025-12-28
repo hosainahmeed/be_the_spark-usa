@@ -47,6 +47,7 @@ const RoutingSafe = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname()
     const [isAllowed, setIsAllowed] = useState(false)
 
+
     useEffect(() => {
         const token = Cookies.get('accessTokenForPlayFinder')
         const isPublicRoute = publicRoutes.includes(pathname)
@@ -80,12 +81,16 @@ const RoutingSafe = ({ children }: { children: React.ReactNode }) => {
         }
 
 
+
         if (role === 'organizer' && userRoutes.includes(pathname)) {
             router.replace('/list-events-organizer')
             return
         }
 
         setIsAllowed(true)
+
+
+
     }, [pathname, router])
 
 

@@ -137,7 +137,7 @@ const ProfilePage: React.FC = () => {
             businessName: profileForm?.businessName
         }
         try {
-            
+
             formData.append('data', JSON.stringify(data))
             const res = await updateProfileMutation(formData).unwrap()
             if (!res?.success) {
@@ -204,6 +204,7 @@ const ProfilePage: React.FC = () => {
                 <div>
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8">
                         <AvatarSection
+                            name={response?.data?.businessName}
                             avatar={profileImage}
                             isEditMode={updateProfile && !changePassword}
                             onAvatarChange={handleAvatarChange}

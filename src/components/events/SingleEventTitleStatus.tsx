@@ -14,6 +14,7 @@ function SingleEventTitleStatus({ event }: { event: EventDetails }) {
             </div>
             <span
                 className={cn('px-4 py-1 text-sm font-medium rounded-full self-start md:self-auto', {
+                    'bg-gray-300 text-gray-700': event?.status === 'UPCOMING',
                     'bg-green-100 text-green-700': event?.status === 'REGISTRATION_OPEN',
                     'bg-yellow-100 text-yellow-700': event?.status === 'EVENT_STARTED',
                     'bg-red-100 text-red-700': event?.status === 'EVENT_FINISHED',

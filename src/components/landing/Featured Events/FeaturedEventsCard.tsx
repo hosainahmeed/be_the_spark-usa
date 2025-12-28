@@ -52,7 +52,7 @@ function FeaturedEventsCard({ event }: { event: EventDetails }) {
                         <p className="text-base font-medium text-gray-700">Reviews</p>
                         <div className="flex items-center gap-1">
                             🌟 <span className="text-sm font-medium text-gray-900">
-                                {event?.averageRating}
+                                {event?.averageRating.toFixed(1)} /
                             </span>
                             <span className="text-sm text-gray-500">
                                 5

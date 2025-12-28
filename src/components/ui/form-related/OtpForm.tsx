@@ -42,8 +42,6 @@ function OtpForm() {
             toast.success(res?.message || "OTP verified successfully")
             Cookies.set("accessTokenForPlayFinder", res?.data?.accessToken);
             const token = Cookies.get('accessTokenForPlayFinder')
-            // console.log(res?.data)
-            alert(res?.data)
             setTimeout(() => {
                 if (role === 'organizer') {
                     router.push(`/sign-in`)

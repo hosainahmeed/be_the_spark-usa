@@ -245,8 +245,8 @@ const ProfilePage: React.FC = () => {
         <div>
           <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8">
             <div className="flex items-start gap-6 mb-6 md:mb-0">
-              <div className="w-28 relative h-28 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 border border-gray-100">
-                <Image
+              <div className="w-28 relative h-28 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-md flex items-center justify-center flex-shrink-0 border border-gray-100">
+                {avatar ? <Image
                   className='rounded-full object-cover cursor-pointer w-full h-full overflow-hidden'
                   src={
                     avatar instanceof File
@@ -262,7 +262,9 @@ const ProfilePage: React.FC = () => {
                     const target = e.target as HTMLImageElement;
                     target.src = IMAGE.defaultProfileImage.src;
                   }}
-                />
+                /> :
+                  <h1 className="text-2xl font-bold text-gray-700">{profileForm?.name.charAt(0).toUpperCase()}</h1>
+                }
                 {updateProfile && !changePassword && (
                   <div className="absolute cursor-pointer bottom-0 z-10 rounded-full bg-[var(--blue)] right-0 w-6 h-6 flex items-center justify-center">
                     <Camera className="w-4 h-4 cursor-pointer text-white" />

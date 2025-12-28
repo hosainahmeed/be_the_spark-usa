@@ -1,6 +1,6 @@
 'use client'
-import React from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MapPin, Mail, Phone, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -100,242 +100,270 @@ function Page() {
     }
 
     return (
-        <div className="container mx-auto px-4 md:px-6 lg:px-10 py-6">
-            <SingleEventBanner event={eventData} />
-            <SingleEventTitleStatus event={eventData} />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white border rounded-xl shadow-sm p-5">
-                        <h2 className="text-lg font-semibold mb-4">About The Event</h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div className="flex items-start gap-2">
-                                <IconShader>
-                                    <CalenderIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Event Start On</p>
-                                    <time className="text-gray-600">{new Date(eventData?.eventStartDateTime).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                    })}</time>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <IconShader>
-                                    <AgeIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Ages</p>
-                                    <p className="text-gray-600">{eventData?.minAge} min - {eventData?.maxAge} max</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <IconShader>
-                                    <SportIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Sport</p>
-                                    <p className="text-gray-600">{eventData?.sport?.name}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <IconShader>
-                                    <SlotIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Available Slots</p>
-                                    <p className="text-gray-600">{eventData?.availableSlot}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <IconShader>
-                                    <EventIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Event Type</p>
-                                    <p className="text-gray-600">{eventData?.eventType?.type}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                                <IconShader >
-                                    <CalenderIcon />
-                                </IconShader>
-                                <div>
-                                    <p className="font-medium">Registration Deadline</p>
-                                    <time className="text-gray-600">{new Date(eventData?.registrationEndDateTime).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                    })}</time>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white border rounded-xl shadow-sm p-5">
-                        <h2 className="text-lg font-semibold mb-4">Event Details</h2>
-                        <div dangerouslySetInnerHTML={{ __html: eventData?.description || '' }} />
-                    </div>
-                    {event?.isMyFeedbackGiven &&
-                        <div>
-                            <h1 className='text-lg font-semibold mb-4'>My feedback</h1>
-                            <Card className='flex flex-row items-center gap-2 p-5'>
-                                <Image
-                                    src={event?.feedbackData?.profilePhotoUrl || ''}
-                                    alt="Profile"
-                                    width={50}
-                                    height={50}
-                                    className='rounded-full overflow-hidden'
-                                />
-                                <div>
-                                    <h1 className="font-semibold text-xl">{event?.feedbackData?.name}</h1>
-                                    <span className='flex items-center gap-1'>⭐ {" "} {event?.feedbackData?.rating} / 5</span>
-                                </div>
-                            </Card>
-                        </div>
-                    }
-                </div>
-                <div>
-                    <Card className='bg-[#FAF7F9] p-4'>
-                        <div>
-                            <div className='flex items-center justify-between'>
-                                <div>
-                                    <p className="text-sm text-gray-500">Starts From</p>
-                                    <p className="text-2xl font-bold">${eventData?.registrationFee}</p>
-                                </div>
-                                <div className='flex items-center gap-2'>
-                                    {user?.role !== 'organizer' && <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onPointerDown={() => {
-                                        if (!bookMarkLoading) {
-                                            handleEventBookMark(eventData?._id)
-                                        }
-                                    }}>
-                                        {bookMarkLoading ?
-                                            <div className="w-5 h-5 border-red-400 rounded-full animate-spin border-t border-l"></div>
-                                            :
-                                            <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />
-                                        }
-                                    </IconShader>}
-                                    <IconShader className='cursor-pointer' onPointerDown={() => handleShare(eventData)}>
-                                        <ShareIcon />
+        <UserChecker>
+            <div className="container mx-auto px-4 md:px-6 lg:px-10 py-6">
+                <SingleEventBanner event={eventData} />
+                <SingleEventTitleStatus event={eventData} />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                    <div className="lg:col-span-2 space-y-6">
+                        <div className="bg-white border rounded-xl shadow-sm p-5">
+                            <h2 className="text-lg font-semibold mb-4">About The Event</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                <div className="flex items-start gap-2">
+                                    <IconShader>
+                                        <CalenderIcon />
                                     </IconShader>
+                                    <div>
+                                        <p className="font-medium">Event Start On</p>
+                                        <time className="text-gray-600">{new Date(eventData?.eventStartDateTime).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric',
+                                        })}</time>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <IconShader>
+                                        <AgeIcon />
+                                    </IconShader>
+                                    <div>
+                                        <p className="font-medium">Ages</p>
+                                        <p className="text-gray-600">{eventData?.minAge} min - {eventData?.maxAge} max</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <IconShader>
+                                        <SportIcon />
+                                    </IconShader>
+                                    <div>
+                                        <p className="font-medium">Sport</p>
+                                        <p className="text-gray-600">{eventData?.sport?.name}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <IconShader>
+                                        <SlotIcon />
+                                    </IconShader>
+                                    <div>
+                                        <p className="font-medium">Available Slots</p>
+                                        <p className="text-gray-600">{eventData?.availableSlot}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <IconShader>
+                                        <EventIcon />
+                                    </IconShader>
+                                    <div>
+                                        <p className="font-medium">Event Type</p>
+                                        <p className="text-gray-600">{eventData?.eventType?.type}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <IconShader >
+                                        <CalenderIcon />
+                                    </IconShader>
+                                    <div>
+                                        <p className="font-medium">Registration Deadline</p>
+                                        <time className="text-gray-600">{new Date(eventData?.registrationEndDateTime).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric',
+                                        })}</time>
+                                    </div>
                                 </div>
                             </div>
-                            <Button
-                                onPointerDown={() => window.open(eventData?.websiteLink, '_blank')}
-                                className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
-                            >Go to Event Registration Link</Button>
                         </div>
-                        <div className='flex flex-col gap-2'>
-                            <h2 className="text-lg font-semibold">Organizer Info</h2>
-                            <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
-                                <Image
-                                    src={imageUrl({ image: eventData?.organizer?.profile_image })}
-                                    alt="Avatar"
-                                    width={50}
-                                    height={50}
-                                    className='rounded-full w-12 h-12 object-cover overflow-hidden'
-                                />
-                                <div>
-                                    <p className="font-black">Organized By: </p>
-                                    <p>{eventData?.organizer?.name}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
-                                <div className='bg-[#E6ECF5] rounded-full p-2'>
-                                    <Star className="w-4 h-4 text-yellow-500" />
-                                </div>
-                                <div>
-                                    <h1 className="font-black">Rating</h1>
-                                    <p>{eventData?.averageRating} ({eventData?.totalRating || 0})</p>
-                                </div>
-                            </div>
-                            <div
-                                className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
-                                <div className='bg-[#E6ECF5] rounded-full p-2'>
-                                    <Mail className="w-4 h-4 text-gray-500" />
-                                </div>
-                                <div>
-                                    <h1 className="font-black">Contact Email</h1>
-                                    <span>{eventData?.organizer?.email}</span>
-                                </div>
-                            </div>
-                            <div
-                                className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
-                                <div className='bg-[#E6ECF5] rounded-full p-2'>
-                                    <Phone className="w-4 h-4 text-gray-500" />
-                                </div>
-                                <div>
-                                    <h1 className="font-black">Contact Phone</h1>
-                                    <span>{eventData?.organizer?.phone}</span>
-                                </div>
-                            </div>
+                        <div className="bg-white border rounded-xl shadow-sm p-5">
+                            <h2 className="text-lg font-semibold mb-4">Event Details</h2>
+                            <div dangerouslySetInnerHTML={{ __html: eventData?.description || '' }} />
                         </div>
-                    </Card>
-
-                    <div className="mt-3">
-                        <h2 className="text-lg font-semibold mb-3">Event Location</h2>
-                        <div className='border border-gray-200 rounded-xl p-5'>
-                            <div className="flex mb-3 items-start gap-2">
-                                <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
-                                    <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
-                                </div>
-                                <div>
-                                    <p className="font-medium">Location</p>
-                                    <p className="text-gray-600">{eventData?.address}</p>
-                                </div>
-                            </div>
-                            <iframe
-                                src={`https://www.google.com/maps?q=${encodeURIComponent(
-                                    eventData?.address
-                                )}&output=embed`}
-                                width="100%"
-                                height="200"
-                                className="rounded-lg"
-                                allowFullScreen
-                                loading="lazy"
-                            ></iframe>
-                        </div>
-                    </div>
-
-                    {user?.role !== 'organizer' &&
-                        event?.data?.ratingData ?
-                        <Card style={{ width: '100%', marginTop: 20 }} className="flex flex-col p-6">
-                            <h1>My Feedback</h1>
-                            <div className='flex items-center gap-4'>
-                                <div className="border-2 overflow-hidden rounded-full w-12 h-12 ">
+                        {event?.isMyFeedbackGiven &&
+                            <div>
+                                <h1 className='text-lg font-semibold mb-4'>My feedback</h1>
+                                <Card className='flex flex-row items-center gap-2 p-5'>
                                     <Image
-                                        width={40}
-                                        height={40}
-                                        src={imageUrl({ image: event?.data?.ratingData?.user?.profile_image })}
-                                        alt={event?.data?.ratingData?.user?.name}
-                                        className='object-cover w-full h-full'
+                                        src={event?.feedbackData?.profilePhotoUrl || ''}
+                                        alt="Profile"
+                                        width={50}
+                                        height={50}
+                                        className='rounded-full overflow-hidden'
                                     />
+                                    <div>
+                                        <h1 className="font-semibold text-xl">{event?.feedbackData?.name}</h1>
+                                        <span className='flex items-center gap-1'>⭐ {" "} {event?.feedbackData?.rating}</span>
+                                    </div>
+                                </Card>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <Card className='bg-[#FAF7F9] p-4'>
+                            <div>
+                                <div className='flex items-center justify-between'>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Starts From</p>
+                                        <p className="text-2xl font-bold">${eventData?.registrationFee}</p>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        {user?.role !== 'organizer' && <IconShader className={`cursor-pointer ${eventData?.isBookmark ? "bg-[var(--blue)]" : ""}`} onPointerDown={() => {
+                                            if (!bookMarkLoading) {
+                                                handleEventBookMark(eventData?._id)
+                                            }
+                                        }}>
+                                            {bookMarkLoading ?
+                                                <div className="w-5 h-5 border-red-400 rounded-full animate-spin border-t border-l"></div>
+                                                :
+                                                <SaveIcon stroke={`${eventData?.isBookmark ? '#fff' : '#002868'}`} />
+                                            }
+                                        </IconShader>}
+                                        <IconShader className='cursor-pointer' onPointerDown={() => handleShare(eventData)}>
+                                            <ShareIcon />
+                                        </IconShader>
+                                    </div>
                                 </div>
-                                <div className='flex flex-col'>
-                                    <p className='font-semibold'>{event?.data?.ratingData?.user?.name}</p>
-                                    <p className='text-sm text-gray-500'>Rating :{event?.data?.ratingData?.rating}</p>
+                                <Button
+                                    onPointerDown={() => window.open(eventData?.websiteLink, '_blank')}
+                                    className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer w-full"
+                                >Go to Event Registration Link</Button>
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <h2 className="text-lg font-semibold">Organizer Info</h2>
+                                <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                    <Image
+                                        src={imageUrl({ image: eventData?.organizer?.profile_image })}
+                                        alt="Avatar"
+                                        width={50}
+                                        height={50}
+                                        className='rounded-full w-12 h-12 object-cover overflow-hidden'
+                                    />
+                                    <div>
+                                        <p className="font-black">Organized By: </p>
+                                        <p>{eventData?.organizer?.name}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                    <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                        <Star className="w-4 h-4 text-yellow-500" />
+                                    </div>
+                                    <div>
+                                        <h1 className="font-black">Rating</h1>
+                                        <p>{eventData?.averageRating?.toFixed(1)} ({eventData?.totalRating || 0})</p>
+                                    </div>
+                                </div>
+                                <div
+                                    className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                    <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                        <Mail className="w-4 h-4 text-gray-500" />
+                                    </div>
+                                    <div>
+                                        <h1 className="font-black">Contact Email</h1>
+                                        <span>{eventData?.organizer?.email}</span>
+                                    </div>
+                                </div>
+                                <div
+                                    className="flex items-center gap-2 border border-gray-200 rounded-2xl p-2">
+                                    <div className='bg-[#E6ECF5] rounded-full p-2'>
+                                        <Phone className="w-4 h-4 text-gray-500" />
+                                    </div>
+                                    <div>
+                                        <h1 className="font-black">Contact Phone</h1>
+                                        <span>{eventData?.organizer?.phone}</span>
+                                    </div>
                                 </div>
                             </div>
                         </Card>
-                        : <UserFeedbackGivenSection eventData={eventData} />}
+
+                        <div className="mt-3">
+                            <h2 className="text-lg font-semibold mb-3">Event Location</h2>
+                            <div className='border border-gray-200 rounded-xl p-5'>
+                                <div className="flex mb-3 items-start gap-2">
+                                    <div className="flex items-center gap-2 bg-[#E6ECF5] rounded-full p-2">
+                                        <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
+                                    </div>
+                                    <div>
+                                        <p className="font-medium">Location</p>
+                                        <p className="text-gray-600">{eventData?.address}</p>
+                                    </div>
+                                </div>
+                                <iframe
+                                    src={`https://www.google.com/maps?q=${encodeURIComponent(
+                                        eventData?.address
+                                    )}&output=embed`}
+                                    width="100%"
+                                    height="200"
+                                    className="rounded-lg"
+                                    allowFullScreen
+                                    loading="lazy"
+                                ></iframe>
+                            </div>
+                        </div>
+
+                        {user?.role !== 'organizer' &&
+                            event?.data?.ratingData ?
+                            <Card style={{ width: '100%', marginTop: 20 }} className="flex flex-col p-6">
+                                <h1>My Feedback</h1>
+                                <div className='flex items-center gap-4'>
+                                    <div className="border-2 overflow-hidden rounded-full w-12 h-12 ">
+                                        <Image
+                                            width={40}
+                                            height={40}
+                                            src={imageUrl({ image: event?.data?.ratingData?.user?.profile_image })}
+                                            alt={event?.data?.ratingData?.user?.name}
+                                            className='object-cover w-full h-full'
+                                        />
+                                    </div>
+                                    <div className='flex flex-col'>
+                                        <p className='font-semibold'>{event?.data?.ratingData?.user?.name}</p>
+                                        <p className='text-sm text-gray-500'>Rating :{event?.data?.ratingData?.rating}</p>
+                                    </div>
+                                </div>
+                            </Card>
+                            : <UserFeedbackGivenSection eventData={eventData} />}
+                    </div>
                 </div>
-            </div>
-            {user?.role === 'organizer' && (
-                <div className='flex items-center gap-2'>
-                    <Button
-                        onPointerDown={() => handlerEventDelete(id as string)}
-                        className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">
-                        {eventDeleting ? "Deleting..." : "Delete"}</Button>
-                    <Button
-                        onPointerDown={() => router.push(`/list-events-organizer?id=${id}`)}
-                        className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6"><FaEdit /> Edit</Button>
-                </div>
-            )}
-        </div >
+                {user?.role === 'organizer' && (
+                    <div className='flex items-center gap-2'>
+                        <Button
+                            onPointerDown={() => handlerEventDelete(id as string)}
+                            className="mt-4 bg-white rounded text-red-500 border border-red-500 hover:border-[var(--blue)] hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6">
+                            {eventDeleting ? "Deleting..." : "Delete"}</Button>
+                        <Button
+                            onPointerDown={() => router.push(`/list-events-organizer?id=${id}`)}
+                            className="mt-4 bg-[var(--blue)] rounded text-white hover:bg-[var(--blue)] hover:text-white cursor-pointer px-6"><FaEdit /> Edit</Button>
+                    </div>
+                )}
+            </div >
+        </UserChecker>
     )
 }
 
 export default Page
+
+const UserChecker = ({ children }: { children: React.ReactNode }) => {
+    const { user, profile } = useMyProfile()
+    const router = useRouter()
+    const pathName = usePathname()
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        if (pathName.includes('event') && user?.role === 'user' && !profile?.annualAccessExpiryDate) {
+            router.push('/subscription-purchase')
+        }
+        // Set loading to false after a short delay to prevent flash of content
+        const timer = setTimeout(() => setIsLoading(false), 100)
+        return () => clearTimeout(timer)
+    }, [pathName, user, profile, router])
+
+    if (isLoading || (pathName.includes('event') && user?.role === 'user' && !profile?.annualAccessExpiryDate)) {
+        return (
+            <div className="fixed inset-0 w-screen h-screen bg-white z-[999] flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+        )
+    }
+
+    return <>{children}</>
+}
 
 
 const IconShader = ({ children, onPointerDown, className }: { children: React.ReactNode, onPointerDown?: () => void, className?: string }) => {

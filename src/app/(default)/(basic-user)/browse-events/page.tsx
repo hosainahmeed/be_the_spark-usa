@@ -22,15 +22,20 @@ type EventFilters = {
 export default function EventsPage() {
     const [showMobileFilter, setShowMobileFilter] = useState(false)
     const [filters, setFilters] = useState<EventFilters>({})
+    const [latitude, setLatitude] = useState('')
+    const [longitude, setLongitude] = useState('')
     const [page, setPage] = useState(1)
-
+    const [distance, setDistance] = useState('')
     const queryParams = useMemo(() => ({
         limit: 6,
         page: page,
+        ...(distance !== '' ? { maxDistance: distance } : {}),
+        ...(latitude !== '' ? { latitude: latitude } : {}),
+        ...(longitude !== '' ? { longitude: longitude } : {}),
         ...Object.fromEntries(
             Object.entries(filters).filter(([_, value]) => value !== '' && value !== undefined)
         )
-    }), [filters, page])
+    }), [filters, page, longitude, latitude, distance])
 
     const { data, isLoading } = useGetEventsQuery(queryParams)
 
@@ -93,6 +98,9 @@ export default function EventsPage() {
                 {/* Desktop Sidebar - Always visible on large screens */}
                 <aside className="hidden lg:block w-64 flex-shrink-0">
                     {isLoading ? <div className="w-full h-[calc(100vh-10rem)] bg-gray-200 rounded animate-pulse"></div> : <FilterSidebar
+                        setDistance={setDistance}
+                        setLatitude={setLatitude}
+                        setLongitude={setLongitude}
                         setAge={(value: { minAge: string; maxAge: string }) => {
                             updateFilter('minAge', value.minAge)
                             updateFilter('maxAge', value.maxAge)
@@ -143,6 +151,9 @@ export default function EventsPage() {
 
                                 <div className="p-4">
                                     <FilterSidebar
+                                        setDistance={setDistance}
+                                        setLatitude={setLatitude}
+                                        setLongitude={setLongitude}
                                         setAge={(value: { minAge: string; maxAge: string }) => {
                                             updateFilter('minAge', value.minAge)
                                             updateFilter('maxAge', value.maxAge)
@@ -189,6 +200,9 @@ export default function EventsPage() {
                                 setShowMobileFilter={setShowMobileFilter}
                                 data={data}
                                 page={page}
+                                setDistance={setDistance}
+                                setLatitude={setLatitude}
+                                setLongitude={setLongitude}
                                 searchTerm={filters?.searchTerm || ''}
                                 setFilters={setFilters}
                                 setPage={setPage}

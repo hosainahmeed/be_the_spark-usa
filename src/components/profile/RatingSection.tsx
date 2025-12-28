@@ -22,7 +22,7 @@ const RatingSection: React.FC<RatingData> = ({ averageRating, totalRatings }) =>
   return (
     <div className="rounded-xl px-6 py-4 flex flex-col items-center min-w-[140px]">
       <div className="text-2xl font-bold text-gray-900 mb-1">
-        {averageRating} <span className="text-base font-normal text-gray-400">/ 5</span>
+        {averageRating.toFixed(1)}
       </div>
       <div className="flex gap-1 mb-2">
         {renderStars(averageRating)}

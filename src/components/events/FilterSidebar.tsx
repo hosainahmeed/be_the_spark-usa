@@ -2,14 +2,20 @@ import { useGetCategoryQuery } from '@/app/redux/service/categoryApis'
 import { AgeOptionsForFilter, EventStatus, SkillLevel } from '@/constants/constantsOptions'
 import { Collapse, Input, Radio, Select } from 'antd'
 import React from 'react'
+import PlaceSearch from '../common/PlaceSearch'
 
-function FilterSidebar({ setAge, setSport, setEventType, setStatus, setSkillLevel, filters }: { setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any, filters: any }) {
+function FilterSidebar({ setAge, setDistance, setSport, setEventType, setStatus, setSkillLevel, filters, setLongitude, setLatitude }:
+  { setDistance: any, setLongitude?: any, setLatitude?: any, setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any, filters: any }) {
   const { data: sportCategories } = useGetCategoryQuery({ type: 'sports' })
   const { data: eventTypeCategories } = useGetCategoryQuery({ type: 'event' })
 
   return (
     <div>
-      <Input onChange={(e) => setAge(e.target.value)} size='middle' placeholder='Location (ZIP Code or City)' />
+      <PlaceSearch isTitle={false} setLongitude={setLongitude} setLatitude={setLatitude} />
+      <div className="mt-3">
+        <Input type='number' onChange={(e) => setDistance(e.target.value)} size='middle' placeholder='Distance (km) (default: 5 km)' />
+      </div>
+
       <Select
         onClear={() => setAge('')}
         style={{ width: '100%', margin: '0.5rem 0' }}
