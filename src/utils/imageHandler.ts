@@ -1,4 +1,4 @@
-export const url = "http://api.playfinderusa.com";
+export const url = "https://api.playfinderusa.com";
 export const imageUrl = ({ image, fallback }: { image: string, fallback?: string }) => {
     return image
         ? image?.startsWith("http")
