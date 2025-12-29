@@ -6,11 +6,13 @@ import { useGetAnnualQuery } from '@/app/redux/service/annualApis'
 import { Button } from '@/components/ui/button'
 import { useMyProfile } from '@/app/hooks/useMyProfile'
 import { Alert } from 'antd'
+import { usePathname } from 'next/navigation'
 
 
 function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { buttonText: string, disable?: boolean, setPrice?: any, onPointerDown: () => void }) {
     const { data: annualAccessFeeData, isLoading: annualDataLoading } = useGetAnnualQuery({})
     const { profile } = useMyProfile()
+  const pathname = usePathname()
 
     const plan = useMemo(() => {
         const data = annualAccessFeeData?.data || [];
@@ -41,18 +43,18 @@ function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { bu
     }
 
 
-    if (!profile?.annualAccessExpiryDate) {
-        return (
-            <div className='md:mt-28 mt-16 px-1 h-72 bg-gray-200 max-w-2xl shadow-2xl mx-auto rounded-md mb-12 animate-pulse'></div>
-        )
-    }
+    // if (!profile?.annualAccessExpiryDate && pathname?.includes('/subscription-purchase')) {
+    //     return (
+    //         <div className='md:mt-28 mt-16 px-1 h-72 bg-gray-200 max-w-2xl shadow-2xl mx-auto rounded-md mb-12 animate-pulse'></div>
+    //     )
+    // }
 
-    const expiryDate = new Date(profile?.annualAccessExpiryDate).getTime();
-    const currentDate = new Date().getTime();
-    const diffTime = Math.abs(expiryDate - currentDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    // const expiryDate = profile?.annualAccessExpiryDate ? new Date(profile.annualAccessExpiryDate).getTime() : 0;
+    // const currentDate = new Date().getTime();
+    // const diffTime = Math.abs(expiryDate - currentDate);
+    // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    const isExpired = diffDays > 5;
+    // const isExpired = diffDays > 5;
 
     return (
         <div>
@@ -95,13 +97,13 @@ function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { bu
                             </div>
                             <div className='my-6 p-2' dangerouslySetInnerHTML={{ __html: plan?.description }} />
                             <Button
-                                disabled={disable || isExpired}
+                                // disabled={disable || isExpired}
                                 onPointerDown={onPointerDown}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
                             >{buttonText}</Button>
-                            {isExpired && <div className="mt-4">
+                            {/* {isExpired && <div className="mt-4">
                                 <Alert title="You can renew annual access only within the last 5 days before expiry" type="info" showIcon />
-                            </div>}
+                            </div>} */}
                         </div>
 
                     </div>
