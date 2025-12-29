@@ -171,6 +171,9 @@ function page() {
       }
       toast.success(res?.message)
       dispatch(resetEvent())
+      if (window !== undefined) {
+        window.location.reload()
+      }
       router.push("/my-events")
     } catch (error: any) {
       toast.error(error?.data?.message || error?.message || 'something went wrong while create event!')
