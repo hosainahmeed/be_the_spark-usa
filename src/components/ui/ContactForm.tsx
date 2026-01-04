@@ -1,6 +1,6 @@
 'use client';
 import { Form, Input, Spin } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from './button';
 import TextArea from 'antd/es/input/TextArea';
 import { useContactSubmitMutation } from '@/app/redux/service/contactApis';
@@ -14,6 +14,7 @@ function ContactForm() {
             const data = {
                 name: values?.fullName,
                 email: values?.email,
+                phone: values?.phone,
                 message: values?.description
             }
             const response = await submitContact(data).unwrap()
@@ -51,7 +52,7 @@ function ContactForm() {
                             placeholder="Email"
                         />
                     </Form.Item>
-                    {/* <Form.Item
+                    <Form.Item
                         name="phone"
                         label="Phone Number"
                         rules={[{ required: true, message: 'Please input your phone!' }]}
@@ -60,7 +61,7 @@ function ContactForm() {
                             size='large'
                             placeholder="Phone"
                         />
-                    </Form.Item> */}
+                    </Form.Item>
                     <Form.Item
                         name="description"
                         label="Description"
