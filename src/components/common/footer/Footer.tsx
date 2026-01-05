@@ -42,9 +42,9 @@ const Footer = () => {
         { label: 'Terms of Condition', href: '/terms' }
         ],
         social: [
-            { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+            { icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61582770463998', label: 'Facebook' },
             { icon: FaXTwitter, href: 'https://twitter.com', label: 'Twitter' },
-            { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+            // { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
             { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
         ],
     };
