@@ -18,21 +18,21 @@ const TESTIMONIALS: Testimonial[] = [
         name: "Rolando Hintz",
         date: "June 16-17, 2025",
         image: SlideImage.slideImage1.src,
-        quote: "Ipsum vel nobis doloremque est aut non accusantium vero molestias. Et est minima dolorem eum modi atque sint nobis. Enim quod facere. Reiciendis necessitatibus ipsam non aspernatur voluptate id."
+        quote: `Perry, The Soccer Box Dallas "PlayFinder is super easy to use, and helps us market all of our leagues, tournaments and camp programs in front of people that are actually looking for those things. I love it."`
     },
     {
         id: 2,
         name: "Sarah Martinez",
         date: "July 22-23, 2025",
         image: SlideImage.slideImage2.src,
-        quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+        quote: `Benji, Dallas Legends "We've been doing shotgun marketing on Facebook for years, and spend over $10,000 every year. And although that has been okay, and we've probably broke even, it's not an ideal way to get our tryouts, open practices and other Legends programs in front of the right people that are actually looking for those things. PlayFinder has a great interface, and best of all for Clubs like us... it's free!"`
     },
     {
         id: 3,
         name: "Sarah Martinez",
         date: "July 22-23, 2025",
         image: SlideImage.slideImage3.src,
-        quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+        quote: `Billy, The Speedman "Man, I love PlayFinder. As a private coach, with limited time for the admin side of things, PlayFinder is a really great way to get my services into a marketplace in front of people looking for those things. I have an account that I can access any time, edit my services, add new ones, and do pretty much anything I need to do, and it takes no time at all."`
     }
 ];
 
