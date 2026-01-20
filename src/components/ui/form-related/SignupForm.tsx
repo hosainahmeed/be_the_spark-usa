@@ -86,17 +86,25 @@ export default function SignupForm() {
         return Promise.resolve();
     };
 
+
+
     return (
         <div>
             <Card
-                bordered={false}
+                title={
+                    <h1 onClick={() => {
+                        if (window !== undefined) {
+                            window.location.href = '/'
+                        }
+                    }} className='hover:underline cursor-pointer'>Back to Home</h1>
+                }
                 className="shadow-lg"
                 styles={{
                     body: { padding: 0 }
                 }}
             >
                 {/* Header Section */}
-                <div className="p-6 border-b">
+                <div className="p-6 border-b" >
                     <div className="flex flex-col items-start  text-center">
                         <Image
                             src={IMAGE.brandLogo}
@@ -116,7 +124,7 @@ export default function SignupForm() {
                 </div>
 
                 {/* Form Section */}
-                <div className="p-6">
+                <div className="p-6" >
                     <Form
                         form={form}
                         layout="vertical"
@@ -270,7 +278,7 @@ export default function SignupForm() {
                         </Text>
                     </div>
                 </div>
-            </Card>
-        </div>
+            </Card >
+        </div >
     );
 }

@@ -6,8 +6,8 @@ import PlaceSearch from '../common/PlaceSearch'
 
 function FilterSidebar({ setAge, setDistance, setSport, setEventType, setStatus, setSkillLevel, filters, setLongitude, setLatitude }:
   { setDistance: any, setLongitude?: any, setLatitude?: any, setAge: any, setSport: any, setEventType: any, setStatus: any, setSkillLevel: any, filters: any }) {
-  const { data: sportCategories } = useGetCategoryQuery({ type: 'sports' })
-  const { data: eventTypeCategories } = useGetCategoryQuery({ type: 'event' })
+  const { data: sportCategories } = useGetCategoryQuery({ type: 'sports', limit: 9999 })
+  const { data: eventTypeCategories } = useGetCategoryQuery({ type: 'event', limit: 9999 })
 
   return (
     <div>

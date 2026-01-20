@@ -29,8 +29,8 @@ function EventBasics({
         defaultValues: data,
         mode: 'onChange'
     });
-    const { data: sportCategoryData } = useGetCategoryQuery({ type: 'sports' })
-    const { data: eventCategoryData } = useGetCategoryQuery({ type: 'event' })
+    const { data: sportCategoryData } = useGetCategoryQuery({ type: 'sports', limit: 9999 })
+    const { data: eventCategoryData } = useGetCategoryQuery({ type: 'event', limit: 9999 })
 
     const [file, setFile] = React.useState<File | null>(data?.image || null);
 

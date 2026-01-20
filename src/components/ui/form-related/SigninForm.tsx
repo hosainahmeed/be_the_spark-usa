@@ -62,7 +62,13 @@ export default function SigninForm() {
     };
 
     return (
-        <Card>
+        <Card title={<h1
+            onClick={() => {
+                if (window !== undefined) {
+                    window.location.href = '/'
+                }
+            }}
+            className='hover:underline cursor-pointer'>Back to Home</h1>}>
             {/* Header Section */}
             <div>
                 <div className="flex flex-col items-start text-center">

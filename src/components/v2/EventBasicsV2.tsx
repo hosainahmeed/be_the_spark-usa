@@ -26,8 +26,8 @@ function EventBasicsV2({ onValuesChange }: EventBasicsV2Props) {
     const eventData = useSelector((state: any) => state.event);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [form] = Form.useForm();
-    const { data: sportCategoryData } = useGetCategoryQuery({ type: 'sports' })
-    const { data: eventCategoryData } = useGetCategoryQuery({ type: 'event' })
+    const { data: sportCategoryData } = useGetCategoryQuery({ type: 'sports', limit: 9999 })
+    const { data: eventCategoryData } = useGetCategoryQuery({ type: 'event', limit: 9999 })
 
 
     useEffect(() => {
