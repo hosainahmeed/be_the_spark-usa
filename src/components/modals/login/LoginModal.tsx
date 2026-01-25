@@ -48,6 +48,24 @@ function LoginModal({ isOpen, setIsOpen, desireRoute }: any) {
     visible: { opacity: 1 }
   };
 
+  const borderGradient = `linear-gradient(90deg, #1F437B, #4a90e2, #1F437B)`;
+
+  // Animation variants for the border
+  const borderVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.95
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        opacity: { duration: 0.3 },
+        scale: { duration: 0.3 }
+      }
+    }
+  };
+
   const modalVariants: any = {
     hidden: {
       opacity: 0,
@@ -97,7 +115,42 @@ function LoginModal({ isOpen, setIsOpen, desireRoute }: any) {
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-white rounded-2xl shadow-2xl p-8 mx-4">
+            <motion.div 
+              className="relative rounded-2xl overflow-hidden p-[2px] mx-4"
+              style={{
+                background: borderGradient,
+                backgroundSize: '300% 100%',
+                boxShadow: '0 0 15px rgba(31, 67, 123, 0.5)',
+                animation: 'gradient 3s ease infinite',
+                position: 'relative',
+              }}
+              variants={borderVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <style jsx global>{`
+                @keyframes gradient {
+                  0% { 
+                    background-position: 0% 50%;
+                    box-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+                  }
+                  50% { 
+                    background-position: 100% 50%;
+                    box-shadow: 0 0 20px rgba(74, 144, 226, 0.9);
+                  }
+                  100% { 
+                    background-position: 0% 50%;
+                    box-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+                  }
+                }
+              `}</style>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-30" />
+              <motion.div 
+                className="bg-white rounded-2xl p-8 w-full h-full relative z-10"
+                initial={{ opacity: 0 }}
+                animate={isOpen ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <motion.h2
@@ -229,7 +282,8 @@ function LoginModal({ isOpen, setIsOpen, desireRoute }: any) {
                   Sign up
                 </Link>
               </motion.p>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </>
       )}
