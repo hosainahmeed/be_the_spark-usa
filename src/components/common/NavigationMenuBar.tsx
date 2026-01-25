@@ -225,7 +225,7 @@ export const NavigationMenuBar = () => {
                                             />
                                             <Button
                                                 onPointerDown={() => handleLogout()}
-                                                className="primary-btn px-6 py-2 rounded cursor-pointer"
+                                                className="primary-btn  px-6 py-2 rounded cursor-pointer"
                                             >
                                                 Sign Out
                                             </Button>

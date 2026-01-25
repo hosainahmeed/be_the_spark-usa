@@ -8,7 +8,7 @@ import { SportCategory } from '@/types/categoryApis'
 import React, { useMemo } from 'react'
 
 function page() {
-  const { data, isLoading } = useGetCategoryQuery({ type: 'sports' })
+  const { data, isLoading } = useGetCategoryQuery({ type: 'sports', sortBy: "name", sortOrder: 'asc', limit: 9999 })
 
   const randomBackgrounds = useMemo(() => {
     if (!data?.data?.result) return [];

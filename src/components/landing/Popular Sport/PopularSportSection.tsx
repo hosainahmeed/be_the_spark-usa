@@ -26,7 +26,7 @@ export const backgroundImage = [
 ];
 
 const PopularSportSection = () => {
-    const { data, isLoading } = useGetCategoryQuery({ type: 'sports', limit: 8 })
+    const { data, isLoading } = useGetCategoryQuery({ type: 'sports', sortBy: "name", sortOrder: 'asc', limit: 8 })
 
     const randomBackgrounds = useMemo(() => {
         if (!data?.data?.result) return [];

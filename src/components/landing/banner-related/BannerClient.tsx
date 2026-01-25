@@ -10,18 +10,33 @@ import { Button } from '../../ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useMyProfile } from '@/app/hooks/useMyProfile';
+import { useRouter } from 'next/navigation';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 const BannerClient = ({ title, description, image }: BannerProps) => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
     const { user } = useMyProfile()
-
+    const router = useRouter()
     const [role, setRole] = useState<string | undefined>(undefined)
+    const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         if (user) {
             setRole(user?.role);
         }
     }, [user])
+
+    const handleFindEvents = () => {
+        if (!user || !role) {
+            setShowModal(true)
+            return
+        }
+        if (role !== 'organizer') {
+            router.push('/browse-events')
+        }
+    }
+
+
 
     return (
         <section
@@ -62,15 +77,17 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                             variants={containerVariants}
                             className="flex flex-col md:flex-row gap-4 justify-center lg:justify-start"
                         >
-                            {role !== 'organizer' && <Link href='/browse-events'>
-                                <Button className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
+                            {role !== 'organizer' &&
+                                <Button
+                                    onClick={handleFindEvents}
+                                    className="primary-btn px-6 text-lg py-6 rounded cursor-pointer hover:!bg-white hover:!text-[#BF0A30]">
                                     Find Events
                                 </Button>
-                            </Link>}
+                            }
 
                             {role !== 'user' &&
                                 <Link href={role === 'organizer' ? 'list-events-organizer' : '/list-events'}>
-                                    <Button variant={role  ?"default" : "outline"} className={cn("px-6 py-6 text-lg rounded",
+                                    <Button variant={role ? "default" : "outline"} className={cn("px-6 py-6 text-lg rounded",
                                         "bg-white text-[#BF0A30] border border-[#BF0A30] cursor-pointer",
                                         role === 'organizer' && "bg-[var(--blue)] border-none hover:bg-[var(--blue)] text-white  cursor-pointer"
                                     )}>
@@ -98,6 +115,7 @@ const BannerClient = ({ title, description, image }: BannerProps) => {
                         </div>
                     </motion.div>
                 </motion.div>
+                {showModal && <LoginModal isOpen={showModal} setIsOpen={setShowModal} />}
             </div >
         </section >
     );

@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation'
 function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { buttonText: string, disable?: boolean, setPrice?: any, onPointerDown: () => void }) {
     const { data: annualAccessFeeData, isLoading: annualDataLoading } = useGetAnnualQuery({})
     const { profile } = useMyProfile()
-  const pathname = usePathname()
+    const pathname = usePathname()
 
     const plan = useMemo(() => {
         const data = annualAccessFeeData?.data || [];
@@ -43,11 +43,11 @@ function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { bu
     }
 
 
-    if (!profile?.annualAccessExpiryDate && pathname?.includes('/subscription')) {
-        return (
-            <div className='md:mt-28 mt-16 px-1 h-72 bg-gray-200 max-w-2xl shadow-2xl mx-auto rounded-md mb-12 animate-pulse'></div>
-        )
-    }
+    // if (!profile?.annualAccessExpiryDate && pathname?.includes('/subscription')) {
+    //     return (
+    //         <div className='md:mt-28 mt-16 px-1 h-72 w-full bg-gray-200 max-w-2xl shadow-2xl mx-auto rounded-md mb-12 animate-pulse'></div>
+    //     )
+    // }
 
     const expiryDate = profile?.annualAccessExpiryDate ? new Date(profile.annualAccessExpiryDate).getTime() : 0;
     const currentDate = new Date().getTime();
@@ -98,7 +98,7 @@ function SubscriptionCard({ buttonText, onPointerDown, disable, setPrice }: { bu
                             </div>
                             <div className='my-6 p-2' dangerouslySetInnerHTML={{ __html: plan?.description }} />
                             <Button
-                                disabled={disable || (pathname?.includes('/subscription-purchase') && isExpired)}
+                                // disabled={disable || (pathname?.includes('/subscription-purchase') && isExpired)}
                                 onPointerDown={onPointerDown}
                                 className='w-fit rounded px-12 cursor-pointer mt-4 py-5 self-start bg-[var(--blue)] text-white hover:bg-[var(--blue)]'
                             >{buttonText}</Button>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../button";
 import { cn } from "@/lib/utils";
 import SectionLayout from "@/components/component-layout/SectionLayout";
+import { ArrowLeft } from "lucide-react";
 
 interface IChooseRole {
     title: string;
@@ -21,6 +22,7 @@ export default function ChooseRoleClient({ roles }: { roles: IChooseRole[] }) {
 
     return (
         <SectionLayout>
+            <h1 className="text-title font-semibold text-center mt-3 flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}><ArrowLeft /> Back to Home</h1>
             <div className="w-full h-screen flex items-center justify-center px-1">
                 <div className="grid gap-8 md:grid-cols-1">
                     {roles && roles.map((role, index) => (

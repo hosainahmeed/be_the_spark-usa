@@ -106,7 +106,7 @@ export const ProfileDropdown = ({ user, isOpen, profile, onClose, onLogout }: Pr
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3 }}
                                 onPointerDown={onLogout}
-                                className="w-full flex items-center gap-2 text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
+                                className="w-full flex items-center cursor-pointer gap-2 text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
                             >
                                 <LogOut className="w-5 h-5" />   Sign Out
                             </motion.button>

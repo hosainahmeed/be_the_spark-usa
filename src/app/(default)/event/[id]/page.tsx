@@ -128,7 +128,7 @@ function Page() {
                                     </IconShader>
                                     <div>
                                         <p className="font-medium">Ages</p>
-                                        <p className="text-gray-600">{eventData?.minAge} min - {eventData?.maxAge} max</p>
+                                        <p className="text-gray-600">{eventData?.minAge} min - {eventData?.maxAge < 10000 ? eventData?.maxAge : '17+'} max</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-2">

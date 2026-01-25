@@ -1,10 +1,37 @@
+'use client'
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { EventDetails } from '@/types/event';
 import Link from 'next/link';
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useMyProfile } from '@/app/hooks/useMyProfile';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 function FeaturedEventsCard({ event }: { event: EventDetails }) {
+    const { user } = useMyProfile()
+    const router = useRouter()
+    const [showModal, setShowModal] = useState(false)
+    const [role, setRole] = useState<string | undefined>(undefined)
+    const [desireRoute, setDesireRoute] = useState<string | undefined>(undefined)
+    useEffect(() => {
+        if (user) {
+            setRole(user?.role);
+        }
+    }, [user])
+
+    const handleFindEvents = () => {
+        if (!user || !role) {
+            setShowModal(true)
+            setDesireRoute(`/event/${event?._id}`)
+            return
+        }
+        if (role !== 'organizer') {
+            router.push(`/event/${event?._id}`)
+        }
+    }
+
     return (
         <article className="group bg-white rounded-xl shadow-sm transition-all duration-300 border border-gray-100 overflow-hidden">
             <div className="relative p-2 aspect-video">
@@ -61,15 +88,13 @@ function FeaturedEventsCard({ event }: { event: EventDetails }) {
                     </div>
                 </div>
 
-                <Link
-                    href={`/event/${event?._id}`}
-                >
-                    <Button
-                        className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-4 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
-                        View Details
-                    </Button>
-                </Link>
+                <Button
+                    onClick={() => handleFindEvents()}
+                    className="w-fit mt-4 hover:bg-[var(--blue)] hover:text-white cursor-pointer bg-[#E6ECF5] text-black font-medium py-2 px-4 rounded transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
+                    View Details
+                </Button>
             </div>
+            {showModal && <LoginModal isOpen={showModal} setIsOpen={setShowModal} desireRoute={desireRoute} />}
         </article>
     )
 }
