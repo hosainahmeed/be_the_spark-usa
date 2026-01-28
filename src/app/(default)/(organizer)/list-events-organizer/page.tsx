@@ -80,7 +80,7 @@ function page() {
           eventData.data.shortDescription && eventData?.event_image);
       case 1:
         return !!(eventData.data.registrationStartDateTime &&
-          eventData.data.registrationEndDateTime &&
+          // eventData.data.registrationEndDateTime &&
           eventData.data.eventStartDateTime &&
           eventData.data.eventEndDateTime);
       case 2:
@@ -150,7 +150,11 @@ function page() {
 
       Object.entries(data).forEach(([key, value]) => {
         if (value === null || value === false || value === 0 || value === '') {
-          throw new Error(`${key} should not be null, false or empty string`);
+          if (key !== 'registrationEndDateTime') {
+            if (key !== 'registrationFee') {
+              throw new Error(`${key} should not be null, false or empty string`);
+            }
+          }
         }
       });
 

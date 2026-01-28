@@ -9,112 +9,112 @@ function EventDatesRegistrationV2() {
   const dispatch = useDispatch();
   const eventData = useSelector((state: any) => state.event.data);
   const [form] = Form.useForm();
-  const [registrationStart, setRegistrationStart] = React.useState<dayjs.Dayjs | null>(null);
-  const [registrationEnd, setRegistrationEnd] = React.useState<dayjs.Dayjs | null>(null);
-  const [eventStart, setEventStart] = React.useState<dayjs.Dayjs | null>(null);
+  // const [registrationStart, setRegistrationStart] = React.useState<dayjs.Dayjs | null>(null);
+  // const [registrationEnd, setRegistrationEnd] = React.useState<dayjs.Dayjs | null>(null);
+  // const [eventStart, setEventStart] = React.useState<dayjs.Dayjs | null>(null);
 
-  const disabledRegistrationStartDate = (current: dayjs.Dayjs) => {
-    return current && current.isBefore(dayjs(), 'day');
-  };
+  // const disabledRegistrationStartDate = (current: dayjs.Dayjs) => {
+  //   return current && current.isBefore(dayjs(), 'day');
+  // };
 
-  const disabledRegistrationEndDate = (current: dayjs.Dayjs) => {
-    if (!registrationStart) {
-      return current && current.isBefore(dayjs(), 'day');
-    }
+  // const disabledRegistrationEndDate = (current: dayjs.Dayjs) => {
+  //   if (!registrationStart) {
+  //     return current && current.isBefore(dayjs(), 'day');
+  //   }
 
-    return current && current.isBefore(registrationStart, 'day');
-  };
+  //   return current && current.isBefore(registrationStart, 'day');
+  // };
 
-  const disabledEventStartDate = (current: dayjs.Dayjs) => {
-    if (!registrationEnd) {
-      return true;
-    }
+  // const disabledEventStartDate = (current: dayjs.Dayjs) => {
+  //   if (!registrationEnd) {
+  //     return true;
+  //   }
 
-    return current && current.isBefore(registrationEnd, 'day');
-  };
+  //   return current && current.isBefore(registrationEnd, 'day');
+  // };
 
-  const disabledEventEndDate = (current: dayjs.Dayjs) => {
-    if (!eventStart) {
-      return true;
-    }
+  // const disabledEventEndDate = (current: dayjs.Dayjs) => {
+  //   if (!eventStart) {
+  //     return true;
+  //   }
 
-    return current && current.isBefore(eventStart, 'day');
-  };
+  //   return current && current.isBefore(eventStart, 'day');
+  // };
 
-  const validateDates = () => {
-    const values = form.getFieldsValue();
-    const errors: any[] = [];
+  // const validateDates = () => {
+  //   const values = form.getFieldsValue();
+  //   const errors: any[] = [];
 
-    if (values.registrationStartDateTime && values.registrationEndDateTime) {
-      if (dayjs(values.registrationEndDateTime).isBefore(values.registrationStartDateTime)) {
-        errors.push({
-          name: 'registrationEndDateTime',
-          errors: ['Registration end must be after registration start'],
-        });
-      }
-    }
+  //   if (values.registrationStartDateTime && values.registrationEndDateTime) {
+  //     if (dayjs(values.registrationEndDateTime).isBefore(values.registrationStartDateTime)) {
+  //       errors.push({
+  //         name: 'registrationEndDateTime',
+  //         errors: ['Registration end must be after registration start'],
+  //       });
+  //     }
+  //   }
 
-    if (values.eventStartDateTime && values.eventEndDateTime) {
-      if (dayjs(values.eventEndDateTime).isBefore(values.eventStartDateTime)) {
-        errors.push({
-          name: 'eventEndDateTime',
-          errors: ['Event end must be after event start'],
-        });
-      }
-    }
+  //   if (values.eventStartDateTime && values.eventEndDateTime) {
+  //     if (dayjs(values.eventEndDateTime).isBefore(values.eventStartDateTime)) {
+  //       errors.push({
+  //         name: 'eventEndDateTime',
+  //         errors: ['Event end must be after event start'],
+  //       });
+  //     }
+  //   }
 
-    if (values.eventStartDateTime && values.registrationEndDateTime) {
-      if (dayjs(values.eventStartDateTime).isBefore(values.registrationEndDateTime)) {
-        errors.push({
-          name: 'eventStartDateTime',
-          errors: ['Event must start after registration ends'],
-        });
-      }
-    }
+  //   if (values.eventStartDateTime && values.registrationEndDateTime) {
+  //     if (dayjs(values.eventStartDateTime).isBefore(values.registrationEndDateTime)) {
+  //       errors.push({
+  //         name: 'eventStartDateTime',
+  //         errors: ['Event must start after registration ends'],
+  //       });
+  //     }
+  //   }
 
-    if (errors.length > 0) {
-      form.setFields(errors);
-    } else {
-      form.setFields([
-        { name: 'registrationEndDateTime', errors: [] },
-        { name: 'eventStartDateTime', errors: [] },
-        { name: 'eventEndDateTime', errors: [] },
-      ]);
-    }
-  };
+  //   if (errors.length > 0) {
+  //     form.setFields(errors);
+  //   } else {
+  //     form.setFields([
+  //       { name: 'registrationEndDateTime', errors: [] },
+  //       { name: 'eventStartDateTime', errors: [] },
+  //       { name: 'eventEndDateTime', errors: [] },
+  //     ]);
+  //   }
+  // };
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
     if (changedValues.registrationStartDateTime) {
-      setRegistrationStart(changedValues.registrationStartDateTime);
+      // setRegistrationStart(changedValues.registrationStartDateTime);
 
       form.setFieldsValue({
         registrationEndDateTime: null,
         eventStartDateTime: null,
         eventEndDateTime: null
       });
-      setRegistrationEnd(null);
-      setEventStart(null);
+      // setRegistrationEnd(null);
+      // setEventStart(null);
     }
 
     if (changedValues.registrationEndDateTime) {
-      setRegistrationEnd(changedValues.registrationEndDateTime);
+      // setRegistrationEnd(changedValues.registrationEndDateTime);
 
       form.setFieldsValue({
         eventStartDateTime: null,
         eventEndDateTime: null
       });
-      setEventStart(null);
+      // setEventStart(null);
     }
 
     if (changedValues.eventStartDateTime) {
-      setEventStart(changedValues.eventStartDateTime);
+      // setEventStart(changedValues.eventStartDateTime);
 
       form.setFieldsValue({
         eventEndDateTime: null
       });
     }
 
-    validateDates();
+    // validateDates();
 
     const updates: Partial<EventData> = {};
 
@@ -142,17 +142,17 @@ function EventDatesRegistrationV2() {
     });
   };
 
-  useEffect(() => {
-    if (eventData.registrationStartDateTime) {
-      setRegistrationStart(dayjs(eventData.registrationStartDateTime));
-    }
-    if (eventData.registrationEndDateTime) {
-      setRegistrationEnd(dayjs(eventData.registrationEndDateTime));
-    }
-    if (eventData.eventStartDateTime) {
-      setEventStart(dayjs(eventData.eventStartDateTime));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (eventData.registrationStartDateTime) {
+  //     setRegistrationStart(dayjs(eventData.registrationStartDateTime));
+  //   }
+  //   if (eventData.registrationEndDateTime) {
+  //     setRegistrationEnd(dayjs(eventData.registrationEndDateTime));
+  //   }
+  //   if (eventData.eventStartDateTime) {
+  //     setEventStart(dayjs(eventData.eventStartDateTime));
+  //   }
+  // }, []);
 
   return (
     <div className="p-4">
@@ -198,7 +198,7 @@ function EventDatesRegistrationV2() {
                 placeholder="Select date and time"
                 format="MM/DD/YYYY hh:mm A"
                 use12Hours
-                disabledDate={disabledRegistrationStartDate}
+                // disabledDate={disabledRegistrationStartDate}
               />
             </Form.Item>
           </Col>
@@ -207,9 +207,9 @@ function EventDatesRegistrationV2() {
             <Form.Item
               label="Registration End Date & Time"
               name="registrationEndDateTime"
-              rules={[
-                { required: true, message: 'Please select registration end date and time' }
-              ]}
+              // rules={[
+              //   { required: true, message: 'Please select registration end date and time' }
+              // ]}
             >
               <DatePicker
                 showTime
@@ -217,8 +217,9 @@ function EventDatesRegistrationV2() {
                 size="large"
                 placeholder="Select date and time"
                 format="MM/DD/YYYY hh:mm A"
+                allowClear
                 use12Hours
-                disabledDate={disabledRegistrationEndDate}
+                // disabledDate={disabledRegistrationEndDate}
               />
             </Form.Item>
           </Col>
@@ -238,7 +239,7 @@ function EventDatesRegistrationV2() {
                 placeholder="Select date and time"
                 format="MM/DD/YYYY hh:mm A"
                 use12Hours
-                disabledDate={disabledEventStartDate}
+                // disabledDate={disabledEventStartDate}
               />
             </Form.Item>
           </Col>
@@ -258,7 +259,7 @@ function EventDatesRegistrationV2() {
                 placeholder="Select date and time"
                 format="MM/DD/YYYY hh:mm A"
                 use12Hours
-                disabledDate={disabledEventEndDate}
+                // disabledDate={disabledEventEndDate}
               />
             </Form.Item>
           </Col>
