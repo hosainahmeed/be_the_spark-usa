@@ -11,7 +11,7 @@ function FilterSidebar({ setAge, setDistance, setSport, setEventType, setStatus,
 
   return (
     <div>
-      <PlaceSearch isTitle={false} setLongitude={setLongitude} setLatitude={setLatitude} />
+      <PlaceSearch  isTitle={false} setLongitude={setLongitude} setLatitude={setLatitude} />
       <div className="mt-3">
         <Input type='number' onChange={(e) => setDistance(e.target.value)} size='middle' placeholder='Distance (km) (default: 5 km)' />
       </div>
