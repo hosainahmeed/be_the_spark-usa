@@ -63,6 +63,13 @@ const PlaceSearch = ({ existingPlace, isTitle = true, setLongitude, setLatitude 
                 onSearch={handleSearch}
                 onSelect={handleSelect}
                 allowClear
+
+                onClear={() => {
+                    if (setLongitude) setLongitude('')
+                    if (setLatitude) setLatitude('')
+                    if (setLongitude) setLongitude('')
+                    dispatch(updateEventData({ field: 'address', value: '' }))
+                }}
                 filterOption={false}
                 notFoundContent={loading ? <Spin size="small" /> : null}
                 value={eventData.address || undefined}
